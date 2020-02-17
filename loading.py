@@ -15,17 +15,24 @@ if __name__ == "__main__":
     data[0,0] = 0.034398
     size = data.size
     a = Dataset()
+    # a.visualinspection()
+    # plt.show()
+    print(a.Izz())
+    print(a.Izz(spar=False))
+    print(a.Izz(skin=False, spar=False))
+    print(a.Izz(stiffener=False))
+    print(a.Izz(skin=False, spar=False, stiffener=False))
 
-    x, z = makeGrid(a.minx, a.minz, a.maxx, a.maxz, 81, 41)
-    fig = plt.figure()
-    frame1 = fig.add_subplot(2,1,1,projection='3d')
-    frame1.plot_surface(x, z, data, cmap=cm.coolwarm, rstride=1, cstride=1, linewidth=1, antialiased=True)
-    xs = np.reshape(x, size)
-    zs = np.reshape(z, size)
-    ys = np.reshape(data, size)
-    frame2 = fig.add_subplot(2,1,2,projection='3d')
-    frame2.plot_trisurf(xs, zs, ys, cmap=cm.coolwarm, linewidth=1, antialiased=True)
-    plt.show()
+    # x, z = makeGrid(a.minx, a.minz, a.maxx, a.maxz, 81, 41)
+    # fig = plt.figure()
+    # frame1 = fig.add_subplot(2,1,1,projection='3d')
+    # frame1.plot_surface(x, z, data, cmap=cm.coolwarm, rstride=1, cstride=1, linewidth=1, antialiased=True)
+    # xs = np.reshape(x, size)
+    # zs = np.reshape(z, size)
+    # ys = np.reshape(data, size)
+    # frame2 = fig.add_subplot(2,1,2,projection='3d')
+    # frame2.plot_trisurf(xs, zs, ys, cmap=cm.coolwarm, linewidth=1, antialiased=True)
+    # plt.show()
 
 
 
