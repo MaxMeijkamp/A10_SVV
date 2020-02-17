@@ -109,5 +109,8 @@ class Dataset:
         plt.ylabel("$y \: [m]$")
         plt.show()
 
+if __name__ == "__main__":
+    print("Hello world")
+
 
 
