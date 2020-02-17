@@ -15,13 +15,9 @@ if __name__ == "__main__":
     data[0,0] = 0.034398
     size = data.size
     a = Dataset()
-    # a.visualinspection()
-    # plt.show()
-    print(a.Izz())
-    print(a.Izz(spar=False))
-    print(a.Izz(skin=False, spar=False))
-    print(a.Izz(stiffener=False))
-    print(a.Izz(skin=False, spar=False, stiffener=False))
+    a.visualinspection()
+    plt.show()
+
 
     # x, z = makeGrid(a.minx, a.minz, a.maxx, a.maxz, 81, 41)
     # fig = plt.figure()
