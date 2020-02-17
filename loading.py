@@ -11,10 +11,13 @@ def makeGrid(minX, minZ, maxX, maxZ, numx, numz):
 
 
 if __name__ == "__main__":
-    data = np.genfromtxt("aerodata.csv", delimiter=",")
-    data[0,0] = 0.034398
-    size = data.size
+    # data = np.genfromtxt("aerodata.csv", delimiter=",")
+    # data[0,0] = 0.034398
+    # size = data.size
     a = Dataset()
+    print(a.chord)
+    print(a._radius)
+
     # a.visualinspection()
     # plt.show()
     print(a.Izz())
