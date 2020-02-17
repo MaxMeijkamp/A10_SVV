@@ -14,5 +14,7 @@ class SimpleTest(unittest.TestCase):
     def test_integrate(self):
         self.assertEqual( integrate(func, 0, 6, 3), 42)
 
+#Other things to test: Negative number of steps, 0 steps, stepsize negative, reaction to different start and stops,
+
 if __name__ == '__main__':
     unittest.main()
