@@ -88,28 +88,41 @@ class MyTestCase(unittest.TestCase):
         start = 0
         stop = 1
         def tempfunc(x):
-            return 1. + x * 0.
+            return 1 + x * 0
         n = 1
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 1., places= 8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places= 8)
         n =100
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 1., places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places=8)
         start = -5
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 6., places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 6., places=8)
         stop = -2
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 3., places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 3., places=8)
 
         def tempfunc(x):
             return 2*x
         start = 0
         stop = np.pi
         n = 1000
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), stop**2, places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), stop**2, places=8)
         stop = 10
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), stop**2, places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), stop**2, places=8)
         stop = -10
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), stop ** 2, places=8)
+        # Stop < start
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), stop ** 2, places=8)
         start = 10
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 0, places=8)
+        # Integral should cancel out (symmetric)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 0, places=8)
+        start, stop = 0, 0
+        # No distance over which to integrate
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 0, places=8)
+
+        #More difficult book example
+        def tempfunc(x):
+            return np.log(x) / x
+        start = 1
+        stop = np.e
+        n = 100000
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), .5, places=8)
 
 
 if __name__ == '__main__':
