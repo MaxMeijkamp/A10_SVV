@@ -1,14 +1,14 @@
 import unittest
 import stress_modules
+import numericaltools
 import math
+import numpy as np
 
 #simple case: rectangle with y = 10, x = 5
 class MyTestCase(unittest.TestCase):
 
     def test_something(self):
         self.assertEqual(True, True)
-
-
 
     def test_bend(self):
         h = 10
@@ -56,9 +56,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 0), 0)
 
         #One unit stress
-        self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt((1)))
-        self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=1, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt((1)))
-        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=1, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt((1)))
+        self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), 1)
+        self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=1, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), 1)
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=1, tau_xy=0, tau_yz=0, tau_xz=0), 1)
 
         #Two unit stresses
         self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=1, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt((1)))
@@ -78,6 +78,38 @@ class MyTestCase(unittest.TestCase):
         #Check for negative tau
         self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= -1, tau_yz= 0, tau_xz= 0), math.sqrt(6* 1**2 /2))
 
+        #Negative unit stress
+        self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= 0, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 0), 1)
+        self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= -1, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 0), 1)
+        self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= -1, sigma_zz= -1, tau_xy= 0, tau_yz= 0, tau_xz= 0), 0)
+
+    def test_integration(self):
+        #integrate(func, start, stop, number_of_points)
+        start = 0
+        stop = 1
+        def tempfunc(x):
+            return 1. + x * 0.
+        n = 1
+        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 1., places= 8)
+        n =100
+        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 1., places=8)
+        start = -5
+        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 6., places=8)
+        stop = -2
+        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 3., places=8)
+
+        def tempfunc(x):
+            return 2*x
+        start = 0
+        stop = np.pi
+        n = 1000
+        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), stop**2, places=8)
+        stop = 10
+        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), stop**2, places=8)
+        stop = -10
+        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), stop ** 2, places=8)
+        start = 10
+        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 0, places=8)
 
 
 if __name__ == '__main__':
