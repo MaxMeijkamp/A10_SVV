@@ -7,14 +7,18 @@ from math import sin, cos
 from numericaltools import integrate, interpolate, cont_spline
 from functools import *
 
+
 def get_theta(i, N):
     return (i-1)*np.pi/N
 
+
 def getzcoord(i, aileron, Nz=81):
-    return -0.5* (aileron.chord*0.5 * (1-cos(get_theta(i, Nz)))+ aileron.chord*0.5*(1-cos(get_theta(i+1, Nz))))
+    return -0.5 * (aileron.chord*0.5 * (1-cos(get_theta(i, Nz))) + aileron.chord*0.5*(1-cos(get_theta(i+1, Nz))))
+
 
 def getxcoord(i, aileron, Nx=41):
-    return 0.5* (aileron.span*0.5 * (1-cos(get_theta(i, Nx)))+ aileron.span*0.5*(1-cos(get_theta(i+1, Nx))))
+    return 0.5 * (aileron.span*0.5 * (1-cos(get_theta(i, Nx))) + aileron.span*0.5*(1-cos(get_theta(i+1, Nx))))
+
 
 def aero_points(Nx, Nz, a):
     coordlist = []
@@ -22,6 +26,7 @@ def aero_points(Nx, Nz, a):
         for z in range(1, Nz+1):
             coordlist.append([getxcoord(x, a), getzcoord(z, a)])
     return np.asarray(coordlist)
+
 
 def make_sections(Nx, Nz, a):
     coords = np.unique(aero_points(Nx, Nz, a)[:, 0])
@@ -31,30 +36,23 @@ def make_sections(Nx, Nz, a):
     new_list.append(a.span)
     return np.asarray(new_list)
 
+
 def get_aero_resultants(file, coords):
     data = np.genfromtxt(file, delimiter=",")
-    data[0,0] = 0.034398 # Reader gives the first value as nan, this is to fix that problem
+    data[0, 0] = 0.034398  # Reader gives the first value as nan, this is to fix that problem
     print(data.shape)
-    coords=np.unique(coords[:,1])
+    coords = np.unique(coords[:, 1])
     res_forces = []
     for i in range(data.shape[1]):
-        res_forces.append(integrate(cont_spline(coords, data[i,:]), np.min(coords), np.max(coords), 500))
+        res_forces.append(integrate(cont_spline(coords, data[i, :]), np.min(coords), np.max(coords), 500))
     return res_forces
+
 
 if __name__ == "__main__":
     a = Dataset()
     aerogrid = aero_points(41, 81, a)
     data = get_aero_resultants("aerodata.csv", aerogrid)
     print(data)
-
-
-
-
-
-
-
-
-
 
     # plt.scatter(coordlist[:,0], coordlist[:,1])
     # plt.gca().invert_xaxis()
@@ -66,9 +64,3 @@ if __name__ == "__main__":
     # plt.scatter(a.hinge1, -a._radius, s=100)
     # plt.scatter(a.hinge3, -a._radius, s=100)
     # plt.show()
-
-
-
-
-
-

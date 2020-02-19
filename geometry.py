@@ -105,7 +105,8 @@ class Dataset:
             raise ValueError("The aileron does not contain this number of stringers")
 
     def stiffLoc(self, n=None):
-        # Returns a tuple of the given stiffener number. If no arguments are given, a list of tuples containing all stiffener locations is returned.
+        # Returns a tuple of the given stiffener number.
+        # If no arguments are given, a list of tuples containing all stiffener locations is returned.
         if n == None:
             list = []
             for i in range(self.stiffn):
@@ -115,11 +116,11 @@ class Dataset:
             return self._stiffcoord(n)
 
     def _I_stiff(self, stiffener_list, axis):
-        I = 0
+        i_stiff = 0
         for stiff in stiffener_list:
             d_2 = stiff[axis]*stiff[axis]
-            I += d_2*self._stiffener_area
-        return I
+            i_stiff += d_2*self._stiffener_area
+        return i_stiff
 
     def visualinspection(self):
         # Used as a visual inspection of the cross-section.
@@ -141,6 +142,7 @@ class Dataset:
         plt.xlabel("$z \: [m]$")
         plt.ylabel("$y \: [m]$")
         plt.show()
+
 
 if __name__ == "__main__":
     print("Hello world")
