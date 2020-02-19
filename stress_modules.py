@@ -1,6 +1,5 @@
 import numpy as np
 import geometry
-import numericaltools
 
 def von_mises(sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz):
     #Takes arg. sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz.
@@ -25,4 +24,9 @@ def findShearCenter(dataset):
         return
     return Izz
 
-def torsion(y, z, torque, dataset)
+
+def output():
+    # Takes arg. x, y, z coordinates(from geometry), von mises stress, bending stress, shear flow, displacements in y&z;
+    # Cont'd: slope in y & z, twist, torque, distributed torque, moments about y & z, shear force in y & z
+
+    return

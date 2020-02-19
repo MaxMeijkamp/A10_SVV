@@ -4,7 +4,7 @@ import numericaltools
 import math
 import numpy as np
 
-#simple case: rectangle with y = 10, x = 5
+
 class MyTestCase(unittest.TestCase):
 
     def test_something(self):
@@ -134,14 +134,25 @@ class MyTestCase(unittest.TestCase):
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), .5, places=8)
 
     def test_interpolation(self):
+        # Simple test with basic python lists and some fringe cases (first value, high decimal count)
         test_list_x = [0, 1, 2, 3, 4]
         test_list_f = [2, 5, 3, 3, 4]
         test_x_target = 0
         self.assertEqual(numericaltools.interpolate(test_list_x, test_list_f, test_x_target), 2)
-        test_x_target = 0.
+        test_x_target = 0.5
         self.assertEqual(numericaltools.interpolate(test_list_x, test_list_f, test_x_target), 3.5)
         test_x_target = 2.9999999
         self.assertEqual(numericaltools.interpolate(test_list_x, test_list_f, test_x_target), 3)
+        # More complex test with other fringe case (last value)
+        test_list_x_1 = np.array([0.001, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+        test_list_f_1 = np.array([4, 3, 2, 3, 3, 6, 2, 3, 5, 4, 3, 1])
+        test_x_target = 5.5
+        self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 4)
+        test_x_target = 7.5
+        self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 4)
+        test_x_target = 11
+        self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 1)
+
 
 if __name__ == '__main__':
     unittest.main()

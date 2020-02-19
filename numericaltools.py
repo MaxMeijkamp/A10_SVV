@@ -1,4 +1,5 @@
 import numpy as np
+from functools import *
 
 
 def integrate(func, start, stop, number_of_points):
@@ -14,11 +15,14 @@ def integrate(func, start, stop, number_of_points):
     return integration
 
 
-def spline(x, f):
+def cont_spline(x_discrete, f_discrete):
+    return np.vectorize(partial(interpolate, x_discrete, f_discrete))
+
+
+def spline(x, f, n):
     # Spline function,
     if len(x) != len(f):
         raise ValueError("The lists are not of the same shape")
-    n = len(x)
     sp_start = []
     sp_slope = []
     for i in range(0, n-1):
@@ -32,17 +36,14 @@ def spline(x, f):
 
 def interpolate(x, f, x_target):
     # Interpolation function which gives f_target for a given x_target and x-f spline
-    sp_start, sp_slope = spline(x, f)
-    for i in range(0, len(x)):
-        if x[i] >= x_target:
+    n = len(x)
+    if x[0] > x_target or x_target > x[n-1]:
+        raise ValueError("The target location is out of bounds")
+    sp_start, sp_slope = spline(x, f, n)
+    left_i = n-2
+    for i in range(n):
+        if x[i] > x_target:
             left_i = i-1
             break
     f_target = sp_slope[left_i] * (x_target - x[left_i]) + sp_start[left_i]
     return f_target
-
-
-if __name__ == "__main__":
-    x = np.array()
-    f = np.array()
-    interp = interpolate([0, 0.1, 0.2, 0.5, 0.65, 0.8, 0.9, 1.0], [1, 4, 2, 3, 7, -4, 0.5, 0], 0.15)
-    print(interp)

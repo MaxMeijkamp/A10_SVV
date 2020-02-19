@@ -3,39 +3,76 @@ from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 from geometry import Dataset
+from math import sin, cos
+from numericaltools import integrate, interpolate, cont_spline
+from functools import *
 
-def makeGrid(minX, minZ, maxX, maxZ, numx, numz):
-    stepX = (maxX - minX) / (numx-1)
-    stepZ = (maxZ - minZ) / (numz-1)
-    return np.mgrid[minX:maxX+stepX*0.1:stepX, minZ:maxZ+stepZ*0.1:stepZ]
+
+def get_theta(i, N):
+    return (i-1)*np.pi/N
+
+
+def getzcoord(i, aileron, Nz=81):
+    return -0.5 * (aileron.chord*0.5 * (1-cos(get_theta(i, Nz))) + aileron.chord*0.5*(1-cos(get_theta(i+1, Nz))))
+
+
+def getxcoord(i, aileron, Nx=41):
+    return 0.5 * (aileron.span*0.5 * (1-cos(get_theta(i, Nx))) + aileron.span*0.5*(1-cos(get_theta(i+1, Nx))))
+
+
+def aero_points(Nx, Nz, a):
+    coordlist = []
+    for x in range(1, Nx+1):
+        for z in range(1, Nz+1):
+            coordlist.append([getxcoord(x, a), getzcoord(z, a)])
+    return np.asarray(coordlist)
+
+
+def make_sections(Nx, Nz, a):
+    coords = np.unique(aero_points(Nx, Nz, a)[:, 0])
+    new_list = [0]
+    for i in range(coords.size-1):
+        new_list.append(0.5*(coords[i] + coords[i+1]))
+    new_list.append(a.span)
+    return np.asarray(new_list)
+
+
+def get_aero_resultants(file, coords):
+    data = np.genfromtxt(file, delimiter=",")
+    data[0,0] = 0.034398 # Reader gives the first value as nan, this is to fix that problem
+    coords = np.unique(coords[:,1])
+    print(coords)
+    res_forces = []
+    res_locations = []
+    data = np.flip(data, axis=0)
+    for i in range(data.shape[1]):
+        Q = 0
+        res_forces.append(integrate(cont_spline(coords, data[:,i]), np.min(coords), np.max(coords), 100))
+        for j in range(data.shape[0]):
+            Q += data[j,i]*coords[j]
+        res_locations.append(Q/np.sum(data[:,i]))
+    return res_locations, res_forces
 
 
 if __name__ == "__main__":
-    # data = np.genfromtxt("aerodata.csv", delimiter=",")
-    # data[0,0] = 0.034398
-    # size = data.size
     a = Dataset()
-    print(a.chord)
-    print(a._radius)
+    aerogrid = aero_points(41, 81, a)
+    locs, forces = get_aero_resultants("aerodata.csv", aerogrid)
 
-    # a.visualinspection()
-    # plt.show()
-    print(a.Izz())
-    print(a.Izz(spar=False))
-    print(a.Izz(skin=False, spar=False))
-    print(a.Izz(stiffener=False))
-    print(a.Izz(skin=False, spar=False, stiffener=False))
+    plt.scatter(aerogrid[:,0], aerogrid[:,1], s=10)
+    plt.scatter(np.unique(aerogrid[:,0]), locs, s=50)
+    plt.gca().invert_xaxis()
+    plt.plot([0, a.span], [-a.chord, -a.chord])
+    plt.plot([0, a.span], [0, 0])
+    plt.plot([0, 0], [-a.chord, 0])
+    plt.plot([a.span, a.span], [-a.chord, 0])
+    plt.scatter(a.hinge2, -a._radius, s=100)
+    plt.scatter(a.hinge1, -a._radius, s=100)
+    plt.scatter(a.hinge3, -a._radius, s=100)
+    plt.show()
 
-    # x, z = makeGrid(a.minx, a.minz, a.maxx, a.maxz, 81, 41)
-    # fig = plt.figure()
-    # frame1 = fig.add_subplot(2,1,1,projection='3d')
-    # frame1.plot_surface(x, z, data, cmap=cm.coolwarm, rstride=1, cstride=1, linewidth=1, antialiased=True)
-    # xs = np.reshape(x, size)
-    # zs = np.reshape(z, size)
-    # ys = np.reshape(data, size)
-    # frame2 = fig.add_subplot(2,1,2,projection='3d')
-    # frame2.plot_trisurf(xs, zs, ys, cmap=cm.coolwarm, linewidth=1, antialiased=True)
-    # plt.show()
+
+
 
 
 
