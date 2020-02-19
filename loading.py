@@ -39,28 +39,40 @@ def make_sections(Nx, Nz, a):
 
 def get_aero_resultants(file, coords):
     data = np.genfromtxt(file, delimiter=",")
-    data[0, 0] = 0.034398  # Reader gives the first value as nan, this is to fix that problem
-    print(data.shape)
-    coords = np.unique(coords[:, 1])
+    data[0,0] = 0.034398 # Reader gives the first value as nan, this is to fix that problem
+    coords = np.unique(coords[:,1])
+    print(coords)
     res_forces = []
+    res_locations = []
+    data = np.flip(data, axis=0)
     for i in range(data.shape[1]):
-        res_forces.append(integrate(cont_spline(coords, data[i, :]), np.min(coords), np.max(coords), 500))
-    return res_forces
+        Q = 0
+        res_forces.append(integrate(cont_spline(coords, data[:,i]), np.min(coords), np.max(coords), 100))
+        for j in range(data.shape[0]):
+            Q += data[j,i]*coords[j]
+        res_locations.append(Q/np.sum(data[:,i]))
+    return res_locations, res_forces
 
 
 if __name__ == "__main__":
     a = Dataset()
     aerogrid = aero_points(41, 81, a)
-    data = get_aero_resultants("aerodata.csv", aerogrid)
-    print(data)
+    locs, forces = get_aero_resultants("aerodata.csv", aerogrid)
 
-    # plt.scatter(coordlist[:,0], coordlist[:,1])
-    # plt.gca().invert_xaxis()
-    # plt.plot([0, a.span], [-a.chord, -a.chord])
-    # plt.plot([0, a.span], [0, 0])
-    # plt.plot([0, 0], [-a.chord, 0])
-    # plt.plot([a.span, a.span], [-a.chord, 0])
-    # plt.scatter(a.hinge2, -a._radius, s=100)
-    # plt.scatter(a.hinge1, -a._radius, s=100)
-    # plt.scatter(a.hinge3, -a._radius, s=100)
-    # plt.show()
+    plt.scatter(aerogrid[:,0], aerogrid[:,1], s=10)
+    plt.scatter(np.unique(aerogrid[:,0]), locs, s=50)
+    plt.gca().invert_xaxis()
+    plt.plot([0, a.span], [-a.chord, -a.chord])
+    plt.plot([0, a.span], [0, 0])
+    plt.plot([0, 0], [-a.chord, 0])
+    plt.plot([a.span, a.span], [-a.chord, 0])
+    plt.scatter(a.hinge2, -a._radius, s=100)
+    plt.scatter(a.hinge1, -a._radius, s=100)
+    plt.scatter(a.hinge3, -a._radius, s=100)
+    plt.show()
+
+
+
+
+
+
