@@ -52,7 +52,11 @@ def get_aero_resultants(file, coords):
         res_locations.append(Q/np.sum(data[:,i]))
     return res_locations, res_forces
 
-def getq(coords, forces, x):
+def getq(coords, forces, a, x):
+    if x == 0:
+        return forces[0]
+    elif x == a.span:
+        return forces[-1]
     xlocs = np.unique(coords[:,0])
     return interpolate(xlocs, forces, x)
 
@@ -63,7 +67,7 @@ if __name__ == "__main__":
     locs, forces = get_aero_resultants("aerodata.csv", aerogrid)
     print(np.unique(aerogrid[:,0]))
     print(forces)
-    print(getq(aerogrid, forces, 0.5))
+    print(getq(aerogrid, forces, a, 0.5))
 
     # plt.scatter(aerogrid[:,0], aerogrid[:,1], s=10)
     # plt.scatter(np.unique(aerogrid[:,0]), locs, s=50)
