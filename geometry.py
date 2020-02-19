@@ -28,12 +28,14 @@ class Dataset:
         self.maxz = self.height/2
         self.miny = - self.height/2
         self.maxy = self.height/2
+        self.stiffener_area = self.stifft*(self.stiffh + self.stiffw)
+
+        self._radius = self.height*0.5
+
         self.a = sqrt(self._radius * self._radius + (self.chord - self._radius) * (self.chord - self._radius))
 
-        # Protected variables
-        self._radius = self.height*0.5
         self._circumference = 2 * self.a + np.pi * self._radius
-        self._stiffener_area = self.stifft*(self.stiffh + self.stiffw)
+
 
     def Izz(self, skin=True, spar=True, stiffener=True):
         # Calculates Izz of a cross-section. Also able to calculate only parts of Izz based on arguments given
@@ -148,3 +150,4 @@ class Dataset:
 
 if __name__ == "__main__":
     print("Hello world")
+
