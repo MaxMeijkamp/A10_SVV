@@ -16,10 +16,12 @@ a = a.astype(np.float)
 
 # finding hingeline nodes
 lst = []
+xlst = []
 for i in a:
     if i[2] == 0:
         if i[3] == 0:
             lst.append(i[0])
+            xlst.append(i[1])
 
 # Deflection data - loading case: bending
 c = np.genfromtxt("B737.rpt", skip_header=20074, skip_footer=(59956 - 26662 - 109))
@@ -70,6 +72,7 @@ for i in lst:
     y_jam_straight.append(e[i][3])
     z_jam_straight.append(e[i][4])
 
-x = np.linspace()
-plt.plot(y_bend, z_bend)
+plt.plot(xlst, y_bend, 'o')
+# plt.plot(xlst,y_jam_bent,'o')
+# plt.plot(xlst,y_jam_straight,'o')
 plt.show()
