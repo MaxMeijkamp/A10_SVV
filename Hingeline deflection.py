@@ -21,7 +21,7 @@ for i in a:
         if i[3] == 0:
             lst.append(i[0])
 
-# find corresponding hingeline location - loading case: bending
+# Deflection data - loading case: bending
 c = np.genfromtxt("B737.rpt", skip_header=20074, skip_footer=(59956 - 26662 - 109))
 c = c.astype(np.float)
 hingelinedata_bend = []
@@ -30,7 +30,7 @@ y_bend = []
 z_bend = []
 mag_bend = []
 
-# find corresponding hingeline location - loading case: jam_bent
+# Deflection data - loading case: jam_bent
 d = np.genfromtxt("B737.rpt", skip_header=26724, skip_footer=(59956 - 33313 - 89))
 d = d.astype(np.float)
 hingelinedata_jam_bent = []
@@ -39,7 +39,7 @@ y_jam_bent = []
 z_jam_bent = []
 mag_jam_bent = []
 
-# find corresponding hingeline location - loading case: jam_bent
+# Deflection data - loading case: jam_bent
 e = np.genfromtxt("B737.rpt", skip_header=33374, skip_footer=(59956 - 39963 - 70))
 e = e.astype(np.float)
 hingelinedata_jam_straight = []
@@ -48,6 +48,7 @@ y_jam_straight = []
 z_jam_straight = []
 mag_jam_straight = []
 
+# Find hingeline data for loading cases
 for i in lst:
     i = int(i) - 1
 
@@ -68,4 +69,3 @@ for i in lst:
     y_jam_straight.append(e[i][2])
     z_jam_straight.append(e[i][3])
     mag_jam_straight.append(e[i][0])
-
