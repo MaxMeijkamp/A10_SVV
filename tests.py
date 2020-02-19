@@ -45,6 +45,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(stress_modules.bending(10, 5, Iyy, Izz, 1, 1, centroid), 5 / Izz + 2.5 / Iyy)
         self.assertEqual(stress_modules.bending(10, 0, Iyy, Izz, 1, 1, centroid), 5 / Izz - 2.5 / Iyy)
 
+        #very small input
+        self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, .000000001, 0, centroid), -.0000000025 / Iyy)
+
     def test_vonmis(self):
         h = 10
         b = 5
@@ -83,6 +86,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= -1, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 0), 1)
         self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= -1, sigma_zz= -1, tau_xy= 0, tau_yz= 0, tau_xz= 0), 0)
 
+        #Very small input
+        self.assertEqual(stress_modules.von_mises(sigma_xx=.0000001, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt(.0000001**2))
+
     def test_integration(self):
         #integrate(func, start, stop, number_of_points)
         start = 0
@@ -115,14 +121,18 @@ class MyTestCase(unittest.TestCase):
         start, stop = 0, 0
         # No distance over which to integrate
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 0, places=8)
+        stop = .00000001
+        # Very small distance over which to integrate
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 0.00000001**2, places=10)
 
-        #More difficult book example
+        #More difficult book example from Early Transcendentals
         def tempfunc(x):
             return np.log(x) / x
         start = 1
         stop = np.e
         n = 100000
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), .5, places=8)
+
 
 
 if __name__ == '__main__':
