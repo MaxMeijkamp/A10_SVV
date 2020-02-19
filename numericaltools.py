@@ -14,8 +14,10 @@ def integrate(func, start, stop, number_of_points):
     integration = (np.sum((next_values - values) * .5) + np.sum(values)) * width
     return integration
 
+
 def cont_spline(x_discrete, f_discrete):
     return partial(spline(x_discrete, f_discrete))
+
 
 def spline(x, f, n):
     # Spline function,
@@ -45,10 +47,3 @@ def interpolate(x, f, x_target):
             break
     f_target = sp_slope[left_i] * (x_target - x[left_i]) + sp_start[left_i]
     return f_target
-
-
-if __name__ == "__main__":
-    x = np.array()
-    f = np.array()
-    interp = interpolate([0, 0.1, 0.2, 0.5, 0.65, 0.8, 0.9, 1.0], [1, 4, 2, 3, 7, -4, 0.5, 0], 0.15)
-    print(interp)
