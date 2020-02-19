@@ -4,7 +4,8 @@ from math import sqrt, sin, cos, acos
 
 
 class Dataset:
-    def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011, spart=0.0025, stifft=0.0012, stiffh=0.014, stiffw=0.018, stiffn=13):
+    def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
+                 spart=0.0025, stifft=0.0012, stiffh=0.014, stiffw=0.018, stiffn=13):
         # All given parameters and useful parameters. All the values are in SI units
         self.span = span
         self.chord = chord
@@ -51,14 +52,14 @@ class Dataset:
         Iyy = 0
         if skin:
             beta = acos((self.chord - self._radius) / self._a)
-            Iyy += self.skint * self._a*self._a*self._a * cos(beta) * cos(beta) /12 + np.pi * self.skint * self.height*self.height*self.height / 16
+            Iyy += self.skint * self._a*self._a*self._a * cos(beta) * cos(beta) / 12 + np.pi * self.skint * self.height*self.height*self.height / 16
         if spar:
             Iyy += self.height * self.spart * self.spart * self.spart / 12
         if stiffener:
             Iyy += self._I_stiff(self.stiffLoc(), 0)
         return Iyy
 
-    def centroid(self, axis = None):
+    def centroid(self, axis=None):
         xbar = self.span * 0.5
         ybar = 0
         zbar = self.skint * (self._radius * self._radius * 2 - self._a * (self.chord-self._radius)) + sum([self._stiffener_area * stiff[0] for stiff in self.stiffLoc()])
@@ -74,7 +75,7 @@ class Dataset:
         else:
             raise ValueError("The axis is invalid")
 
-    def shearcentre(self, axis = None):
+    def shearcentre(self, axis=None):
         # TODO: implement
         return self.centroid(axis)
 
@@ -116,6 +117,7 @@ class Dataset:
             return self._stiffcoord(n)
 
     def _I_stiff(self, stiffener_list, axis):
+        # Calculate moment of Inertia, including Steiner terms
         i_stiff = 0
         for stiff in stiffener_list:
             d_2 = stiff[axis]*stiff[axis]
@@ -126,11 +128,11 @@ class Dataset:
         # Used as a visual inspection of the cross-section.
         plt.scatter(*zip(*self.stiffLoc()))
         plt.gca().invert_xaxis()
-        y1 = np.linspace(0,np.pi,1000)
+        y1 = np.linspace(0, np.pi, 1000)
         z1 = np.sin(y1)*self._radius
         y1 = np.cos(y1)*self._radius
-        y2 = self._radius * np.linspace(-1,1,1000)
-        z2 = np.linspace(0,-self.chord+self._radius, 500)
+        y2 = self._radius * np.linspace(-1, 1, 1000)
+        z2 = np.linspace(0, -self.chord+self._radius, 500)
         z2 = np.append(z2, -z2-self.chord+self._radius)
         z3 = np.zeros(100)
         y3 = np.linspace(-self._radius, self._radius, 100)
@@ -146,6 +148,3 @@ class Dataset:
 
 if __name__ == "__main__":
     print("Hello world")
-
-
-

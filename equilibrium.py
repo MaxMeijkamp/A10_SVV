@@ -3,6 +3,7 @@ import numpy as np
 from geometry import Dataset
 from loading import make_sections
 
+
 def distr_defl_func(q1, q2, L, I, E=71000000000):
     # deflection return positive in positive direction of q
     if q1 != q2:
@@ -10,15 +11,12 @@ def distr_defl_func(q1, q2, L, I, E=71000000000):
     else:
         return L*L*L*L*q2/(E*I*8)
 
+
 def distr_angle_func(q1, q2, L, I, E=71000000000):
     if q1 != q2:
         return L*L*L/(E*I)*(q2/6 + (q1-q2)/18)
     else:
         return L*L*L*q2/(6*E*I)
-
-
-
-
 
 
 if __name__ == "__main__":

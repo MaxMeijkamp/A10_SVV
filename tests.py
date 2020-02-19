@@ -4,7 +4,7 @@ import numericaltools
 import math
 import numpy as np
 
-#simple case: rectangle with y = 10, x = 5
+
 class MyTestCase(unittest.TestCase):
 
     def test_something(self):
@@ -152,6 +152,7 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 4)
         test_x_target = 11
         self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 1)
+
 
 if __name__ == '__main__':
     unittest.main()
