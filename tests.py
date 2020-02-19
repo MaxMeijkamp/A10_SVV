@@ -4,7 +4,7 @@ import numericaltools
 import math
 import numpy as np
 
-#simple case: rectangle with y = 10, x = 5
+
 class MyTestCase(unittest.TestCase):
 
     def test_something(self):
@@ -45,6 +45,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(stress_modules.bending(10, 5, Iyy, Izz, 1, 1, centroid), 5 / Izz + 2.5 / Iyy)
         self.assertEqual(stress_modules.bending(10, 0, Iyy, Izz, 1, 1, centroid), 5 / Izz - 2.5 / Iyy)
 
+        #very small input
+        self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, .000000001, 0, centroid), -.0000000025 / Iyy)
+
     def test_vonmis(self):
         h = 10
         b = 5
@@ -83,33 +86,72 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= -1, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 0), 1)
         self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= -1, sigma_zz= -1, tau_xy= 0, tau_yz= 0, tau_xz= 0), 0)
 
+        #Very small input
+        self.assertEqual(stress_modules.von_mises(sigma_xx=.0000001, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt(.0000001**2))
+
     def test_integration(self):
         #integrate(func, start, stop, number_of_points)
         start = 0
         stop = 1
         def tempfunc(x):
-            return 1. + x * 0.
+            return 1 + x * 0
         n = 1
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 1., places= 8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places= 8)
         n =100
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 1., places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places=8)
         start = -5
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 6., places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 6., places=8)
         stop = -2
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 3., places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 3., places=8)
 
         def tempfunc(x):
             return 2*x
         start = 0
         stop = np.pi
         n = 1000
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), stop**2, places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), stop**2, places=8)
         stop = 10
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), stop**2, places=8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), stop**2, places=8)
         stop = -10
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), stop ** 2, places=8)
+        # Stop < start
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), stop ** 2, places=8)
         start = 10
-        self.assertAlmostEqual(numericaltools.integrateP(tempfunc, start, stop, n), 0, places=8)
+        # Integral should cancel out (symmetric)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 0, places=8)
+        start, stop = 0, 0
+        # No distance over which to integrate
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 0, places=8)
+        stop = .00000001
+        # Very small distance over which to integrate
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 0.00000001**2, places=10)
+
+        #More difficult book example from Early Transcendentals
+        def tempfunc(x):
+            return np.log(x) / x
+        start = 1
+        stop = np.e
+        n = 100000
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), .5, places=8)
+
+    def test_interpolation(self):
+        # Simple test with basic python lists and some fringe cases (first value, high decimal count)
+        test_list_x = [0, 1, 2, 3, 4]
+        test_list_f = [2, 5, 3, 3, 4]
+        test_x_target = 0
+        self.assertEqual(numericaltools.interpolate(test_list_x, test_list_f, test_x_target), 2)
+        test_x_target = 0.5
+        self.assertEqual(numericaltools.interpolate(test_list_x, test_list_f, test_x_target), 3.5)
+        test_x_target = 2.9999999
+        self.assertEqual(numericaltools.interpolate(test_list_x, test_list_f, test_x_target), 3)
+        # More complex test with other fringe case (last value)
+        test_list_x_1 = np.array([0.001, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+        test_list_f_1 = np.array([4, 3, 2, 3, 3, 6, 2, 3, 5, 4, 3, 1])
+        test_x_target = 5.5
+        self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 4)
+        test_x_target = 7.5
+        self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 4)
+        test_x_target = 11
+        self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 1)
 
 
 if __name__ == '__main__':
