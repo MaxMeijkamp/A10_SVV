@@ -19,9 +19,3 @@ def bending(y, z, Iyy, Izz, M_y, M_z, centroid):
 def shear():
     return
 
-
-def output():
-    # Takes arg. x, y, z coordinates(from geometry), von mises stress, bending stress, shear flow, displacements in y&z;
-    # Cont'd: slope in y & z, twist, torque, distributed torque, moments about y & z, shear force in y & z
-
-    return
