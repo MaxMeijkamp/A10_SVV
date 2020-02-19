@@ -133,7 +133,15 @@ class MyTestCase(unittest.TestCase):
         n = 100000
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), .5, places=8)
 
-
+    def test_interpolation(self):
+        test_list_x = [0, 1, 2, 3, 4]
+        test_list_f = [2, 5, 3, 3, 4]
+        test_x_target = 0
+        self.assertEqual(numericaltools.interpolate(test_list_x, test_list_f, test_x_target), 2)
+        test_x_target = 0.
+        self.assertEqual(numericaltools.interpolate(test_list_x, test_list_f, test_x_target), 3.5)
+        test_x_target = 2.9999999
+        self.assertEqual(numericaltools.interpolate(test_list_x, test_list_f, test_x_target), 3)
 
 if __name__ == '__main__':
     unittest.main()
