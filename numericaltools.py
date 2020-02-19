@@ -1,4 +1,5 @@
 import numpy as np
+from functools import *
 
 
 def integrate(func, start, stop, number_of_points):
@@ -13,6 +14,8 @@ def integrate(func, start, stop, number_of_points):
     integration = (np.sum((next_values - values) * .5) + np.sum(values)) * width
     return integration
 
+def cont_spline(x_discrete, f_discrete):
+    return partial(spline(x_discrete, f_discrete))
 
 def spline(x, f, n):
     # Spline function,
