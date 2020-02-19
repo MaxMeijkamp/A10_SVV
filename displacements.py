@@ -2,15 +2,15 @@ import stress_modules
 import equilibrium
 
 
-def some_function(n, l):
+def some_function(length, parameter):
     # Dummy temp function
-    return n+l
+    return length+parameter
 
 
-def displ(input):
+def displ(input_disp):
     # Adds up the displacements of all different inputs (stresses and equilibrium) on any axis required, outputs them
     # as a list of displacements
-    n = len(input)
+    n = len(input_disp)
     input_disp_a = some_function(n, a)  # Equilibrium function
     input_disp_b = some_function(n, b)  # Torsion function
     input_disp_c = some_function(n, c)  # Bending function
@@ -23,7 +23,7 @@ def displ(input):
 
 def angle_disp(input_angle_disp):
     # Adds up all angle displacements from inputs (equilibrium, torsion, bending) and outputs them as a list
-    n = len(input)
+    n = len(input_angle_disp)
     input_angle_disp_a = some_function(n, a)
     input_angle_disp_b = some_function(n, b)
     input_angle_disp_c = some_function(n, c)
