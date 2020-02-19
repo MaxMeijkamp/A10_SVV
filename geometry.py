@@ -74,6 +74,10 @@ class Dataset:
         else:
             raise ValueError("The axis is invalid")
 
+    def shearcentre(self, axis = None):
+        # TODO: implement
+        return self.centroid(axis)
+
     def _stiffcoord(self, num):
         step = self._circumference/self.stiffn
         current = step*(num-1)
