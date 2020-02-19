@@ -50,6 +50,9 @@ def findShearCenter(dataset):
 
 
 
+# For bending, not only sigma_x is needed, but also the displacements and angular displacements
+# at all sections caused by the bending.
+
 
     return
 
