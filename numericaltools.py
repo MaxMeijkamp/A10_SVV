@@ -38,12 +38,15 @@ def interpolate(x, f, x_target):
     # Interpolation function which gives f_target for a given x_target and x-f spline
     n = len(x)
     if x[0] > x_target or x_target > x[n-1]:
-        raise ValueError("The target location is out of bounds")
-    sp_start, sp_slope = spline(x, f, n)
-    left_i = n-2
-    for i in range(n):
-        if x[i] > x_target:
-            left_i = i-1
-            break
-    f_target = sp_slope[left_i] * (x_target - x[left_i]) + sp_start[left_i]
-    return f_target
+        raise ValueError("The target location is not in the range of provided function values, x_tar =",x_target, "; x[0] =", x[0], "; x[n-1] =", x[n-1])
+    elif x_target in x:
+        return f[np.where(x==x_target)]
+    else:
+        sp_start, sp_slope = spline(x, f, n)
+        left_i = n-2
+        for i in range(n):
+            if x[i] > x_target:
+                left_i = i-1
+                break
+        f_target = sp_slope[left_i] * (x_target - x[left_i]) + sp_start[left_i]
+        return f_target

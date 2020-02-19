@@ -28,18 +28,19 @@ class Dataset:
         self.maxz = self.height/2
         self.miny = - self.height/2
         self.maxy = self.height/2
-        self.a = sqrt(self._radius * self._radius + (self.chord - self._radius) * (self.chord - self._radius))
+        self.stiffener_area = self.stifft * (self.stiffh + self.stiffw)
+        self.radius = self.height * 0.5
+        self.a = sqrt(self.radius * self.radius + (self.chord - self.radius) * (self.chord - self.radius))
 
         # Protected variables
-        self._radius = self.height*0.5
-        self._circumference = 2 * self.a + np.pi * self._radius
-        self._stiffener_area = self.stifft*(self.stiffh + self.stiffw)
+        self._circumference = 2 * self.a + np.pi * self.radius
+
 
     def Izz(self, skin=True, spar=True, stiffener=True):
         # Calculates Izz of a cross-section. Also able to calculate only parts of Izz based on arguments given
         Izz = 0
         if skin:
-            beta = acos((self.chord - self._radius) / self.a)
+            beta = acos((self.chord - self.radius) / self.a)
             Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
         if spar:
             Izz += self.spart * self.height * self.height * self.height / 12
@@ -51,7 +52,7 @@ class Dataset:
         # Calculates Iyy of a cross-section. Also able to calculate only parts of Iyy based on arguments given
         Iyy = 0
         if skin:
-            beta = acos((self.chord - self._radius) / self.a)
+            beta = acos((self.chord - self.radius) / self.a)
             Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12 + np.pi * self.skint * self.height * self.height * self.height / 16
         if spar:
             Iyy += self.height * self.spart * self.spart * self.spart / 12
@@ -62,8 +63,8 @@ class Dataset:
     def centroid(self, axis=None):
         xbar = self.span * 0.5
         ybar = 0
-        zbar = self.skint * (self._radius * self._radius * 2 - self.a * (self.chord - self._radius)) + sum([self._stiffener_area * stiff[0] for stiff in self.stiffLoc()])
-        zbar = zbar / (self.skint * self._circumference + self.spart * self.height + self._stiffener_area * self.stiffn)
+        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + sum([self.stiffener_area * stiff[0] for stiff in self.stiffLoc()])
+        zbar = zbar / (self.skint * self._circumference + self.spart * self.height + self.stiffener_area * self.stiffn)
         if axis == 0:
             return xbar
         if axis == 1:
@@ -83,24 +84,24 @@ class Dataset:
         step = self._circumference/self.stiffn
         current = step*(num-1)
         if current < np.pi*0.25*self.height:
-            angle = current / self._radius
-            z = self._radius * cos(angle)
-            y = - self._radius * sin(angle)
+            angle = current / self.radius
+            z = self.radius * cos(angle)
+            y = - self.radius * sin(angle)
             return z, y
         elif current > self._circumference - np.pi*0.25*self.height:
-            angle = (self._circumference - current) / self._radius
-            z = self._radius * cos(angle)
-            y = self._radius * sin(angle)
+            angle = (self._circumference - current) / self.radius
+            z = self.radius * cos(angle)
+            y = self.radius * sin(angle)
             return z, y
         elif current > np.pi*0.25*self.height + self.a:
             current = current - np.pi*0.25*self.height - self.a
-            z = (self.chord - self._radius) * current / self.a - self.chord + self._radius
-            y = self._radius * current/self.a
+            z = (self.chord - self.radius) * current / self.a - self.chord + self.radius
+            y = self.radius * current / self.a
             return z, y
         elif current > np.pi*0.25*self.height:
             current -= np.pi*0.25*self.height
-            z = - (self.chord - self._radius) * current/self.a
-            y = - self._radius + self._radius * current/self.a
+            z = - (self.chord - self.radius) * current / self.a
+            y = - self.radius + self.radius * current / self.a
             return z, y
         else:
             raise ValueError("The aileron does not contain this number of stringers")
@@ -121,7 +122,7 @@ class Dataset:
         i_stiff = 0
         for stiff in stiffener_list:
             d_2 = stiff[axis]*stiff[axis]
-            i_stiff += d_2*self._stiffener_area
+            i_stiff += d_2*self.stiffener_area
         return i_stiff
 
     def visualinspection(self):
@@ -129,13 +130,13 @@ class Dataset:
         plt.scatter(*zip(*self.stiffLoc()))
         plt.gca().invert_xaxis()
         y1 = np.linspace(0, np.pi, 1000)
-        z1 = np.sin(y1)*self._radius
-        y1 = np.cos(y1)*self._radius
-        y2 = self._radius * np.linspace(-1, 1, 1000)
-        z2 = np.linspace(0, -self.chord+self._radius, 500)
-        z2 = np.append(z2, -z2-self.chord+self._radius)
+        z1 = np.sin(y1)*self.radius
+        y1 = np.cos(y1)*self.radius
+        y2 = self.radius * np.linspace(-1, 1, 1000)
+        z2 = np.linspace(0, -self.chord + self.radius, 500)
+        z2 = np.append(z2, -z2 - self.chord + self.radius)
         z3 = np.zeros(100)
-        y3 = np.linspace(-self._radius, self._radius, 100)
+        y3 = np.linspace(-self.radius, self.radius, 100)
         plt.plot(z1, y1)
         plt.plot(z2, y2)
         plt.plot(z3, y3)
@@ -148,3 +149,4 @@ class Dataset:
 
 if __name__ == "__main__":
     print("Hello world")
+
