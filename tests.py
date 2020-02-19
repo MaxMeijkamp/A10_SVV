@@ -3,7 +3,7 @@ import stress_modules
 import numericaltools
 import math
 import numpy as np
-
+import geometry
 
 class MyTestCase(unittest.TestCase):
 
@@ -155,4 +155,6 @@ class MyTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    data = geometry.Dataset()
+    data.visualinspection()
     unittest.main()
