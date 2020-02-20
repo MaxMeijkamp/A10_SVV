@@ -293,11 +293,29 @@ class AppliedLoads:
     def pointload_angle(self, P, L, I, E=71000000000):
         return P*L*L/(2*E*I)
 
-    def forward_delf_point(self, i):
+    def forward_defl_point(self, i):
         if abs(self._grid[i]-self.hinge1_val) < self._geo_error:
-            return self.pointload_defl()
+            return self.pointload_defl(1, self.dx_list[i], self.a.Izz())
+        else:
+            return 0
 
+    def backward_defl_point(self, i):
+        if abs(self._grid[i]-self.hinge3_val) < self._geo_error:
+            return self.pointload_defl(1, self.dx_list[i-1], self.a.Izz())
+        else:
+            return 0
 
+    def forward_angle_point(self, i):
+        if abs(self._grid[i]-self.hinge1_val) < self._geo_error:
+            return self.pointload_angle(1, self.dx_list[i], self.a.Izz())
+        else:
+            return 0
+
+    def backward_angle_point(self, i):
+        if abs(self._grid[i]-self.hinge3_val) < self._geo_error:
+            return self.pointload_angle(1, self.dx_list[i-1], self.a.Izz())
+        else:
+            return 0
 
     def forward_defl_distr(self, i):
         return self.distr_defl_func(-self.q(self._grid[i]), -self.q(self._grid[i + 1]), self.dx_list[i], self.a.Izz())
