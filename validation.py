@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 
 # input file
 a = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
-a = a.astype(np.float)
+#a = a.astype(np.float)
 xin = []
 yin = []
 zin = []
 
 # output file
 b = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20074, skip_footer=(59953-26768))
-b = b.astype(np.float)
+#b = b.astype(np.float)
 
 
 
@@ -54,9 +54,13 @@ angle_case1 = []
 LE_bend1 = []
 for samp in LE_Bend:
     theta = np.arctan(samp[3]/samp[4])
+    print(samp[4])
     LE_nodes.append(samp[0])
     angle_case1.append(theta)
     LE_bend1.append(samp[3])
+
+# print(LE_Bend)
+# print(len(LE_Bend))
 
 
 
@@ -66,54 +70,48 @@ for samp in LE_Bend:
 # plt.plot(LE_nodes, LE_bend1)
 # plt.show()
 
-class val_dat:
+def get_dat(case, param):
 
-    def get_dat(self, case, param):
+    loaded = []
+    i = 1
 
-        a = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598),
-                          delimiter=",")
-        b = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20074, skip_footer=(59953 - 26768))
+    if str(case) == 'bending' :
 
-        self.unloaded = a.astype(np.float) # node with (x,y,z) location
-        self.loaded = []
-        i = 1
+        if param == 'stresses': # returns VMS and S12 at each element
+            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20, skip_footer=53992)
+            for elem in loaded:
+                loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
+                i += 1
 
+        if param == 'disp': # returns displacement at each node
+            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20074,
+                                        skip_footer = (59953 - 26768))
 
-        if str(case) == 'bending' :
+    if case == 'Jam_Bent':
 
-            if param == 'stresses': # returns VMS and S12 at each element
-                self.loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20,
-                                            skip_footer=(59953 - 19168))
-                for elem in self.loaded:
-                    self.loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
-                    i += 1
+        if param == 'stresses':  # returns VMS and S12 at each element
+            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=6705, skip_footer=(59953 - (6705 + 6634)+712))
+            for elem in loaded:
+                loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
+                i += 1
+        if param == 'disp': # returns displacement at each node
+            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=26724,
+                                        skip_footer=(59953 - (26724 + 6588)))
 
-            if param == 'disp': # returns displacement at each node
-                self.loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20074,
-                                            skip_footer=(59953 - 26768))
+    if case == 'Jam_Straight':
+        if param == 'stresses':  # returns VMS and S12 at each element
+            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=13390,
+                                        skip_footer=(59953 - (13390 + 6634))+731)
+            loaded = loaded.astype(np.float)
+            for elem in loaded:
+                loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
+                i += 1
+        if param == 'disp': # returns displacement at each node
+            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=33374,
+                                        skip_footer=(59953 - (33374 + 6588)))
+    loaded = loaded.astype(np.float)
 
-        if case == 'Jam_Bent':
+    return (loaded)
 
-            if param == 'stresses':  # returns VMS and S12 at each element
-                self.loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=6705,
-                                            skip_footer=(59953 - (6705 + 6634)))
-                for elem in self.loaded:
-                    self.loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
-                    i += 1
-            if param == 'disp': # returns displacement at each node
-                self.loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=26724,
-                                            skip_footer=(59953 - (26724 + 6588)))
-
-        if case == 'Jam_Straight':
-            if param == 'stresses':  # returns VMS and S12 at each element
-                self.loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=13390,
-                                            skip_footer=(59953 - (13390 + 6634)))
-                for elem in self.loaded:
-                    self.loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
-                    i += 1
-            if param == 'disp': # returns displacement at each node
-                self.loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=33374,
-                                            skip_footer=(59953 - (33374 + 6588)))
-
-        return self.loaded
-
+loaded  = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20, skip_footer=53992)
+print(loaded)

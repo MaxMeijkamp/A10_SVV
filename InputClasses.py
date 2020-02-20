@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from math import sqrt, sin, cos, acos
 from numericaltools import *
 
+
 class Aileron:
     def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
                  spart=0.0025, stifft=0.0012, stiffh=0.014, stiffw=0.018, stiffn=13):
@@ -191,6 +192,5 @@ class AppliedLoads:
 
 
 if __name__ == "__main__":
-    for i in range(len(Aileron().stiffLoc())):
-        print(Aileron().stiffLoc()[i])
+    print("Hello world")
 

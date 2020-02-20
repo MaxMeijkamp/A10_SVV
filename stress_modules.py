@@ -1,4 +1,5 @@
 import numpy as np
+import numericaltools
 import InputClasses
 
 def von_mises(sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz):
@@ -41,7 +42,7 @@ def findShearCenter(dataset):
     # now per section (1 to 6), find the total q_base distribution:
     # after the integration The boom influences are PUT IN MANUALLY, PUT IN MANUALLY, PUT IN MANUALLY!!!
 
-    dqb1a = -1. / Izz * (numericaltools.integrate(func_s1, 0, 0.07111646421258024/ (r * ), 100000)    )
+    dqb1 = -1. / Izz * (numericaltools.integrate(func_s1, 0, dist_s1, 100000)  +   )
     dqb2 = -1. / Izz * (numericaltools.integrate(func_s2, 0, dist_s2, 100000)    )
     dqb3 = -1. / Izz * (numericaltools.integrate(func_s3, 0, dist_s3, 100000)    )
     dqb4 = -1. / Izz * (numericaltools.integrate(func_s4, 0, dist_s4, 100000)    )
@@ -50,6 +51,9 @@ def findShearCenter(dataset):
 
 
 
+# For bending, not only sigma_x is needed, but also the displacements and angular displacements
+# at all sections caused by the bending.
 
-    return 0
+
+    return
 

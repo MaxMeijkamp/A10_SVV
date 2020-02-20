@@ -1,6 +1,8 @@
 import stress_modules
 import equilibrium
 
+# TODO: Entire code when all stress modules and equilibrium are finished.
+
 
 def some_function(length, parameter):
     # Dummy temp function

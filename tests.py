@@ -6,6 +6,7 @@ import numpy as np
 import InputClasses
 import displacements
 import equilibrium
+from InputClasses import *
 
 class MyTestCase(unittest.TestCase):
 
@@ -157,7 +158,6 @@ class MyTestCase(unittest.TestCase):
 
 class SystemTests(unittest.TestCase):
     def test_no_load_no_deformation(self):
-        pass
 
 
 if __name__ == '__main__':
