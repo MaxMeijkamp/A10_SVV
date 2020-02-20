@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
-from geometry import Dataset
+from InputClasses import Aileron
 from math import sin, cos
 from numericaltools import integrate, interpolate, cont_spline
 from functools import *
@@ -52,18 +52,22 @@ def get_aero_resultants(file, coords):
         res_locations.append(Q/np.sum(data[:,i]))
     return res_locations, res_forces
 
-def getq(coords, forces, x):
+def getq(coords, forces, a, x):
+    if x == 0:
+        return forces[0]
+    elif x == a.span:
+        return forces[-1]
     xlocs = np.unique(coords[:,0])
     return interpolate(xlocs, forces, x)
 
 
 if __name__ == "__main__":
-    a = Dataset()
+    a = Aileron()
     aerogrid = aero_points(41, 81, a)
     locs, forces = get_aero_resultants("aerodata.csv", aerogrid)
     print(np.unique(aerogrid[:,0]))
     print(forces)
-    print(getq(aerogrid, forces, 0.5))
+    print(getq(aerogrid, forces, a, 0.5))
 
     # plt.scatter(aerogrid[:,0], aerogrid[:,1], s=10)
     # plt.scatter(np.unique(aerogrid[:,0]), locs, s=50)

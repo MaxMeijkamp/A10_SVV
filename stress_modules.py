@@ -1,5 +1,5 @@
 import numpy as np
-import geometry
+import InputClasses
 
 def von_mises(sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz):
     #Takes arg. sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz.
@@ -40,35 +40,16 @@ def findShearCenter(dataset):
     dist_s5, dist_s6 = dataset.maxy
     # now per section (1 to 6), find the total q_base distribution:
     # after the integration The boom influences are PUT IN MANUALLY, PUT IN MANUALLY, PUT IN MANUALLY!!!
-    booms_s1 = [boom for boom in dataset.stiffLoc() if boom[1] >= 0 and boom[0] > 0]
-    booms_s2 = [boom for boom in dataset.stiffLoc() if boom[1] >= 0 and boom[0] < 0]
-    booms_s3 = [boom for boom in dataset.stiffLoc() if boom[1] < 0 and boom[0] < 0]
-    booms_s4 = [boom for boom in dataset.stiffLoc() if boom[1] < 0 and boom[0] > 0]
-    booms_s5 = [boom for boom in dataset.stiffLoc() if boom[1] < 0 and boom[0] == 0]
-    booms_s6 = [boom for boom in dataset.stiffLoc() if boom[1] >= 0 and boom[0] == 0]
-    all_booms_divided = [booms_s1, booms_s2, booms_s3, booms_s4, booms_s4, booms_s5, booms_s6]
 
-    for boomlist in all_booms_divided:
-        for boom in boomlist:
-            boom = boom[1] * stiffenerA
-
-    dqb1 = -1. / Izz * (numericaltools.integrate(func_s1, 0, dist_s1, 100000)  +  sum(all_booms_divided[0]) )
-    dqb2 = -1. / Izz * (numericaltools.integrate(func_s2, 0, dist_s2, 100000)  +  sum(all_booms_divided[1]) )
-    dqb3 = -1. / Izz * (numericaltools.integrate(func_s3, 0, dist_s3, 100000)  +  sum(all_booms_divided[2]) )
-    dqb4 = -1. / Izz * (numericaltools.integrate(func_s4, 0, dist_s4, 100000)  +  sum(all_booms_divided[3]) )
-    dqb5 = -1. / Izz * (numericaltools.integrate(func_s5, 0, dist_s5, 100000)  +  sum(all_booms_divided[4]) )
-    dqb6 = -1. / Izz * (numericaltools.integrate(func_s6, 0, dist_s6, 100000)  +  sum(all_booms_divided[5]) )
-
-    # now find the qs,0 by setting the twist to 0: ie 1/2A * integral(q ds / (G t)) = 0
-    # G = constant, A is constant per section. t = constant and q = sum of (qb times the length - qs, 0)
-    # therefor the qs,0 should be opposite of the sum of qb
-    # clockwise positive
-
-    #for left part:
-
-    #round part:
-    dqb1 +=5
+    dqb1 = -1. / Izz * (numericaltools.integrate(func_s1, 0, dist_s1, 100000)  +   )
+    dqb2 = -1. / Izz * (numericaltools.integrate(func_s2, 0, dist_s2, 100000)    )
+    dqb3 = -1. / Izz * (numericaltools.integrate(func_s3, 0, dist_s3, 100000)    )
+    dqb4 = -1. / Izz * (numericaltools.integrate(func_s4, 0, dist_s4, 100000)    )
+    dqb5 = -1. / Izz * (numericaltools.integrate(func_s5, 0, dist_s5, 100000)    )
+    dqb6 = -1. / Izz * (numericaltools.integrate(func_s6, 0, dist_s6, 100000)    )
 
 
-    return 0
+
+
+    return
 
