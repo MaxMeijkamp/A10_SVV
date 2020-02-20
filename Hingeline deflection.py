@@ -8,7 +8,6 @@ Created on Thu Feb 13 13:56:00 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits import mplot3d
 
 # input file
 a = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
@@ -17,6 +16,7 @@ a = a.astype(np.float)
 # finding hingeline nodes
 # hingeline coordinates from input data
 # lst for
+
 lst = []
 xlst = []
 for i in a:
