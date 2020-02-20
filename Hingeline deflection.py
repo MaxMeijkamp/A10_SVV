@@ -74,7 +74,7 @@ for i in hingelinenodes:
 plt.title('Vertical Hingeline deflection x-y plane')
 plt.xlabel('Location x-axis[mm]')
 plt.ylabel('Vertical deflection [mm]')
-plt.plot(hingelinenodes_x, y_bend, 'o')
-plt.plot(hingelinenodes_x, y_jam_bent, 'o')
-plt.plot(hingelinenodes_x, y_jam_straight, 'o')
-plt.show()
+plt.plot(hingelinenodes_x, y_bend, 'bo') #bluedots
+plt.plot(hingelinenodes_x, y_jam_bent, 'ro') #reddots
+plt.plot(hingelinenodes_x, y_jam_straight, 'go') #greendots
+plt.show()8
