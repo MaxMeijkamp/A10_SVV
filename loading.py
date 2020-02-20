@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
-from geometry import Dataset
+from InputClasses import Aileron
 from math import sin, cos
 from numericaltools import integrate, interpolate, cont_spline
 from functools import *
@@ -62,7 +62,7 @@ def getq(coords, forces, a, x):
 
 
 if __name__ == "__main__":
-    a = Dataset()
+    a = Aileron()
     aerogrid = aero_points(41, 81, a)
     locs, forces = get_aero_resultants("aerodata.csv", aerogrid)
     print(np.unique(aerogrid[:,0]))
