@@ -165,15 +165,11 @@ class MyTestCase(unittest.TestCase):
         spart = 0.05
         a = Aileron(chord=chord, height=height, skint=skint, spart=spart)
         # self.assertEqual(a.Izz(stiffener=False, spar=False), 0.001865283305) # Exact value different from
-        # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
-        # self.assertEqual(a.Izz(skin=False, spar=False),) todo
-        # self.assertEqual(a.Izz(skin=False, stiffener=False), 0.0256/12) Works
+        # manually calculated value by less than 0.1%, hence human error and can be interpreted as correct
+        # self.assertEqual(a.Izz(skin=False, spar=False),)
+        self.assertEqual(a.Izz(skin=False, stiffener=False), 0.0256/12)
 
         # Tests Iyy
-        # self.assertEqual(a.Iyy(stiffener=False, spar=False), 0.003638774597) # Exact value different from
-        # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
-        # self.assertEqual(a.Iyy(skin=False, spar=False),) todo
-        # self.assertEqual(a.Iyy(skin=False, stiffener=False), 0.0001/12) Works
 
         # Tests centroid
 
@@ -184,21 +180,54 @@ class MyTestCase(unittest.TestCase):
 
         # Tests _Istiff
 
- # class SystemTests(unittest.TestCase):
- #     def test_no_load_no_deformation(self):
- #
- #    def test_unit_loads_applied(self):
- #
- #    def test_normal_loads_compared_with_hand_calculations_at_different_points(self):
- #
- #    def test_check_hinge_2_deflection_0_at_different_loads(self):
- #        self.assertIsNone(displacements.displ(normal loads))
- #
- #    def test_check_large_E_G_give_small_displacements(self):
- #        self.assertLess(displacements.displ(normal loads, large E), some low displacement value,))
- #        self.assertLess(displacements.displ(normal loads, very very large E), some super low displacement value,))
- #        self.assertLess(displacements.angle_displ(normal loads, large G), some low angle value,))
- #        self.assertLess(displacements.angle_displ(normal loads, very very large G), some suprt low angle value,))
+#class SystemTestsDisplacements(unittest.TestCase):
+#    def test_no_load_no_displacement(self):
+#        self.assertIsNone(displacements.displ(None, Normal geometry))
+#        self.assertIsNone(displacements.angle_disp(None, Normal geometry))
+#
+#
+#    def test_unit_loads_applied_displacement(self):
+#        self.assertEqual(displacements.displ(input_loads = 1, Normal geometry), hand calculated deflection)
+#        self.assertEqual(displacements.angle_disp(input_loads = 1, Normal geometry), hand calculated deflection)
+#
+#
+#    def test_normal_loads_compared_hand_calculations_different_points_displacement(self):
+#       self.assertEqual(displacements.displ(input_disp_normalloads_random_locations), displacements_hand_calculated_loads_@_random_locations)
+#       self.assertEqual(displacements.angle_displ(input_angle_disp_normalloads_random locations), displacements_hand_calculated_loads_@_random_locations)
+#
+#
+#    def test_check_hinge_2_deflection_0_at_different_loads(self):
+#        self.assertIsNone(displacements.displ(input_disp_normalloads))
+#
+#
+#    def test_check_large_E_gives_small_displacements(self):
+#        self.assertLess(displacements.displ(input_disp_normalloads, large E), some low displacement value,))
+#        self.assertLess(displacements.displ(input_disp_normalloads, very very large E), some super low displacement value,))
+#
+#    def test_check_large_G_gives_small_angle_displacements(self):
+#        self.assertLess(displacements.angle_displ(input_angle_disp_normalloads, large G), some low angle value,))
+#        self.assertLess(displacements.angle_displ(input_angle_disp_normalloads, very very large G), some super low angle value,))
+#
+#
+#class SystemTestsStresses(unittest.TestCase):
+#
+#    def test_no_load_no_stresses(self):
+#        self.assertIsNone(stress_modules.bending(None, None, Iyy, Izz, M_y, M_z, centroid))
+#        self.assertIsNone(stress_modules.von_mises(sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz))
+#        self.assertIsNone(stress_modules.findShearCenter(dataset_forces0))
+#
+
+#    def test_unit_loads_applied_stresses(self):
+#        self.assertEqual(stress_modules.bending(y, z, Iyy, Izz, 1, 1, centroid), hand calculated stress)
+#        self.assertEqual(stress_modules.findShearCenter(dataset_forces_is_1), hand calculated stress)
+#        self.assertEqual(stress_modules.von_mises(sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz))
+#
+#
+#    def test_normal_loads_compared_hand_calculations_different_points_stress(self):
+#        self.assertEqual(stress_modules.bending(y, z, Iyy, Izz, M_y, M_z, centroid, @_random_locations), stresses_hand_calculated_loads_@_random_locations )
+#        self.assertEqual(stress_modules.findShearCenter(dataset, @_random_locations), stresses_hand_calculated_loads_@_random_locations )
+#        self.assertEqual(stress_modules.von_mises(sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz, @_random_locations), stresses_hand_calculated_loads_@_random_locations )
+
 
 if __name__ == '__main__':
     data = InputClasses.Aileron()
