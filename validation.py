@@ -111,7 +111,7 @@ def get_dat(case, param):
                                         skip_footer=(59953 - (33374 + 6588)))
     loaded = loaded.astype(np.float)
 
-    return (loaded)
+    return loaded
 
 loaded  = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20, skip_footer=53992)
-print(loaded)
+#print(loaded)

@@ -1,5 +1,5 @@
 import unittest
-import stress_modules
+from stress_modules import von_mises, bending
 import numericaltools
 import math
 import numpy as np
@@ -7,6 +7,7 @@ import InputClasses
 import displacements
 import equilibrium
 from InputClasses import *
+import validation
 
 class MyTestCase(unittest.TestCase):
 
@@ -156,9 +157,13 @@ class MyTestCase(unittest.TestCase):
         test_x_target = 11
         self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 1)
 
+    def test_validation_get_data(self):
+        self.assertEqual(validation.get_dat('bending', 'stress').size, (6634, 5))
+
+
 class SystemTests(unittest.TestCase):
     def test_no_load_no_deformation(self):
-
+        pass
 
 if __name__ == '__main__':
     data = InputClasses.Aileron()
