@@ -77,4 +77,4 @@ plt.ylabel('Vertical deflection [mm]')
 plt.plot(hingelinenodes_x, y_bend, 'bo') #bluedots
 plt.plot(hingelinenodes_x, y_jam_bent, 'ro') #reddots
 plt.plot(hingelinenodes_x, y_jam_straight, 'go') #greendots
-plt.show()8
+plt.show()
