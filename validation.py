@@ -86,7 +86,7 @@ def get_dat(case, param):
             print(loaded2)
             print(loaded, len(loaded))
             for elem in loaded:
-
+e
                 loaded[i] = [elem[0],(elem[2]+elem[3])/2,(elem[4]/elem[5])/2]
                 i += 1
 
