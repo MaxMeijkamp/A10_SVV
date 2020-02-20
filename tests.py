@@ -3,7 +3,7 @@ import stress_modules
 import numericaltools
 import math
 import numpy as np
-import geometry
+import InputClasses
 
 class MyTestCase(unittest.TestCase):
 
@@ -155,6 +155,6 @@ class MyTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    data = geometry.Dataset()
+    data = InputClasses.Aileron()
     data.visualinspection()
     unittest.main()

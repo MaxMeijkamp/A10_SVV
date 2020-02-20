@@ -1,9 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from math import sqrt, sin, cos, acos
+from numericaltools import *
 
-
-class Dataset:
+class Aileron:
     def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
                  spart=0.0025, stifft=0.0012, stiffh=0.014, stiffw=0.018, stiffn=13):
         # All given parameters and useful parameters. All the values are in SI units
@@ -145,6 +145,49 @@ class Dataset:
         plt.xlabel("$z \: [m]$")
         plt.ylabel("$y \: [m]$")
         plt.show()
+
+
+class AppliedLoads:
+    def __init__(self, filename="aerodata.csv", Nx=41, Nz=81, aileron=Aileron()):
+        self.filename = filename
+        self.Nx = Nx
+        self.Nz = Nz
+        self.a = aileron
+        self.aerogrid = self.aero_points(self.Nx, self.Nz, self.a)
+        self.res_locs, self.res_forces = self.get_aero_resultants(self.filename, self.aerogrid)
+
+    def _getzcoord(self, i, aileron, Nz=81):
+        return -0.5 * (aileron.chord*0.5 * (1-cos(self._get_theta(i, Nz))) + aileron.chord*0.5*(1-cos(self._get_theta(i+1, Nz))))
+
+
+    def _getxcoord(self, i, aileron, Nx=41):
+        return 0.5 * (aileron.span*0.5 * (1-cos(self._get_theta(i, Nx))) + aileron.span*0.5*(1-cos(self._get_theta(i+1, Nx))))
+
+    def _get_theta(self, i, N):
+        return (i - 1) * np.pi / N
+
+    def aero_points(self, Nx, Nz, a):
+        coordlist = []
+        for x in range(1, Nx+1):
+            for z in range(1, Nz+1):
+                coordlist.append([self._getxcoord(x, a), self._getzcoord(z, a)])
+        return np.asarray(coordlist)
+
+    def get_aero_resultants(self, file, coords):
+        data = np.genfromtxt(file, delimiter=",")
+        data[0, 0] = 0.034398  # Reader gives the first value as nan, this is to fix that problem
+        coords = np.unique(coords[:, 1])
+        res_forces = []
+        res_locations = []
+        data = np.flip(data, axis=0)
+        for i in range(data.shape[1]):
+            Q = 0
+            res_forces.append(integrate(cont_spline(coords, data[:, i]), np.min(coords), np.max(coords), 100))
+            for j in range(data.shape[0]):
+                Q += data[j, i] * coords[j]
+            res_locations.append(Q / np.sum(data[:, i]))
+        return res_locations, res_forces
+
 
 
 if __name__ == "__main__":
