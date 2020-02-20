@@ -1,5 +1,5 @@
 import numpy as np
-import geometry
+import InputClasses
 
 def von_mises(sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz):
     #Takes arg. sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz.

@@ -1,6 +1,6 @@
 import numpy as np
 
-from geometry import *
+from InputClasses import *
 from loading import *
 
 
@@ -19,8 +19,9 @@ def distr_angle_func(q1, q2, L, I, E=71000000000):
         return L*L*L*q2/(6*E*I)
 
 
+
 if __name__ == "__main__":
-    a = Dataset()
+    a = Aileron()
     Nx = 41
     Nz = 81
 
@@ -42,10 +43,20 @@ if __name__ == "__main__":
 
     u = np.zeros((coordlist.size, 2))
     thetas = np.zeros(coordlist.size)
-    for i in range(hinge2_idx, -1, -1):
+
+    for i in range(hinge2_idx-1, -1, -1):
         u[i, 0] += u[i + 1, 0] + distr_defl_func(-q(coordlist[i]), -q(coordlist[i+1]), dx_list[i], a.Izz())
         thetas[i] = distr_angle_func(-q(coordlist[i]), -q(coordlist[i+1]), dx_list[i], a.Izz())
-        for j in range(hinge2_idx-i):
-    # TODO: continue here @Max
+        for j in range(1, hinge2_idx-i):
+            u[i, 0] -= dx_list[i] * thetas[hinge2_idx-j]
+        u[i, 1] -= dx_list[i]
+    for i in range(hinge2_idx+1, coordlist.size, 1):
+        u[i,0] += u[i-1, 0] + distr_defl_func(-q(coordlist[i-1]), -q(coordlist[i]), dx_list[i-1], a.Izz())
+        thetas[i] = distr_angle_func(-q(coordlist[i-1]), -q(coordlist[i]), dx_list[i-1], a.Izz())
+        for j in range(1, i-hinge2_idx-i):
+            u[i, 0] += dx_list[i] * thetas[hinge2_idx + j]
+        u[i, 1] += dx_list[i-1]
+
+    print(u)
 
 
