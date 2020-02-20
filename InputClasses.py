@@ -148,14 +148,82 @@ class Aileron:
         plt.show()
 
 
+
+
+
 class AppliedLoads:
-    def __init__(self, filename="aerodata.csv", Nx=41, Nz=81, aileron=Aileron()):
+    """Class containing all the loads and tools for interpreting the applied loads.
+    Can also calculate deflections within a discretized version of the aileron that has been idealized as a beam,
+    using the aileron class.
+
+    Initialization requires the number of sections that the aileron should be discretized in. Changing the number
+    of sections should only be done before using any functions to calculate deflection, and only using the method
+    self.gridnum(gridnum)."""
+    def __init__(self, gridnum, filename="aerodata.csv", Nx=41, Nz=81, aileron=Aileron(), hinge1z=True,
+                 hinge1d_y=0.00681, F_I_z=True, hinge2_fix=True, P=37900, hinge3z=True, hinge3d_y=0.0203, aero=True):
         self.filename = filename
         self.Nx = Nx
         self.Nz = Nz
         self.a = aileron
         self.aerogrid = self.aero_points(self.Nx, self.Nz, self.a)
         self.res_locs, self.res_forces = self.get_aero_resultants(self.filename, self.aerogrid)
+        self.q = partial(self._getq, self.aerogrid, self.res_forces, self.a)
+        self._grid = self.make_cuts_sections(self.a, gridnum)
+        self.gridsize = self._grid.size
+        self.dx_list = np.asarray([self._grid[i + 1] - self._grid[i] for i in range(self._grid.size - 1)])
+        self.hinge1_idx = np.argmin(np.abs(self._grid - self.a.hinge1))
+        self.hinge1_val = self._grid[self.hinge1_idx]
+        self.hinge2_idx = np.argmin(np.abs(self._grid - self.a.hinge2))
+        self.hinge2_val = self._grid[self.hinge2_idx]
+        self.hinge3_idx = np.argmin(np.abs(self._grid - self.a.hinge3))
+        self.hinge3_val = self._grid[self.hinge3_idx]
+
+        self._geo_error = np.min(self.dx_list)*0.1
+
+        self.hinge1z = hinge1z
+        self.hinge1d_y = hinge1d_y
+        self.hinge3z = hinge3z
+        self.hinge3d_y = hinge3d_y
+        self.P = P
+        self.jammed = F_I_z
+        self.hinge2_fix = hinge2_fix
+
+        if self.hinge1d_y != 0 and self.hinge3d_y != 0:
+            self.bending=True
+        else:
+            self.bending=False
+
+    def renew_grid(self, gridnum):
+        self._grid = self.make_cuts_sections(self.a, gridnum)
+        self.dx_list = [self._grid[i + 1] - self._grid[i] for i in range(self._grid.size - 1)]
+        return None
+
+    def gridnum(self, gridnum):
+        self.renew_grid(gridnum)
+        return None
+
+    def grid(self, i):
+        return self._grid[i]
+
+    def hinge_idx(self, num):
+        if num == 1:
+            return self.hinge1_idx
+        elif num == 2:
+            return self.hinge2_idx
+        elif num == 3:
+            return self.hinge3_idx
+        else:
+            raise ValueError("This hinge does not exist.")
+
+    def hinge_val(self, num):
+        if num == 1:
+            return self.hinge1_val
+        elif num == 2:
+            return self.hinge2_val
+        elif num == 3:
+            return self.hinge3_val
+        else:
+            raise ValueError("This hinge does not exist.")
 
     def _getzcoord(self, i, aileron, Nz=81):
         return -0.5 * (aileron.chord*0.5 * (1-cos(self._get_theta(i, Nz))) + aileron.chord*0.5*(1-cos(self._get_theta(i+1, Nz))))
@@ -188,6 +256,63 @@ class AppliedLoads:
                 Q += data[j, i] * coords[j]
             res_locations.append(Q / np.sum(data[:, i]))
         return res_locations, res_forces
+
+
+    def _getq(self, coords, forces, a, x):
+        xlocs = np.unique(coords[:, 0])
+        if x < xlocs[0]:
+            return forces[0]
+        elif x > xlocs[-1]:
+            return forces[-1]
+        return interpolate(xlocs, forces, x)
+
+
+    def make_cuts_sections(self, a, num_sections_x):
+        new_list = [0]
+        step = a.span/num_sections_x
+        for i in range(1,num_sections_x):
+            new_list.append(step*i)
+        new_list.append(a.span)
+        return np.asarray(new_list)
+
+    def distr_defl_func(self, q1, q2, L, I, E=71000000000):
+        # deflection return positive in positive direction of q
+        if q1 != q2:
+            return L*L*L*L/(E*I)*(q2 /8 + (q1-q2)*3/72)
+        else:
+            return L*L*L*L*q2/(E*I*8)
+
+
+    def distr_angle_func(self, q1, q2, L, I, E=71000000000):
+        if q1 != q2:
+            return L*L*L/(E*I)*(q2/6 + (q1-q2)/18)
+        else:
+            return L*L*L*q2/(6*E*I)
+
+    def pointload_defl(self, P, L, I, E=71000000000):
+        return P*L*L*L/(3*E*I)
+
+    def pointload_angle(self, P, L, I, E=71000000000):
+        return P*L*L/(2*E*I)
+
+    def forward_delf_point(self, i):
+        if abs(self._grid[i]-self.hinge1_val) < self._geo_error:
+            return self.pointload_defl()
+
+
+
+    def forward_defl_distr(self, i):
+        return self.distr_defl_func(-self.q(self._grid[i]), -self.q(self._grid[i + 1]), self.dx_list[i], self.a.Izz())
+
+    def backward_defl_distr(self, i):
+        return self.distr_defl_func(-self.q(self._grid[i - 1]), -self.q(self._grid[i]), self.dx_list[i - 1], self.a.Izz())
+
+    def forward_angle_distr(self, i):
+        return self.distr_angle_func(-self.q(self._grid[i]), -self.q(self._grid[i + 1]), self.dx_list[i], self.a.Izz())
+
+    def backward_angle_distr(self, i):
+        return self.distr_angle_func(-self.q(self._grid[i - 1]), -self.q(self._grid[i]), self.dx_list[i - 1], self.a.Izz())
+
 
 
 

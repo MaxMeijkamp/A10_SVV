@@ -14,7 +14,6 @@ def integrate(func, start, stop, number_of_points):
     integration = (np.sum((next_values - values) * .5) + np.sum(values)) * width
     return integration
 
-
 def cont_spline(x_discrete, f_discrete):
     return np.vectorize(partial(interpolate, x_discrete, f_discrete))
 
@@ -37,10 +36,12 @@ def spline(x, f, n):
 def interpolate(x, f, x_target):
     # Interpolation function which gives f_target for a given x_target and x-f spline
     n = len(x)
+    x = np.asarray(x)
+    f = np.asarray(f)
     if x[0] > x_target or x_target > x[n-1]:
         raise ValueError("The target location is not in the range of provided function values, x_tar =",x_target, "; x[0] =", x[0], "; x[n-1] =", x[n-1])
     elif x_target in x:
-        return f[np.where(x==x_target)]
+        return f[np.where(x_target==x)]
     else:
         sp_start, sp_slope = spline(x, f, n)
         left_i = n-2
