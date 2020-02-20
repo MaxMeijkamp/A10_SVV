@@ -15,6 +15,8 @@ a = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 659
 a = a.astype(np.float)
 
 # finding hingeline nodes
+# hingeline coordinates from input data
+# lst for
 lst = []
 xlst = []
 for i in a:
@@ -73,6 +75,7 @@ for i in lst:
     z_jam_straight.append(e[i][4])
 
 plt.plot(xlst, y_bend, 'o')
-# plt.plot(xlst,y_jam_bent,'o')
-# plt.plot(xlst,y_jam_straight,'o')
+plt.plot(xlst, y_jam_bent, 'o')
+plt.plot(xlst, y_jam_straight, 'o')
 plt.show()
+print (np.sort(xlst))
