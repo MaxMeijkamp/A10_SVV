@@ -72,7 +72,6 @@ for samp in LE_Bend:
 
 def get_dat(case, param):
 
-    loaded = []
     i = 1
     file = "A10_SVV_DataSets/B737RPT.rpt"
 
@@ -80,16 +79,19 @@ def get_dat(case, param):
         print(i)
 
         if param == 'stresses': # returns VMS and S12 at each element
-            print(i+1)
-            loaded = np.genfromtxt(file, dtype=str, skip_header=20, max_rows=6588)
-            print(3)
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=20, max_rows=5778)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=5817, max_rows=855)
+            loaded = np.concatenate((loaded1,loaded2)).astype(float)
+            print(loaded1)
+            print(loaded2)
+            print(loaded, len(loaded))
             for elem in loaded:
-                loaded[i] = [elem[0],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
+
+                loaded[i] = [elem[0],(elem[2]+elem[3])/2,(elem[4]/elem[5])/2]
                 i += 1
 
         if param == 'disp': # returns displacement at each node
-            loaded = np.genfromtxt(file, dtype=str, skip_header=20074,
-                                        max_rows = 6588)
+            loaded = np.genfromtxt(file, dtype=str, skip_header=20074,max_rows = 6588)
 
     if case == 'Jam_Bent':
 
@@ -116,4 +118,3 @@ def get_dat(case, param):
     loaded = loaded.astype(np.float)
 
     return (loaded)
-
