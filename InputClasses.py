@@ -191,5 +191,6 @@ class AppliedLoads:
 
 
 if __name__ == "__main__":
-    print("Hello world")
+    for i in range(len(Aileron().stiffLoc())):
+        print(Aileron().stiffLoc()[i])
 

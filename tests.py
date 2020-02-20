@@ -157,6 +157,7 @@ class MyTestCase(unittest.TestCase):
 
 class SystemTests(unittest.TestCase):
     def test_no_load_no_deformation(self):
+        pass
 
 
 if __name__ == '__main__':
