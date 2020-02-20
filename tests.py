@@ -3,7 +3,10 @@ import stress_modules
 import numericaltools
 import math
 import numpy as np
-
+import InputClasses
+import displacements
+import equilibrium
+from InputClasses import *
 
 class MyTestCase(unittest.TestCase):
 
@@ -153,6 +156,34 @@ class MyTestCase(unittest.TestCase):
         test_x_target = 11
         self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 1)
 
+    def test_input_geo(self):
+        # Tests Izz
+        chord = 1.1
+        height = 0.8
+        skint = 0.01
+        spart = 0.05
+        a = Aileron(chord=chord, height=height, skint=skint, spart=spart)
+        # self.assertEqual(a.Izz(stiffener=False, spar=False), 0.001865283305)
+        # self.assertEqual(a.Izz(skin=False, spar=False),)
+        self.assertEqual(a.Izz(skin=False, stiffener=False), 0.0256/12)
+
+        # Tests Iyy
+
+        # Tests centroid
+
+        # Tests shearcentre
+        # TODO: implement in InputClasses.py
+
+        # Tests visualinspection?
+
+        # Tests _Istiff
+
+
+class SystemTests(unittest.TestCase):
+    def test_no_load_no_deformation(self):
+
 
 if __name__ == '__main__':
+    data = InputClasses.Aileron()
+    data.visualinspection()
     unittest.main()

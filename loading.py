@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
-from geometry import Dataset
+from InputClasses import Aileron
 from math import sin, cos
 from numericaltools import integrate, interpolate, cont_spline
 from functools import *
@@ -41,7 +41,6 @@ def get_aero_resultants(file, coords):
     data = np.genfromtxt(file, delimiter=",")
     data[0,0] = 0.034398 # Reader gives the first value as nan, this is to fix that problem
     coords = np.unique(coords[:,1])
-    print(coords)
     res_forces = []
     res_locations = []
     data = np.flip(data, axis=0)
@@ -53,26 +52,37 @@ def get_aero_resultants(file, coords):
         res_locations.append(Q/np.sum(data[:,i]))
     return res_locations, res_forces
 
+def getq(coords, forces, a, x):
+    if x == 0:
+        return forces[0]
+    elif x == a.span:
+        return forces[-1]
+    xlocs = np.unique(coords[:,0])
+    return interpolate(xlocs, forces, x)
+
 
 if __name__ == "__main__":
-    a = Dataset()
+    a = Aileron()
     aerogrid = aero_points(41, 81, a)
     locs, forces = get_aero_resultants("aerodata.csv", aerogrid)
+    print(np.unique(aerogrid[:,0]))
+    print(forces)
+    print(getq(aerogrid, forces, a, 0.5))
 
-    plt.scatter(aerogrid[:,0], aerogrid[:,1], s=10)
-    plt.scatter(np.unique(aerogrid[:,0]), locs, s=50)
-    plt.gca().invert_xaxis()
-    plt.plot([0, a.span], [-a.chord, -a.chord])
-    plt.plot([0, a.span], [0, 0])
-    plt.plot([0, 0], [-a.chord, 0])
-    plt.plot([a.span, a.span], [-a.chord, 0])
-    plt.scatter(a.hinge2, -a._radius, s=100)
-    plt.scatter(a.hinge1, -a._radius, s=100)
-    plt.scatter(a.hinge3, -a._radius, s=100)
-    plt.show()
-
-
-
-
-
+    # plt.scatter(aerogrid[:,0], aerogrid[:,1], s=10)
+    # plt.scatter(np.unique(aerogrid[:,0]), locs, s=50)
+    # plt.gca().invert_xaxis()
+    # plt.plot([0, a.span], [-a.chord, -a.chord])
+    # plt.plot([0, a.span], [0, 0])
+    # plt.plot([0, 0], [-a.chord, 0])
+    # plt.plot([a.span, a.span], [-a.chord, 0])
+    # plt.scatter(a.hinge2, -a._radius, s=100)
+    # plt.scatter(a.hinge1, -a._radius, s=100)
+    # plt.scatter(a.hinge3, -a._radius, s=100)
+    # plt.show()
+    #
+    #
+    #
+    #
+    #
 
