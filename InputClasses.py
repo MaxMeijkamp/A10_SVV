@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from math import sqrt, sin, cos, acos
 from numericaltools import *
 
+
 class Aileron:
     def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
                  spart=0.0025, stifft=0.0012, stiffh=0.014, stiffw=0.018, stiffn=13):
@@ -34,7 +35,6 @@ class Aileron:
 
         # Protected variables
         self._circumference = 2 * self.a + np.pi * self.radius
-
 
     def Izz(self, skin=True, spar=True, stiffener=True):
         # Calculates Izz of a cross-section. Also able to calculate only parts of Izz based on arguments given
@@ -159,7 +159,6 @@ class AppliedLoads:
     def _getzcoord(self, i, aileron, Nz=81):
         return -0.5 * (aileron.chord*0.5 * (1-cos(self._get_theta(i, Nz))) + aileron.chord*0.5*(1-cos(self._get_theta(i+1, Nz))))
 
-
     def _getxcoord(self, i, aileron, Nx=41):
         return 0.5 * (aileron.span*0.5 * (1-cos(self._get_theta(i, Nx))) + aileron.span*0.5*(1-cos(self._get_theta(i+1, Nx))))
 
@@ -192,4 +191,3 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     print("Hello world")
-

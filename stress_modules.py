@@ -1,4 +1,5 @@
 import numpy as np
+import numericaltools
 import InputClasses
 
 def von_mises(sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz):
