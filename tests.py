@@ -4,6 +4,8 @@ import numericaltools
 import math
 import numpy as np
 import InputClasses
+import displacements
+import equilibrium
 
 class MyTestCase(unittest.TestCase):
 
@@ -152,6 +154,9 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 4)
         test_x_target = 11
         self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 1)
+
+class SystemTests(unittest.TestCase):
+    def test_no_load_no_deformation(self):
 
 
 if __name__ == '__main__':

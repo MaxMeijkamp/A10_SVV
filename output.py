@@ -1,5 +1,6 @@
 import matplotlib as plt
 
+# Added possible definitions, based on required results and verification results we need to compare with
 
 def qdistr():
     # Outputs plot of shear flow distribution at given x
