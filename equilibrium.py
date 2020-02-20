@@ -4,59 +4,36 @@ from InputClasses import *
 from loading import *
 
 
-def distr_defl_func(q1, q2, L, I, E=71000000000):
-    # deflection return positive in positive direction of q
-    if q1 != q2:
-        return L*L*L*L/(E*I)*(q2 /8 + (q1-q2)*3/72)
-    else:
-        return L*L*L*L*q2/(E*I*8)
+def make_u(loads):
+    dof_size = 2 if loads.bending == False else 4
+    u = np.zeros((loads.gridsize, dof_size))
+    thetas = np.zeros(loads.gridsize)
 
+    for i in range(loads.hinge_idx(2) - 1, -1, -1):
+        u[i, 0] += u[i + 1, 0] + loads.forward_defl_distr(i)
+        thetas[i] = loads.forward_angle_distr(i)
+        for j in range(1, loads.hinge_idx(2) - i):
+            u[i, 0] -= loads.dx_list[i] * thetas[loads.hinge_idx(2) - j]
+        u[i, 1] -= loads.dx_list[i]
+        if dof_size == 4:
+            u[i, 2] += u[i + 1, 0] + loads.forward_defl_point(i)
+    for i in range(loads.hinge_idx(2) + 1, loads.gridsize, 1):
+        u[i, 0] += u[i - 1, 0] + loads.backward_defl_distr(i)
+        thetas[i] = loads.backward_angle_distr(i)
+        for j in range(1, i - loads.hinge_idx(2) - i):
+            u[i, 0] += loads.dx_list[i] * thetas[loads.hinge_idx(2) + j]
+        u[i, 1] += loads.dx_list[i - 1]
 
-def distr_angle_func(q1, q2, L, I, E=71000000000):
-    if q1 != q2:
-        return L*L*L/(E*I)*(q2/6 + (q1-q2)/18)
-    else:
-        return L*L*L*q2/(6*E*I)
+    return u
 
 
 
 if __name__ == "__main__":
     a = Aileron()
-    Nx = 41
-    Nz = 81
+    loads = AppliedLoads(int(a.span*1000), aileron=a) # Section at every millimeter
 
+    u = make_u(a, loads)
 
-    coordlist = make_sections(41, 81, a)
-    hinge1_idx = np.argmin(np.abs(coordlist - a.hinge1))
-    hinge1_val = coordlist[hinge1_idx]
-    hinge2_idx = np.argmin(np.abs(coordlist - a.hinge2))
-    hinge2_val = coordlist[hinge2_idx]
-    hinge3_idx = np.argmin(np.abs(coordlist - a.hinge3))
-    hinge3_val = coordlist[hinge3_idx]
-
-    aerogrid = aero_points(Nx, Nz, a)
-    aeroloc, aeroforce = get_aero_resultants("aerodata.csv", aerogrid)
-    q = partial(getq, aerogrid, aeroforce, a)
-    dx_list = []
-    for i in range(coordlist.size - 1):
-        dx_list.append(coordlist[i + 1] - coordlist[i])
-
-    u = np.zeros((coordlist.size, 2))
-    thetas = np.zeros(coordlist.size)
-
-    for i in range(hinge2_idx-1, -1, -1):
-        u[i, 0] += u[i + 1, 0] + distr_defl_func(-q(coordlist[i]), -q(coordlist[i+1]), dx_list[i], a.Izz())
-        thetas[i] = distr_angle_func(-q(coordlist[i]), -q(coordlist[i+1]), dx_list[i], a.Izz())
-        for j in range(1, hinge2_idx-i):
-            u[i, 0] -= dx_list[i] * thetas[hinge2_idx-j]
-        u[i, 1] -= dx_list[i]
-    for i in range(hinge2_idx+1, coordlist.size, 1):
-        u[i,0] += u[i-1, 0] + distr_defl_func(-q(coordlist[i-1]), -q(coordlist[i]), dx_list[i-1], a.Izz())
-        thetas[i] = distr_angle_func(-q(coordlist[i-1]), -q(coordlist[i]), dx_list[i-1], a.Izz())
-        for j in range(1, i-hinge2_idx-i):
-            u[i, 0] += dx_list[i] * thetas[hinge2_idx + j]
-        u[i, 1] += dx_list[i-1]
-
-    print(u)
+    print(u[:15,:])
 
 
