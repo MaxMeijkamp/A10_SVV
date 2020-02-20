@@ -54,7 +54,7 @@ class Aileron:
         Iyy = 0
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12 + np.pi * self.skint * self.height * self.height * self.height / 16
+            Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
         if spar:
             Iyy += self.height * self.spart * self.spart * self.spart / 12
         if stiffener:

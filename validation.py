@@ -1,5 +1,5 @@
 import numpy as np
-#from mpl_toolkits import mplot3d  # 3d plotting
+from mpl_toolkits import mplot3d  # 3d plotting
 import matplotlib.pyplot as plt
 
 # input file
@@ -74,44 +74,46 @@ def get_dat(case, param):
 
     loaded = []
     i = 1
+    file = "A10_SVV_DataSets/B737RPT.rpt"
 
     if str(case) == 'bending' :
+        print(i)
 
         if param == 'stresses': # returns VMS and S12 at each element
-            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20, skip_footer=53992)
+            print(i+1)
+            loaded = np.genfromtxt(file, dtype=str, skip_header=20, max_rows=6588)
+            print(3)
             for elem in loaded:
-                loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
+                loaded[i] = [elem[0],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
                 i += 1
 
         if param == 'disp': # returns displacement at each node
-            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20074,
-                                        skip_footer = (59953 - 26768))
+            loaded = np.genfromtxt(file, dtype=str, skip_header=20074,
+                                        max_rows = 6588)
 
     if case == 'Jam_Bent':
 
         if param == 'stresses':  # returns VMS and S12 at each element
-            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=6705, skip_footer=(59953 - (6705 + 6634)+712))
+            loaded = np.genfromtxt(file, dtype=str, skip_header=6705, max_rows=6634)
             for elem in loaded:
                 loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
                 i += 1
         if param == 'disp': # returns displacement at each node
-            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=26724,
-                                        skip_footer=(59953 - (26724 + 6588)))
+            loaded = np.genfromtxt(file, dtype=str, skip_header=26724,
+                                        max_rows=6588)
 
     if case == 'Jam_Straight':
         if param == 'stresses':  # returns VMS and S12 at each element
-            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=13390,
-                                        skip_footer=(59953 - (13390 + 6634))+731)
+            loaded = np.genfromtxt(file, dtype=str, skip_header=13390,
+                                        max_rows=6634)
             loaded = loaded.astype(np.float)
             for elem in loaded:
                 loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
                 i += 1
         if param == 'disp': # returns displacement at each node
-            loaded = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=33374,
-                                        skip_footer=(59953 - (33374 + 6588)))
+            loaded = np.genfromtxt(file, dtype=str, skip_header=33374,
+                                        max_rows=6588)
     loaded = loaded.astype(np.float)
 
-    return loaded
+    return (loaded)
 
-loaded  = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=20, skip_footer=53992)
-#print(loaded)
