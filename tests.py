@@ -165,11 +165,14 @@ class MyTestCase(unittest.TestCase):
         spart = 0.05
         a = Aileron(chord=chord, height=height, skint=skint, spart=spart)
         # self.assertEqual(a.Izz(stiffener=False, spar=False), 0.001865283305) # Exact value different from
-        # manually calculated value by less than 0.1%, hence human error and can be interpreted as correct
-        # self.assertEqual(a.Izz(skin=False, spar=False),)
-        self.assertEqual(a.Izz(skin=False, stiffener=False), 0.0256/12)
+        # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
+        # self.assertEqual(a.Izz(skin=False, spar=False),) todo
+        # self.assertEqual(a.Izz(skin=False, stiffener=False), 0.0256/12) Works
 
         # Tests Iyy
+        self.assertEqual(a.Iyy(stiffener=False, spar=False), 0.003638774597)
+        # self.assertEqual(a.Iyy(skin=False, spar=False),) todo
+        # self.assertEqual(a.Iyy(skin=False, stiffener=False), 0.0001/12) Works
 
         # Tests centroid
 
