@@ -163,7 +163,8 @@ class MyTestCase(unittest.TestCase):
         height = 0.8
         skint = 0.01
         spart = 0.05
-        a = Aileron(chord=chord, height=height, skint=skint, spart=spart)
+        span = 5
+        a = Aileron(chord=chord, height=height, skint=skint, spart=spart, span=span)
         # self.assertEqual(a.Izz(stiffener=False, spar=False), 0.001865283305) # Exact value different from
         # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
         # self.assertEqual(a.Izz(skin=False, spar=False),) todo
@@ -176,6 +177,10 @@ class MyTestCase(unittest.TestCase):
         # self.assertEqual(a.Iyy(skin=False, stiffener=False), 0.0001/12) Works
 
         # Tests centroid
+        self.assertEqual(a.centroid(0), 2.5)
+        self.assertEqual(a.centroid(1), 0)
+        # self.assertEqual(a.centroid(2), )
+        # self.assertEqual(a.centroid(), (2.5, 0, ))
 
         # Tests shearcentre
         # TODO: implement in InputClasses.py
