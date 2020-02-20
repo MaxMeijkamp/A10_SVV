@@ -6,6 +6,7 @@ import numpy as np
 import InputClasses
 import displacements
 import equilibrium
+from InputClasses import *
 
 class MyTestCase(unittest.TestCase):
 
@@ -92,13 +93,14 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(stress_modules.von_mises(sigma_xx=.0000001, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt(.0000001**2))
 
     def test_integration(self):
-        #integrate(func, start, stop, number_of_points)
+        # integrate(func, start, stop, number_of_points)
         start = 0
         stop = 1
+
         def tempfunc(x):
             return 1 + x * 0
         n = 1
-        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places= 8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places=8)
         n =100
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places=8)
         start = -5
@@ -127,7 +129,7 @@ class MyTestCase(unittest.TestCase):
         # Very small distance over which to integrate
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 0.00000001**2, places=10)
 
-        #More difficult book example from Early Transcendentals
+        # Harder book example from Early Transcendentals
         def tempfunc(x):
             return np.log(x) / x
         start = 1
@@ -155,8 +157,31 @@ class MyTestCase(unittest.TestCase):
         test_x_target = 11
         self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 1)
 
-class SystemTests(unittest.TestCase):
-    def test_no_load_no_deformation(self):
+    def test_input_geo(self):
+        # Tests Izz
+        chord = 1.1
+        height = 0.8
+        skint = 0.01
+        spart = 0.05
+        a = Aileron(chord=chord, height=height, skint=skint, spart=spart)
+        # self.assertEqual(a.Izz(stiffener=False, spar=False), 0.001865283305) # Exact value different from
+        # manually calculated value by less than 0.1%, hence human error and can be interpreted as correct
+        # self.assertEqual(a.Izz(skin=False, spar=False),)
+        self.assertEqual(a.Izz(skin=False, stiffener=False), 0.0256/12)
+
+        # Tests Iyy
+
+        # Tests centroid
+
+        # Tests shearcentre
+        # TODO: implement in InputClasses.py
+
+        # Tests visualinspection?
+
+        # Tests _Istiff
+
+ class SystemTests(unittest.TestCase):
+     def test_no_load_no_deformation(self):
 
     def test_unit_loads_applied(self):
 
