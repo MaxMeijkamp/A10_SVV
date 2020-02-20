@@ -7,6 +7,7 @@ import InputClasses
 import displacements
 import equilibrium
 from InputClasses import *
+import validation
 
 class MyTestCase(unittest.TestCase):
 
@@ -183,12 +184,19 @@ class MyTestCase(unittest.TestCase):
 
         # Tests _Istiff
 
+    def test_validation_getdata(self):
+        self.assertEqual(validation.get_dat('bending', 'stresses').size, (65338, 5))
+        #self.assertEqual(validation.get_dat('bending', 'disp').size, (65338, 5))
+        #self.assertEqual(validation.get_dat('Jam_Bent', 'stresses').size, (65338, 5))
+        #self.assertEqual(validation.get_dat('Jam_Bent', 'disp').size, (65338, 5))
+        #self.assertEqual(True, False)
+
 
 # class SystemTests(unittest.TestCase):
 #     def test_no_load_no_deformation(self):
 #  TODO: CHANGE THIS YO, SHOULDN'T BE COMMENTED
 
 if __name__ == '__main__':
-    data = InputClasses.Aileron()
-    data.visualinspection()
+    #data = InputClasses.Aileron()
+    #data.visualinspection()
     unittest.main()
