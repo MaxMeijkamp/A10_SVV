@@ -13,17 +13,14 @@ import matplotlib.pyplot as plt
 a = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
 a = a.astype(np.float)
 
-# finding hingeline nodes
-# hingeline coordinates from input data
-# lst for
 
-lst = []
-xlst = []
+hingelinenodes = []
+hingelinenodes_x = []
 for i in a:
     if i[2] == 0:
         if i[3] == 0:
-            lst.append(i[0])
-            xlst.append(i[1])
+            hingelinenodes.append(i[0])
+            hingelinenodes_x.append(i[1])
 
 # Deflection data - loading case: bending
 c = np.genfromtxt("B737.rpt", skip_header=20074, skip_footer=(59956 - 26662 - 109))
@@ -53,7 +50,7 @@ z_jam_straight = []
 mag_jam_straight = []
 
 # Find hingeline data for loading cases
-for i in lst:
+for i in hingelinenodes:
     i = int(i) - 1
 
     hingelinedata_bend.append(c[i])
@@ -74,8 +71,10 @@ for i in lst:
     y_jam_straight.append(e[i][3])
     z_jam_straight.append(e[i][4])
 
-plt.plot(xlst, y_bend, 'o')
-plt.plot(xlst, y_jam_bent, 'o')
-plt.plot(xlst, y_jam_straight, 'o')
+plt.title('Vertical Hingeline deflection x-y plane')
+plt.xlabel('Location x-axis[mm]')
+plt.ylabel('Vertical deflection [mm]')
+plt.plot(hingelinenodes_x, y_bend, 'o')
+plt.plot(hingelinenodes_x, y_jam_bent, 'o')
+plt.plot(hingelinenodes_x, y_jam_straight, 'o')
 plt.show()
-print (np.sort(xlst))
