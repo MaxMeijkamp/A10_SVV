@@ -226,7 +226,16 @@ class MyTestCase(unittest.TestCase):
         x = [-20, -10, 0]
         f = [0, 1, 2]
         slopes = [.1, .1]
-        self.assertEqual(numericaltools.spline(x, f, n)[1], slopes)
+        self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
+        # Negative x backwards
+        x = [0, -10, -20]
+        f = [0, 1, 2]
+        slopes = [-.1, -.1]
+        self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
+        x = np.array([-20, -10, 0])
+        f = np.array([0, 1, 2])
+        slopes = [.1, .1]
+        self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
 
 
 
