@@ -59,6 +59,8 @@ if __name__ == "__main__":
 
     u_new, x = calc_deflection(loads)
 
+    print(u_new[loads.hinge2_idx])
+
     plt.plot(loads._grid, u_new)
     plt.show()
 
