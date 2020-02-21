@@ -53,9 +53,10 @@ class Aileron:
         # Calculates Iyy of a cross-section. Also able to calculate only parts of Iyy based on arguments given
         # Comment because ???
         Iyy = 0
+        zbar = self.centroid(2)
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) * 2 / 12 + np.pi * self.skint * self.height * self.height * self.height / 16
+            Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
         if spar:
             Iyy += self.height * self.spart * self.spart * self.spart / 12
         if stiffener:
