@@ -53,6 +53,7 @@ class Aileron:
         # Calculates Iyy of a cross-section. Also able to calculate only parts of Iyy based on arguments given
         # Comment because ???
         Iyy = 0
+        zbar = self.centroid(2)
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
             Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
@@ -81,6 +82,16 @@ class Aileron:
     def shearcentre(self):
         xi = self.centroid(1)
         eta = 'centroid location in z'
+        # We have the starting values of s for each section from 1 to 4, and we use the step value for each boom to
+        # calculate their s position relative to s0 in each section. We can then use this to calculate each section
+        # even if booms change in number, location or value. Currently not implemented and the implemented version
+        # seems like it will be very fucking ugly, so that's to be fixed
+        step = self._circumference/self.stiffn
+        s_1 = 0
+        s_2 = np.pi * self.radius * 0.5
+        s_3 = s_2 + self.a
+        s_4 = s_3 + self.a
+        locations = self.stiffloc(shear=True)
         return xi, eta
 
     def _stiffcoord(self, num):
