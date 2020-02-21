@@ -7,6 +7,7 @@ import InputClasses
 import displacements
 import equilibrium
 from InputClasses import *
+import validation
 
 class MyTestCase(unittest.TestCase):
 
@@ -188,6 +189,9 @@ class MyTestCase(unittest.TestCase):
         # Tests visualinspection?
 
         # Tests _Istiff
+
+    def test_validation_read_data(self):
+        self.assertEqual(validation.get_dat("bending", "stresses").size[1],  5)
 
  # class SystemTests(unittest.TestCase):
  #     def test_no_load_no_deformation(self):
