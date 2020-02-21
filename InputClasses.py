@@ -57,10 +57,17 @@ class Aileron:
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
             Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
+            #Steiner term:
+            Iyy += (2 * self.skint * self.a) * ((self.chord - self.radius)*.5 - zbar )**2      # steiner terms for sloped part
+            IYY += (zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius        # steiner terms for circular part
         if spar:
             Iyy += self.height * self.spart * self.spart * self.spart / 12
+            # Steiner term:
+            Iyy += self.spart * self.height * zbar**2                                          # steiner term for spar
         if stiffener:
             Iyy += self._I_stiff(self.stiffLoc(), 0)
+            # Steiner term:
+            Iyy += sum([ (stiff[0] - zbar)**2 * self.stiffener_area for stiff in self.stiffLoc()  ])  #steiner term for stiffeners
         return Iyy
 
     def centroid(self, axis=None):
