@@ -36,6 +36,7 @@ class Aileron:
         # Protected variables
         self._circumference = 2 * self.a + np.pi * self.radius
 
+
     def Izz(self, skin=True, spar=True, stiffener=True):
         # Calculates Izz of a cross-section. Also able to calculate only parts of Izz based on arguments given
         Izz = 0
@@ -227,6 +228,7 @@ class AppliedLoads:
     def _getzcoord(self, i, aileron, Nz=81):
         return -0.5 * (aileron.chord*0.5 * (1-cos(self._get_theta(i, Nz))) + aileron.chord*0.5*(1-cos(self._get_theta(i+1, Nz))))
 
+
     def _getxcoord(self, i, aileron, Nx=41):
         return 0.5 * (aileron.span*0.5 * (1-cos(self._get_theta(i, Nx))) + aileron.span*0.5*(1-cos(self._get_theta(i+1, Nx))))
 
@@ -334,3 +336,4 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     print("Hello world")
+
