@@ -161,7 +161,8 @@ class Aileron:
         # Calculate moment of Inertia, including Steiner terms
         i_stiff = 0
         for stiff in stiffener_list:
-            d_2 = stiff[axis]*stiff[axis]
+            #d_2 = stiff[axis]*stiff[axis]
+            d_2 = (stiff[axis] - self.radius - self.centroid(2) )
             i_stiff += d_2*self.stiffener_area
         return i_stiff
 
