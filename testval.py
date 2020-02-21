@@ -1,3 +1,6 @@
-from validation import val_dat
+from validation import *
 
-val_dat.get_dat(self,bending,stresses)
+a = get_dat('Jam_Straight','disp')
+c = get_twist('bending')
+
+print(c)

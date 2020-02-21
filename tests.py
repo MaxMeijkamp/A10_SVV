@@ -4,11 +4,12 @@ import numericaltools
 import math
 import numpy as np
 import InputClasses
+import displacements
+import equilibrium
+from InputClasses import *
+#import validation
 
 class MyTestCase(unittest.TestCase):
-
-    def test_something(self):
-        self.assertEqual(True, True)
 
     def test_bend(self):
         h = 10
@@ -90,13 +91,14 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(stress_modules.von_mises(sigma_xx=.0000001, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt(.0000001**2))
 
     def test_integration(self):
-        #integrate(func, start, stop, number_of_points)
+        # integrate(func, start, stop, number_of_points)
         start = 0
         stop = 1
+
         def tempfunc(x):
             return 1 + x * 0
         n = 1
-        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places= 8)
+        self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places=8)
         n =100
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places=8)
         start = -5
@@ -125,7 +127,7 @@ class MyTestCase(unittest.TestCase):
         # Very small distance over which to integrate
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 0.00000001**2, places=10)
 
-        #More difficult book example from Early Transcendentals
+        # Harder book example from Early Transcendentals
         def tempfunc(x):
             return np.log(x) / x
         start = 1
@@ -153,8 +155,109 @@ class MyTestCase(unittest.TestCase):
         test_x_target = 11
         self.assertEqual(numericaltools.interpolate(test_list_x_1, test_list_f_1, test_x_target), 1)
 
+    def test_input_geo(self):
+        # Tests Izz
+        chord = 1.1
+        height = 0.8
+        skint = 0.01
+        spart = 0.05
+        span = 5
+        a = Aileron(chord=chord, height=height, skint=skint, spart=spart, span=span)
+        # self.assertEqual(a.Izz(stiffener=False, spar=False), 0.001865283305) # Exact value different from
+        # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
+        # self.assertEqual(a.Izz(skin=False, spar=False),) todo
+        # self.assertEqual(a.Izz(skin=False, stiffener=False), 0.0256/12) Works
+
+        # Tests Iyy
+        # self.assertEqual(a.Iyy(stiffener=False, spar=False), 0.003638774597) # Exact value different from
+        # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
+        # self.assertEqual(a.Iyy(skin=False, spar=False),) todo
+        # self.assertEqual(a.Iyy(skin=False, stiffener=False), 0.0001/12) Works
+
+        # Tests centroid
+        self.assertEqual(a.centroid(0), 2.5)
+        self.assertEqual(a.centroid(1), 0)
+        # self.assertEqual(a.centroid(2), )
+        # self.assertEqual(a.centroid(), (2.5, 0, ))
+
+        # Tests shearcentre
+        # TODO: implement in InputClasses.py
+
+        # Tests visualinspection?
+
+        # Tests _Istiff
+
+    def test_spline(self):
+        x = [0, 1, 2, 3, 4, 5, 6, 7]
+        f = [0, 1, 2, 3, 4, 5, 6, 7]
+        n = 8
+        self.assertEqual(numericaltools.spline(x, f, n)[0], f[0:-1])
+
+        spline_slopes = numericaltools.spline(x, f, n)[1]
+        for elem in spline_slopes:
+            self.assertEqual(elem, 1)
+
+        x = [0, 10, 20, 30, 40, 50, 60, 70]
+        spline_slopes = numericaltools.spline(x, f, n)[1]
+        for elem in spline_slopes:
+            self.assertEqual(elem, .1)
+
+        # Increasing and decreasing f
+        x = [0, 1, 2, 3, 4, 5, 6, 7]
+        f = [0, 2, 0, -2, -8, 0, 3, 7]
+        slopes = [2, -2, -2, -6, 8, 3, 4]
+        self.assertEqual(numericaltools.spline(x, f, n)[1], slopes)
+
+        # Non-consistent step size in x
+        n = 4
+        x = [0, 1, 5, 7]
+        f = [0, 1, 2, 9]
+        slopes = [1, .25, 3.5]
+        self.assertEqual(numericaltools.spline(x, f, n)[1], slopes)
+
+        # Negative values in x
+        x = [-20, -10, 0]
+        f = [0, 1, 2]
+        slopes = [.1, .1]
+        self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
+        # Negative x backwards
+        x = [0, -10, -20]
+        f = [0, 1, 2]
+        slopes = [-.1, -.1]
+        self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
+        x = np.array([-20, -10, 0])
+        f = np.array([0, 1, 2])
+        slopes = [.1, .1]
+        self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
+
+        # Very small values
+        x = [0, 0.00000001, 0.000000002]
+        f = [0, 0.000000015, 0.000000003]
+        slopes = [1.5, 1.5]
+        self.assertAlmostEqual(numericaltools.spline(x, f, 3)[1][0], slopes[0], places= 8)
+
+    #def test_validation_read_data(self):
+        #self.assertEqual(validation.get_dat("bending", "stresses").size[1],  5)
+        #pass
+
+
+ # class SystemTests(unittest.TestCase):
+ #     def test_no_load_no_deformation(self):
+ #
+ #    def test_unit_loads_applied(self):
+ #
+ #    def test_normal_loads_compared_with_hand_calculations_at_different_points(self):
+ #
+ #    def test_check_hinge_2_deflection_0_at_different_loads(self):
+ #        self.assertIsNone(displacements.displ(normal loads))
+ #
+ #    def test_check_large_E_G_give_small_displacements(self):
+ #        self.assertLess(displacements.displ(normal loads, large E), some low displacement value,))
+ #        self.assertLess(displacements.displ(normal loads, very very large E), some super low displacement value,))
+ #        self.assertLess(displacements.angle_displ(normal loads, large G), some low angle value,))
+ #        self.assertLess(displacements.angle_displ(normal loads, very very large G), some suprt low angle value,))
 
 if __name__ == '__main__':
-    data = InputClasses.Aileron()
-    data.visualinspection()
+    #data = InputClasses.Aileron()
+    #data.visualinspection()
     unittest.main()
