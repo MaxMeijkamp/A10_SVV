@@ -67,7 +67,7 @@ class Aileron:
         if stiffener:
             Iyy += self._I_stiff(self.stiffLoc(), 0)
             # Steiner term:
-            Iyy += sum([ (stiff[0] + self.radius - zbar)**2 * self.stiffener_area for stiff in self.stiffLoc()  ])    #steiner term for stiffeners
+            #Iyy += sum([ (stiff[0] + self.radius - zbar)**2 * self.stiffener_area for stiff in self.stiffLoc()  ])    #steiner term for stiffeners
         return Iyy
 
     def centroid(self, axis=None):
@@ -162,7 +162,7 @@ class Aileron:
         i_stiff = 0
         for stiff in stiffener_list:
             #d_2 = stiff[axis]*stiff[axis]
-            d_2 = (stiff[axis] - self.radius - self.centroid(2) )
+            d_2 = (stiff[axis] - self.radius - self.centroid(2) )**2
             i_stiff += d_2*self.stiffener_area
         return i_stiff
 
