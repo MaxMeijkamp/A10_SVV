@@ -12,17 +12,18 @@ aileron = InputClasses.Aileron()
 
 
 class MyTestCase(unittest.TestCase):
-#    def test_Izz_Iyy(self):
+    def test_Izz_Iyy(self):
 #        self.assertAlmostEqual(mainfile.Izz, aileron.Izz(), 9)
-#        self.assertAlmostEqual(mainfile.Iyy, aileron.Iyy(), 9)
+        self.assertAlmostEqual(mainfile.Iyy, aileron.Iyy(), 9)
 
     def test_centroid(self):
 #        self.assertAlmostEqual(mainfile.yc, aileron.centroid(1), 9)
-        self.assertAlmostEqual(mainfile.zc, aileron.centroid(2), 9)
+        self.assertAlmostEqual(mainfile.zc+aileron.radius, aileron.centroid(2), 9)
 
 if __name__ == '__main__':
 #    print(mainfile.Izz, mainfile.Iyy)
     print(aileron.centroid())
 #    print(mainfile.stcoord,mainfile.totarea)
-#    print(aileron._stiffcoord(7)[0]-aileron.radius)
+    print(aileron._stiffcoord(1)[0]-aileron.radius)
+    print('aaaaa', mainfile.zc)
     unittest.main()
