@@ -22,6 +22,7 @@ for i in a:
             hingelinenodes.append(i[0])
             hingelinenodes_x.append(i[1])
 
+print(hingelinenodes)
 # Deflection data - loading case: bending
 c = np.genfromtxt("B737.rpt", skip_header=20074, skip_footer=(59956 - 26662 - 109))
 c = c.astype(np.float)
@@ -50,31 +51,37 @@ z_jam_straight = []
 mag_jam_straight = []
 
 # Find hingeline data for loading cases
+s=0
 for i in hingelinenodes:
     i = int(i) - 1
-
+    print(hingelinenodes_x[s])
     hingelinedata_bend.append(c[i])
     mag_bend.append(c[i][1])
-    x_bend.append(c[i][2])
+    x_bend.append(c[i][2]+hingelinenodes_x[s])
     y_bend.append(c[i][3])
     z_bend.append(c[i][4])
 
     hingelinedata_jam_bent.append(d[i])
     mag_jam_bent.append(d[i][1])
-    x_jam_bent.append(d[i][2])
+    x_jam_bent.append(d[i][2]+hingelinenodes_x[s])
     y_jam_bent.append(d[i][3])
     z_jam_bent.append(d[i][4])
 
     hingelinedata_jam_straight.append(e[i])
     mag_jam_straight.append(e[i][1])
-    x_jam_straight.append(e[i][2])
+    x_jam_straight.append(e[i][2]+hingelinenodes_x[s])
     y_jam_straight.append(e[i][3])
     z_jam_straight.append(e[i][4])
 
-plt.title('Vertical Hingeline deflection x-y plane')
-plt.xlabel('Location x-axis[mm]')
-plt.ylabel('Vertical deflection [mm]')
-plt.plot(hingelinenodes_x, y_bend, 'bo') #bluedots
-plt.plot(hingelinenodes_x, y_jam_bent, 'ro') #reddots
-plt.plot(hingelinenodes_x, y_jam_straight, 'go') #greendots
+    s=s+1
+
+# plt.title('Vertical Hingeline deflection x-y plane')
+# plt.xlabel('Location x-axis[mm]')
+# plt.ylabel('Vertical deflection [mm]')
+plt.plot(x_bend, z_bend, 'bo') #bluedots
+# plt.plot(x_jam_bent, y_jam_bent, 'ro') #reddots
+# plt.plot(x_jam_straight, y_jam_straight, 'go') #greendots
 plt.show()
+
+
+
