@@ -36,6 +36,7 @@ class Aileron:
         # Protected variables
         self._circumference = 2 * self.a + np.pi * self.radius
 
+
     def Izz(self, skin=True, spar=True, stiffener=True):
         # Calculates Izz of a cross-section. Also able to calculate only parts of Izz based on arguments given
         Izz = 0
@@ -76,9 +77,10 @@ class Aileron:
         else:
             raise ValueError("The axis is invalid")
 
-    def shearcentre(self, axis=None):
-        # TODO: implement
-        return self.centroid(axis)
+    def shearcentre(self):
+        xi = self.centroid(1)
+        eta = 'centroid location in z'
+        return xi, eta
 
     def _stiffcoord(self, num):
         step = self._circumference/self.stiffn
@@ -227,6 +229,7 @@ class AppliedLoads:
     def _getzcoord(self, i, aileron, Nz=81):
         return -0.5 * (aileron.chord*0.5 * (1-cos(self._get_theta(i, Nz))) + aileron.chord*0.5*(1-cos(self._get_theta(i+1, Nz))))
 
+
     def _getxcoord(self, i, aileron, Nx=41):
         return 0.5 * (aileron.span*0.5 * (1-cos(self._get_theta(i, Nx))) + aileron.span*0.5*(1-cos(self._get_theta(i+1, Nx))))
 
@@ -293,11 +296,29 @@ class AppliedLoads:
     def pointload_angle(self, P, L, I, E=71000000000):
         return P*L*L/(2*E*I)
 
-    def forward_delf_point(self, i):
+    def forward_defl_point(self, i):
         if abs(self._grid[i]-self.hinge1_val) < self._geo_error:
-            return self.pointload_defl()
+            return self.pointload_defl(1, self.dx_list[i], self.a.Izz())
+        else:
+            return 0
 
+    def backward_defl_point(self, i):
+        if abs(self._grid[i]-self.hinge3_val) < self._geo_error:
+            return self.pointload_defl(1, self.dx_list[i-1], self.a.Izz())
+        else:
+            return 0
 
+    def forward_angle_point(self, i):
+        if abs(self._grid[i]-self.hinge1_val) < self._geo_error:
+            return self.pointload_angle(1, self.dx_list[i], self.a.Izz())
+        else:
+            return 0
+
+    def backward_angle_point(self, i):
+        if abs(self._grid[i]-self.hinge3_val) < self._geo_error:
+            return self.pointload_angle(1, self.dx_list[i-1], self.a.Izz())
+        else:
+            return 0
 
     def forward_defl_distr(self, i):
         return self.distr_defl_func(-self.q(self._grid[i]), -self.q(self._grid[i + 1]), self.dx_list[i], self.a.Izz())
