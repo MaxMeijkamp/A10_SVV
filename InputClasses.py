@@ -51,6 +51,7 @@ class Aileron:
 
     def Iyy(self, skin=True, spar=True, stiffener=True):
         # Calculates Iyy of a cross-section. Also able to calculate only parts of Iyy based on arguments given
+        # Comment because ???
         Iyy = 0
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
