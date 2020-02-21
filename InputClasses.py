@@ -66,18 +66,32 @@ class Aileron:
     def centroid(self, axis=None):
         xbar = self.span * 0.5
         ybar = 0
-        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + sum([self.stiffener_area * stiff[0] for stiff in self.stiffLoc()])
+        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] +0.0865 for stiff in self.stiffLoc()))
         zbar = zbar / (self.skint * self._circumference + self.spart * self.height + self.stiffener_area * self.stiffn)
         if axis == 0:
             return xbar
         if axis == 1:
-            return ybar
+           return ybar
         if axis == 2:
             return zbar
         if axis == None:
             return xbar, ybar, zbar
         else:
             raise ValueError("The axis is invalid")
+
+#    def centroid(self, axis=None):
+#        xbar = self.span * 0.5
+#        ybar = 0
+#        zbar = self.skint * (self.radius ** 2 * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] +0.0865 for stiff in self.stiffLoc()))
+#        zbar = zbar / (self.skint * (np.pi * self.radius * self.skint + 2 * self.a) + self.height * self.spart + self.stiffener_area * self.stiffn)
+#        if axis == 0:
+#            return xbar
+#        if axis == 1:
+#            return ybar
+#        if axis == 2:
+#            return zbar
+#        if axis == None:
+#            return xbar, ybar, zbar
 
     def shearcentre(self):
         xi = self.centroid(1)
