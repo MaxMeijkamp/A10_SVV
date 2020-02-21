@@ -77,9 +77,10 @@ class Aileron:
         else:
             raise ValueError("The axis is invalid")
 
-    def shearcentre(self, axis=None):
-        # TODO: implement
-        return self.centroid(axis)
+    def shearcentre(self):
+        xi = self.centroid(1)
+        eta = 'centroid location in z'
+        return xi, eta
 
     def _stiffcoord(self, num):
         step = self._circumference/self.stiffn
@@ -336,4 +337,3 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     print("Hello world")
-
