@@ -11,9 +11,6 @@ from InputClasses import *
 
 class MyTestCase(unittest.TestCase):
 
-    def test_something(self):
-        self.assertEqual(True, True)
-
     def test_bend(self):
         h = 10
         b = 5
@@ -190,10 +187,6 @@ class MyTestCase(unittest.TestCase):
 
         # Tests _Istiff
 
-    #def test_validation_read_data(self):
-        #self.assertEqual(validation.get_dat("bending", "stresses").size[1],  5)
-        #pass
-
     def test_spline(self):
         x = [0, 1, 2, 3, 4, 5, 6, 7]
         f = [0, 1, 2, 3, 4, 5, 6, 7]
@@ -237,6 +230,15 @@ class MyTestCase(unittest.TestCase):
         slopes = [.1, .1]
         self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
 
+        # Very small values
+        x = [0, 0.00000001, 0.000000002]
+        f = [0, 0.000000015, 0.000000003]
+        slopes = [1.5, 1.5]
+        self.assertAlmostEqual(numericaltools.spline(x, f, 3)[1][0], slopes[0], places= 8)
+
+    #def test_validation_read_data(self):
+        #self.assertEqual(validation.get_dat("bending", "stresses").size[1],  5)
+        #pass
 
 
  # class SystemTests(unittest.TestCase):
