@@ -54,7 +54,7 @@ class Aileron:
         Iyy = 0
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
+            Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) * 2 / 12 + np.pi * self.skint * self.height * self.height * self.height / 16
         if spar:
             Iyy += self.height * self.spart * self.spart * self.spart / 12
         if stiffener:
@@ -108,13 +108,18 @@ class Aileron:
         else:
             raise ValueError("The aileron does not contain this number of stringers")
 
-    def stiffLoc(self, n=None):
+    def stiffLoc(self, n=None, shear=False):
         # Returns a tuple of the given stiffener number.
         # If no arguments are given, a list of tuples containing all stiffener locations is returned.
         if n == None:
             list = []
             for i in range(self.stiffn):
                 list.append(self._stiffcoord(i))
+            return list
+        elif shear:
+            # Append to list elements in 4 divisions, signifying sections 1 through four in shear center calculation
+            # Determine the s-value from
+            list =[]
             return list
         else:
             return self._stiffcoord(n)

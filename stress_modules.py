@@ -16,6 +16,7 @@ def bending(y, z, Iyy, Izz, M_y, M_z, centroid):
 
 
 def find_shear_center(dataset):
+    # Maybe should be brought to InputClasses.py?
     Izz = dataset.Izz()
     SC_y = dataset.centroid[1]
     Vy = 1  # force applied in shear centre
