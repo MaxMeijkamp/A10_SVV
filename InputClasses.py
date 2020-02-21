@@ -51,7 +51,9 @@ class Aileron:
 
     def Iyy(self, skin=True, spar=True, stiffener=True):
         # Calculates Iyy of a cross-section. Also able to calculate only parts of Iyy based on arguments given
+        # Comment because ???
         Iyy = 0
+        zbar = self.centroid(2)
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
             Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
@@ -77,9 +79,10 @@ class Aileron:
         else:
             raise ValueError("The axis is invalid")
 
-    def shearcentre(self, axis=None):
-        # TODO: implement
-        return self.centroid(axis)
+    def shearcentre(self):
+        xi = self.centroid(1)
+        eta = 'centroid location in z'
+        return xi, eta
 
     def _stiffcoord(self, num):
         step = self._circumference/self.stiffn
@@ -107,13 +110,18 @@ class Aileron:
         else:
             raise ValueError("The aileron does not contain this number of stringers")
 
-    def stiffLoc(self, n=None):
+    def stiffLoc(self, n=None, shear=False):
         # Returns a tuple of the given stiffener number.
         # If no arguments are given, a list of tuples containing all stiffener locations is returned.
         if n == None:
             list = []
             for i in range(self.stiffn):
                 list.append(self._stiffcoord(i))
+            return list
+        elif shear:
+            # Append to list elements in 4 divisions, signifying sections 1 through four in shear center calculation
+            # Determine the s-value from
+            list =[]
             return list
         else:
             return self._stiffcoord(n)
@@ -336,4 +344,3 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     print("Hello world")
-
