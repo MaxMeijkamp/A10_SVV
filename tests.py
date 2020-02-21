@@ -7,12 +7,9 @@ import InputClasses
 import displacements
 import equilibrium
 from InputClasses import *
-import validation
+#import validation
 
 class MyTestCase(unittest.TestCase):
-
-    def test_something(self):
-        self.assertEqual(True, True)
 
     def test_bend(self):
         h = 10
@@ -190,8 +187,59 @@ class MyTestCase(unittest.TestCase):
 
         # Tests _Istiff
 
-    def test_validation_read_data(self):
-        self.assertEqual(validation.get_dat("bending", "stresses").size[1],  5)
+    def test_spline(self):
+        x = [0, 1, 2, 3, 4, 5, 6, 7]
+        f = [0, 1, 2, 3, 4, 5, 6, 7]
+        n = 8
+        self.assertEqual(numericaltools.spline(x, f, n)[0], f[0:-1])
+
+        spline_slopes = numericaltools.spline(x, f, n)[1]
+        for elem in spline_slopes:
+            self.assertEqual(elem, 1)
+
+        x = [0, 10, 20, 30, 40, 50, 60, 70]
+        spline_slopes = numericaltools.spline(x, f, n)[1]
+        for elem in spline_slopes:
+            self.assertEqual(elem, .1)
+
+        # Increasing and decreasing f
+        x = [0, 1, 2, 3, 4, 5, 6, 7]
+        f = [0, 2, 0, -2, -8, 0, 3, 7]
+        slopes = [2, -2, -2, -6, 8, 3, 4]
+        self.assertEqual(numericaltools.spline(x, f, n)[1], slopes)
+
+        # Non-consistent step size in x
+        n = 4
+        x = [0, 1, 5, 7]
+        f = [0, 1, 2, 9]
+        slopes = [1, .25, 3.5]
+        self.assertEqual(numericaltools.spline(x, f, n)[1], slopes)
+
+        # Negative values in x
+        x = [-20, -10, 0]
+        f = [0, 1, 2]
+        slopes = [.1, .1]
+        self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
+        # Negative x backwards
+        x = [0, -10, -20]
+        f = [0, 1, 2]
+        slopes = [-.1, -.1]
+        self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
+        x = np.array([-20, -10, 0])
+        f = np.array([0, 1, 2])
+        slopes = [.1, .1]
+        self.assertEqual(numericaltools.spline(x, f, 3)[1], slopes)
+
+        # Very small values
+        x = [0, 0.00000001, 0.000000002]
+        f = [0, 0.000000015, 0.000000003]
+        slopes = [1.5, 1.5]
+        self.assertAlmostEqual(numericaltools.spline(x, f, 3)[1][0], slopes[0], places= 8)
+
+    #def test_validation_read_data(self):
+        #self.assertEqual(validation.get_dat("bending", "stresses").size[1],  5)
+        #pass
+
 
  # class SystemTests(unittest.TestCase):
  #     def test_no_load_no_deformation(self):
@@ -210,6 +258,6 @@ class MyTestCase(unittest.TestCase):
  #        self.assertLess(displacements.angle_displ(normal loads, very very large G), some suprt low angle value,))
 
 if __name__ == '__main__':
-    data = InputClasses.Aileron()
-    data.visualinspection()
+    #data = InputClasses.Aileron()
+    #data.visualinspection()
     unittest.main()
