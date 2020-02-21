@@ -1,4 +1,4 @@
 from validation import *
 
-a = get_dat('bending','stresses')
+a = get_dat('Jam_Straight','stresses')
 print(a)

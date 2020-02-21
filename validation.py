@@ -72,23 +72,20 @@ for samp in LE_Bend:
 
 def get_dat(case, param):
 
-    i = 1
+    i = 0
     file = "A10_SVV_DataSets/B737RPT.rpt"
+    newload = []
 
     if str(case) == 'bending' :
         print(i)
 
         if param == 'stresses': # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=20, max_rows=5778)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=5817, max_rows=855)
-            loaded = np.concatenate((loaded1,loaded2)).astype(float)
-            print(loaded1)
-            print(loaded2)
-            print(loaded, len(loaded))
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=20, max_rows=5778).astype(float)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=5816, max_rows=856).astype(float)
+            loaded = np.concatenate((loaded1,loaded2))
+
             for elem in loaded:
-e
-                loaded[i] = [elem[0],(elem[2]+elem[3])/2,(elem[4]/elem[5])/2]
-                i += 1
+                newload.append([elem[0],(elem[2]+elem[3])/2,(elem[4]/elem[5])/2])
 
         if param == 'disp': # returns displacement at each node
             loaded = np.genfromtxt(file, dtype=str, skip_header=20074,max_rows = 6588)
@@ -96,25 +93,29 @@ e
     if case == 'Jam_Bent':
 
         if param == 'stresses':  # returns VMS and S12 at each element
-            loaded = np.genfromtxt(file, dtype=str, skip_header=6705, max_rows=6634)
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=6705, max_rows=5778)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=12501, max_rows=856)
+            loaded = np.concatenate((loaded1, loaded2)).astype(float)
+
             for elem in loaded:
-                loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
-                i += 1
+                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] / elem[5]) / 2])
+
         if param == 'disp': # returns displacement at each node
             loaded = np.genfromtxt(file, dtype=str, skip_header=26724,
                                         max_rows=6588)
 
     if case == 'Jam_Straight':
         if param == 'stresses':  # returns VMS and S12 at each element
-            loaded = np.genfromtxt(file, dtype=str, skip_header=13390,
-                                        max_rows=6634)
-            loaded = loaded.astype(np.float)
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=13390, max_rows=5778)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=19186, max_rows=856)
+            loaded = np.concatenate((loaded1, loaded2)).astype(float)
+
             for elem in loaded:
-                loaded[i] = [elem[0],elem[1],np.average(elem[2],elem[3]),np.average(elem[4],elem[5])]
-                i += 1
+                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] / elem[5]) / 2])
+
         if param == 'disp': # returns displacement at each node
             loaded = np.genfromtxt(file, dtype=str, skip_header=33374,
                                         max_rows=6588)
-    loaded = loaded.astype(np.float)
 
-    return (loaded)
+
+    return (newload)
