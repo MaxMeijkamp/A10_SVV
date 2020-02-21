@@ -182,7 +182,7 @@ def get_twist(case):
 
     # Twist angle as a function of x (span)
     twistcr = []
-    for samp in LE_LO:
+    for samp in LE_LO :
 
         theta = np.arctan(samp[3] / samp[4])
 
