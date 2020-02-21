@@ -58,8 +58,8 @@ class Aileron:
             beta = acos((self.chord - self.radius) / self.a)
             Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12) + np.pi * self.skint * self.height * self.height * self.height / 16
             #Steiner term:
-            Iyy += 2 * self.skint * self.a * (self.chord - self.radius - zbar)**2               # steiner terms for sloped part
-            Iyy += (zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius                 # steiner terms for circular part
+            Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar)**2               # steiner terms for sloped part
+            Iyy += (-zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius                 # steiner terms for circular part
         if spar:
             Iyy += self.height * self.spart * self.spart * self.spart / 12
             # Steiner term:
