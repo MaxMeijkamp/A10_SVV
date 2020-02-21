@@ -80,7 +80,7 @@ for i in hingelinenodes:
 # plt.ylabel('Vertical deflection [mm]')
 plt.plot(x_bend, z_bend, 'bo') #bluedots
 # plt.plot(x_jam_bent, y_jam_bent, 'ro') #reddots
-# plt.plot(x_jam_straight, y_jam_straight, 'go') #greendots
+plt.plot(x_jam_straight, y_jam_straight, 'go') #greendots
 plt.show()
 
 
