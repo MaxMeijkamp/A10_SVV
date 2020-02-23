@@ -56,22 +56,27 @@ class Aileron:
         zbar = self.centroid(2)
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Iyy += self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
+            Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12) + np.pi * self.skint * self.height * self.height * self.height / 16
+            #Steiner term:
+            Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar)**2               # steiner terms for sloped part
+            Iyy += (-zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius                 # steiner terms for circular part
         if spar:
             Iyy += self.height * self.spart * self.spart * self.spart / 12
+            # Steiner term:
+            Iyy += self.spart * self.height * zbar**2                                                   # steiner term for spar
         if stiffener:
             Iyy += self._I_stiff(self.stiffLoc(), 0)
-        return Iyy
+            return Iyy
 
     def centroid(self, axis=None):
         xbar = self.span * 0.5
         ybar = 0
-        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + sum([self.stiffener_area * stiff[0] for stiff in self.stiffLoc()])
+        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] +0.0865 for stiff in self.stiffLoc()))
         zbar = zbar / (self.skint * self._circumference + self.spart * self.height + self.stiffener_area * self.stiffn)
         if axis == 0:
             return xbar
         if axis == 1:
-            return ybar
+           return ybar
         if axis == 2:
             return zbar
         if axis == None:
@@ -79,9 +84,33 @@ class Aileron:
         else:
             raise ValueError("The axis is invalid")
 
+#    def centroid(self, axis=None):
+#        xbar = self.span * 0.5
+#        ybar = 0
+#        zbar = self.skint * (self.radius ** 2 * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] +0.0865 for stiff in self.stiffLoc()))
+#        zbar = zbar / (self.skint * (np.pi * self.radius * self.skint + 2 * self.a) + self.height * self.spart + self.stiffener_area * self.stiffn)
+#        if axis == 0:
+#            return xbar
+#        if axis == 1:
+#            return ybar
+#        if axis == 2:
+#            return zbar
+#        if axis == None:
+#            return xbar, ybar, zbar
+
     def shearcentre(self):
         xi = self.centroid(1)
         eta = 'centroid location in z'
+        # We have the starting values of s for each section from 1 to 4, and we use the step value for each boom to
+        # calculate their s position relative to s0 in each section. We can then use this to calculate each section
+        # even if booms change in number, location or value. Currently not implemented and the implemented version
+        # seems like it will be very fucking ugly, so that's to be fixed
+        step = self._circumference/self.stiffn
+        s_1 = 0
+        s_2 = np.pi * self.radius * 0.5
+        s_3 = s_2 + self.a
+        s_4 = s_3 + self.a
+        locations = self.stiffloc(shear=True)
         return xi, eta
 
     def _stiffcoord(self, num):
@@ -130,7 +159,8 @@ class Aileron:
         # Calculate moment of Inertia, including Steiner terms
         i_stiff = 0
         for stiff in stiffener_list:
-            d_2 = stiff[axis]*stiff[axis]
+            #d_2 = stiff[axis]*stiff[axis]
+            d_2 = (stiff[axis] - self.centroid(2) )
             i_stiff += d_2*self.stiffener_area
         return i_stiff
 

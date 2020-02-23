@@ -260,4 +260,6 @@ class MyTestCase(unittest.TestCase):
 if __name__ == '__main__':
     #data = InputClasses.Aileron()
     #data.visualinspection()
+    for i in range(len(InputClasses.Aileron().stiffLoc())):
+        print(InputClasses.Aileron().stiffLoc()[i])
     unittest.main()

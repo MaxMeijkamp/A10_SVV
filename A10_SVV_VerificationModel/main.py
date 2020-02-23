@@ -39,16 +39,16 @@ crosssection.compute_bending_properties()   # Run the calculations
 ### Auxiliary functions
 """ A plot of the cross-section, to inspect that the stringers have been placed correctly, and 
 that the position of the centroid makes sense. """
-crosssection.plot_crosssection()     # Plot the cross-section; blue cross is the centroid, red crosses are stringers
+#crosssection.plot_crosssection()     # Plot the cross-section; blue cross is the centroid, red crosses are stringers
 
 ### Access to important results
 """" If you desire, you can manually overwrite these values. """
-_ = crosssection.stcoord            # array containing stringer coordinates
-_ = crosssection.totarea            # total cross-section area
-_ = crosssection.yc                 # y-coordinate of the centroid
-_ = crosssection.zc                 # z-coordinate of the centroid
-_ = crosssection.Iyy                # moment of inertia about y-axis
-_ = crosssection.Izz                # moment of inertia about z-axis
+stcoord = crosssection.stcoord            # array containing stringer coordinates
+totarea = crosssection.totarea            # total cross-section area
+yc = crosssection.yc                 # y-coordinate of the centroid
+zc = crosssection.zc                 # z-coordinate of the centroid
+Iyy = crosssection.Iyy                # moment of inertia about y-axis
+Izz = crosssection.Izz                # moment of inertia about z-axis
 
 ######################## Part III - Torsional stiffness calculations #######################################
 ### Primary functions
@@ -93,15 +93,15 @@ If you do want to include the aerodynamic loading, let the variable aircraft (se
 Note that the name should be spelled exactly as listed above. Note that if the aircraft you write is inconsistent with the
 geometry you define at the beginning of this file, the program will not return an error, but will simply produce bogus
 results."""
-aileron.compute_deflections("CRJ700") ### Switch aerodynamic loading to the aircraft that is being considered
+aileron.compute_deflections() ### Switch aerodynamic loading to the aircraft that is being considered
 
 ### Auxiliary functions
 """" A number of auxiliary functions and results are given to you. """
 
 ## Simplistic plotting procedures for a first check
-aileron.plotv()             # Plot the deflections in y-direction, its derivative, the bending moment about the z-axis, and the shear force in y.
-aileron.plotw()             # Plot the deflections in z-direction, its derivative, the bending moment about the y-axis, and the shear force in z.
-aileron.plotphi()           # Plot the twist distribution, the torque and the distributed torque.
+#aileron.plotv()             # Plot the deflections in y-direction, its derivative, the bending moment about the z-axis, and the shear force in y.
+#aileron.plotw()             # Plot the deflections in z-direction, its derivative, the bending moment about the y-axis, and the shear force in z.
+#aileron.plotphi()           # Plot the twist distribution, the torque and the distributed torque.
 
 ## For custom post-processing of the solution
 x = np.linspace(0,la,num = 10)  # Subsequent functions accept numpy-arrays
@@ -172,9 +172,9 @@ Stressobject.compute_unitstressdistributions()
 Stressobject.compute_stressdistributions(Sy,Sz,My,Mz,T)
 
 ### Some plotting functions
-Stressobject.plot_shearflowdistributions()
-Stressobject.plot_directstressdistributions()
-Stressobject.plot_vonmisesstressdistributions()
+#Stressobject.plot_shearflowdistributions()
+#Stressobject.plot_directstressdistributions()
+#Stressobject.plot_vonmisesstressdistributions()
 
 ### Access to important results
 theta = np.linspace(0,m.pi/2,num = 100)
@@ -212,3 +212,4 @@ _ = Stressobject.q6f(theta)             # Compute the shear flow distribution in
 _ = Stressobject.sigma6f(theta)         # Compute the direct stress distribution in region 6
 _ = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
 _, _ = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
+

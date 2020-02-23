@@ -124,7 +124,7 @@ def get_dat(case, param):
 def get_twist(case):
 
     a = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598),
-                      delimiter=",")
+                      delimiter=",").astype(float)
 
     # get rows for specific loading
 
@@ -136,13 +136,29 @@ def get_twist(case):
         b = np.genfromtxt("A10_SVV_DataSets/B737RPT.rpt", dtype=str, skip_header=33374, max_rows=6588).astype(float)
 
     # classifying the nodes with their x,y,z locations and the elements with their 4 nodes
+
     nodes = list(a[9:6597])  # node number with x y z coord
     elem = list(a[6599:13232])  # elem number with 4 corresponding nodes
 
-    # for i in a:
-    #     xin.append(i[1])
-    #     yin.append(i[2])
-    #     zin.append(i[3])
+    # find hingeline nodes
+
+    hingelinenodes = []
+    hingelinenodes_x = []
+
+    for i in a:
+        if i[2] == 0:
+            if i[3] == 0:
+                hingelinenodes.append(i[0])
+                hingelinenodes_x.append(i[1])
+
+
+    # get the x , y , z of the nodes in diff arrays
+    xin = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598),
+                      delimiter=",", usecols=1).astype(float)
+    yin = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598),
+                      delimiter=",", usecols=2).astype(float)
+    zin = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598),
+                      delimiter=",", usecols=3).astype(float)
 
     # plotting the 3D aileron
     # fig = plt.figure()
@@ -165,16 +181,27 @@ def get_twist(case):
                 LE_LO.append(b0)
 
     # Twist angle as a function of x (span)
-    LE_nodes = []
-    angle_case1 = []
-    LE_bend1 = []
-    for samp in LE_LO:
+    twistcr = []
+    for samp in LE_LO :
 
         theta = np.arctan(samp[3] / samp[4])
 
-        LE_nodes.append(samp[0])
-        angle_case1.append(theta)
-        LE_bend1.append(samp[3])
+        twistcr.append([samp[0],theta, samp[3]])
+
+    # to plot the twist as a function of the x position
+    x_twist = []
+    for z in twistcr:
+        for a0 in a:
+            if int(a0[0]) == int(z[0]):
+                x_twist.append(a0[1])
+
+    x_twist.sort()
+    twistcr.sort()
+    LE.sort()
+    hingelinenodes_x.sort()
+
+    # plt.plot(x_twist,[item[1] for item in twistcr])
+    # plt.show()
 
 
-    return()
+    return(hingelinenodes_x[-1],x_twist[-1])
