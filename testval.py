@@ -1,6 +1,6 @@
 from validation import *
 
-a = get_dat('Jam_Straight','disp')
-c = get_twist('bending')
+a = get_dat('bending','disp')
+c = get_twist('Jam_Bent')
 
 print(c)
