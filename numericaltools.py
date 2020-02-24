@@ -2,17 +2,20 @@ import numpy as np
 from functools import *
 
 
-def integrate(func, start, stop, number_of_point):
+def integrate(func, start, stop, number_of_points):
     # Integration function, with func being the (mathematical) function to integrate,
     # start and stop being beginning and end of the integration respectively,
     # and number_of_points is the subdivisions. (Using Numpy)
-    start, stop, number_of_points = float(start), float(stop), float(number_of_point)
-    width = (stop - start) / number_of_points
-    points = np.linspace(start, stop - width, number_of_point)
-    next_points = np.linspace(start + width, stop, number_of_point)
+    if number_of_points <= 0:
+        raise ValueError("Number of points should be a positive integer")
+    start, stop, number_of_points = float(start), float(stop), int(round(number_of_points))
+    width = (stop - start) / float(number_of_points)
+    points = np.linspace(start, stop - width, number_of_points)
+    next_points = np.linspace(start + width, stop, number_of_points)
     values, next_values = func(points), func(next_points)
     integration = (np.sum((next_values - values) * .5) + np.sum(values)) * width
     return integration
+
 
 def cont_spline(x_discrete, f_discrete):
     return np.vectorize(partial(interpolate, x_discrete, f_discrete))
@@ -51,3 +54,23 @@ def interpolate(x, f, x_target):
                 break
         f_target = sp_slope[left_i] * (x_target - x[left_i]) + sp_start[left_i]
         return f_target
+
+
+def mac_step(difference, pow=1):
+    if difference > 0:
+        if pow == 0:
+            return 1
+        elif pow == 1:
+            return difference
+        elif pow == 2:
+            return difference*difference
+        elif pow == 3:
+            return difference*difference*difference
+        elif pow == 4:
+            return difference*difference*difference*difference
+        elif pow == 5:
+            return difference*difference*difference*difference*difference
+        else:
+            return difference**pow
+    else:
+        return 0

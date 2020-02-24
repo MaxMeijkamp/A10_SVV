@@ -6,13 +6,16 @@ from numericaltools import *
 
 class Aileron:
     def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
-                 spart=0.0025, stifft=0.0012, stiffh=0.014, stiffw=0.018, stiffn=13):
+                 spart=0.0025, stifft=0.0012, stiffh=0.014, stiffw=0.018, stiffn=13, actdist=0.272):
         # All given parameters and useful parameters. All the values are in SI units
         self.span = span
         self.chord = chord
         self.hinge1 = hinge1
         self.hinge2 = hinge2
         self.hinge3 = hinge3
+        self.actdist = actdist
+        self.act1 = self.hinge2-0.5*self.actdist
+        self.act2 = self.hinge2+0.5*self.actdist
         self.height = height
         self.skint = skint
         self.spart = spart
@@ -23,6 +26,8 @@ class Aileron:
         self.xhinge1 = self.hinge1-self.hinge2
         self.xhinge2 = 0.0
         self.xhinge3 = self.hinge3-self.hinge2
+        self.xact1 = self.act1-self.hinge2
+        self.xact2 = self.act2-self.hinge2
         self.minx = - self.hinge2
         self.maxx = self.span - self.hinge2
         self.minz = -self.chord + self.height/2
@@ -42,7 +47,7 @@ class Aileron:
         Izz = 0
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
+            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + np.pi / 2 * self.radius * self.radius * self.radius * self.skint
         if spar:
             Izz += self.spart * self.height * self.height * self.height / 12
         if stiffener:
@@ -51,19 +56,18 @@ class Aileron:
 
     def Iyy(self, skin=True, spar=True, stiffener=True):
         # Calculates Iyy of a cross-section. Also able to calculate only parts of Iyy based on arguments given
-        # Comment because ???
         Iyy = 0
         zbar = self.centroid(2)
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12) + np.pi * self.skint * self.height * self.height * self.height / 16
+            Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12) #+ np.pi * self.skint * self.height * self.height * self.height / 16
+            Iyy += np.pi / 2 * self.skint * self.radius * self.radius * self.radius
             #Steiner term:
             Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar)**2               # steiner terms for sloped part
             Iyy += (-zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius                 # steiner terms for circular part
-        if spar:
-            Iyy += self.height * self.spart * self.spart * self.spart / 12
             # Steiner term:
-            Iyy += self.spart * self.height * zbar**2                                                   # steiner term for spar
+        if spar:
+            Iyy += self.spart * self.height * zbar * zbar                                                 # steiner term for spar
         if stiffener:
             Iyy += self._I_stiff(self.stiffLoc(), 0)
             return Iyy
@@ -71,12 +75,12 @@ class Aileron:
     def centroid(self, axis=None):
         xbar = self.span * 0.5
         ybar = 0
-        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] +0.0865 for stiff in self.stiffLoc()))
+        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] for stiff in self.stiffLoc()))
         zbar = zbar / (self.skint * self._circumference + self.spart * self.height + self.stiffener_area * self.stiffn)
         if axis == 0:
             return xbar
         if axis == 1:
-           return ybar
+            return ybar
         if axis == 2:
             return zbar
         if axis == None:
@@ -196,8 +200,7 @@ class Aileron:
         else:
             centroid = self.centroid(1)
         for stiff in stiffener_list:
-            #d_2 = stiff[axis]*stiff[axis]
-            d_2 = (stiff[axis] - centroid ) ** 2
+            d_2 = (stiff[axis] - centroid )
             i_stiff += d_2*d_2*self.stiffener_area
         return i_stiff
 
@@ -241,17 +244,28 @@ class AppliedLoads:
         self.Nz = Nz
         self.a = aileron
         self.aerogrid = self.aero_points(self.Nx, self.Nz, self.a)
+        self.xaero = np.unique(self.aerogrid[:,0])
+        self._xaero = np.array([0]+list(self.xaero)[1:-1]+[self.a.span])
         self.res_locs, self.res_forces = self.get_aero_resultants(self.filename, self.aerogrid)
-        self.q = partial(self._getq, self.aerogrid, self.res_forces, self.a)
-        self._grid = self.make_cuts_sections(self.a, gridnum)
-        self.gridsize = self._grid.size
-        self.dx_list = np.asarray([self._grid[i + 1] - self._grid[i] for i in range(self._grid.size - 1)])
-        self.hinge1_idx = np.argmin(np.abs(self._grid - self.a.hinge1))
-        self.hinge1_val = self._grid[self.hinge1_idx]
-        self.hinge2_idx = np.argmin(np.abs(self._grid - self.a.hinge2))
-        self.hinge2_val = self._grid[self.hinge2_idx]
-        self.hinge3_idx = np.argmin(np.abs(self._grid - self.a.hinge3))
-        self.hinge3_val = self._grid[self.hinge3_idx]
+        self.aero_force = cont_spline(self._xaero, self.res_forces)
+        self.aero_force_times_x = cont_spline(self._xaero, self.res_forces*self._xaero)
+        self.res_xloc, self.totforce = self.calc_aero_res()
+        self.q = partial(self._getq, self.aerogrid, self.res_forces)
+        self.grid = self.make_cuts_sections(self.a, gridnum)
+        self.gridsize = self.grid.size
+        self.dx_list = np.asarray([self.grid[i + 1] - self.grid[i] for i in range(self.grid.size - 1)])
+        self.hinge1_idx = np.argmin(np.abs(self.grid - self.a.hinge1))
+        self.hinge1_val = self.grid[self.hinge1_idx]
+        self.hinge2_idx = np.argmin(np.abs(self.grid - self.a.hinge2))
+        self.hinge2_val = self.grid[self.hinge2_idx]
+        self.hinge3_idx = np.argmin(np.abs(self.grid - self.a.hinge3))
+        self.hinge3_val = self.grid[self.hinge3_idx]
+        self.act1_idx = np.argmin(np.abs(self.grid - self.a.act1))
+        self.act1_val = self.grid[self.act1_idx]
+        self.act2_idx = np.argmin(np.abs(self.grid - self.a.act2))
+        self.act2_val = self.grid[self.act2_idx]
+
+        self.res_xloc -= self.hinge2_val
 
         self._geo_error = np.min(self.dx_list)*0.1
 
@@ -263,14 +277,24 @@ class AppliedLoads:
         self.jammed = F_I_z
         self.hinge2_fix = hinge2_fix
 
+        self.res_array = self.aero_sections()
+        self.res_array = np.insert(self.res_array, 0, [0,0], axis=0)
+        self.res_xlocs = self.res_array[:,0]
+        self.res_aeroforces = self.res_array[:,1]
+
+        # self.mac_step_vect_0 = np.vectorize(partial(mac_step, pow=0))
+        # self.mac_step_vect_1 = np.vectorize(partial(mac_step, pow=1))
+        self.mac_step_vect_0 = lambda difference: np.where(difference>0, 1, 0)
+        self.mac_step_vect_1 = lambda difference: np.where(difference>0, difference, 0)
+
         if self.hinge1d_y != 0 and self.hinge3d_y != 0:
             self.bending=True
         else:
             self.bending=False
 
     def renew_grid(self, gridnum):
-        self._grid = self.make_cuts_sections(self.a, gridnum)
-        self.dx_list = [self._grid[i + 1] - self._grid[i] for i in range(self._grid.size - 1)]
+        self.grid = self.make_cuts_sections(self.a, gridnum)
+        self.dx_list = [self.grid[i + 1] - self.grid[i] for i in range(self.grid.size - 1)]
         return None
 
     def gridnum(self, gridnum):
@@ -278,7 +302,7 @@ class AppliedLoads:
         return None
 
     def grid(self, i):
-        return self._grid[i]
+        return self.grid[i]
 
     def hinge_idx(self, num):
         if num == 1:
@@ -320,6 +344,7 @@ class AppliedLoads:
     def get_aero_resultants(self, file, coords):
         data = np.genfromtxt(file, delimiter=",")
         data[0, 0] = 0.034398  # Reader gives the first value as nan, this is to fix that problem
+        data *= 1000
         coords = np.unique(coords[:, 1])
         res_forces = []
         res_locations = []
@@ -330,17 +355,34 @@ class AppliedLoads:
             for j in range(data.shape[0]):
                 Q += data[j, i] * coords[j]
             res_locations.append(Q / np.sum(data[:, i]))
-        return res_locations, res_forces
+        return np.asarray(res_locations), np.asarray(res_forces)
 
+    def calc_aero_res(self, maxx=None):
+        if maxx == None:
+            maxx = self.a.span
+        elif maxx < 0 or maxx > self.a.span:
+            raise ValueError("Cannot calculate the resultant force for a limit outside of the domain.")
+        res_force = integrate(self.aero_force, 0, maxx, int(maxx*1000))
+        res_xloc = integrate(self.aero_force_times_x, 0, maxx, int(maxx*1000))/res_force
+        return res_xloc, res_force
 
-    def _getq(self, coords, forces, a, x):
+    def aero_sections(self, file="forcedata.csv"):
+        res_array = np.genfromtxt(file, delimiter=",")
+        return res_array
+
+    def int_shear_y(self, x):
+        return np.array([self.res_aeroforces[np.where(np.abs(self.grid - x)<self._geo_error)], - self.mac_step_vect_0(x-self.hinge1_val), -self.mac_step_vect_0(x-self.hinge2_val), -self.mac_step_vect_0(x-self.hinge3_val)])
+
+    def int_moment_y(self, x):
+        return np.array([-self.res_aeroforces[np.where(np.abs(self.grid - x)<self._geo_error)] * (x-self.res_xlocs), self.mac_step_vect_1(x-self.hinge1_val), self.mac_step_vect_1(x-self.hinge2_val), self.mac_step_vect_1(x-self.hinge3_val)])
+
+    def _getq(self, coords, forces, x):
         xlocs = np.unique(coords[:, 0])
         if x < xlocs[0]:
             return forces[0]
         elif x > xlocs[-1]:
             return forces[-1]
         return interpolate(xlocs, forces, x)
-
 
     def make_cuts_sections(self, a, num_sections_x):
         new_list = [0]
@@ -364,6 +406,12 @@ class AppliedLoads:
         else:
             return L*L*L*q2/(6*E*I)
 
+    def moment_defl(self, M, L, I, E=71000000000):
+        return M*L*L*0.5/(E*I)
+
+    def moment_angle(self, M, L, I, E=71000000000):
+        return M*L/(E*I)
+
     def pointload_defl(self, P, L, I, E=71000000000):
         return P*L*L*L/(3*E*I)
 
@@ -371,45 +419,46 @@ class AppliedLoads:
         return P*L*L/(2*E*I)
 
     def forward_defl_point(self, i):
-        if abs(self._grid[i]-self.hinge1_val) < self._geo_error:
+        if abs(self.grid[i] - self.hinge1_val) < self._geo_error:
             return self.pointload_defl(1, self.dx_list[i], self.a.Izz())
         else:
             return 0
 
     def backward_defl_point(self, i):
-        if abs(self._grid[i]-self.hinge3_val) < self._geo_error:
+        if abs(self.grid[i] - self.hinge3_val) < self._geo_error:
             return self.pointload_defl(1, self.dx_list[i-1], self.a.Izz())
         else:
             return 0
 
     def forward_angle_point(self, i):
-        if abs(self._grid[i]-self.hinge1_val) < self._geo_error:
+        if abs(self.grid[i] - self.hinge1_val) < self._geo_error:
             return self.pointload_angle(1, self.dx_list[i], self.a.Izz())
         else:
             return 0
 
     def backward_angle_point(self, i):
-        if abs(self._grid[i]-self.hinge3_val) < self._geo_error:
+        if abs(self.grid[i] - self.hinge3_val) < self._geo_error:
             return self.pointload_angle(1, self.dx_list[i-1], self.a.Izz())
         else:
             return 0
 
     def forward_defl_distr(self, i):
-        return self.distr_defl_func(-self.q(self._grid[i]), -self.q(self._grid[i + 1]), self.dx_list[i], self.a.Izz())
+        return self.distr_defl_func(-self.q(self.grid[i]), -self.q(self.grid[i + 1]), self.dx_list[i], self.a.Izz())
 
     def backward_defl_distr(self, i):
-        return self.distr_defl_func(-self.q(self._grid[i - 1]), -self.q(self._grid[i]), self.dx_list[i - 1], self.a.Izz())
+        return self.distr_defl_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]), self.dx_list[i - 1], self.a.Izz())
 
     def forward_angle_distr(self, i):
-        return self.distr_angle_func(-self.q(self._grid[i]), -self.q(self._grid[i + 1]), self.dx_list[i], self.a.Izz())
+        return self.distr_angle_func(-self.q(self.grid[i]), -self.q(self.grid[i + 1]), self.dx_list[i], self.a.Izz())
 
     def backward_angle_distr(self, i):
-        return self.distr_angle_func(-self.q(self._grid[i - 1]), -self.q(self._grid[i]), self.dx_list[i - 1], self.a.Izz())
+        return self.distr_angle_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]), self.dx_list[i - 1], self.a.Izz())
 
 
 
 
 if __name__ == "__main__":
-    print("Hello world")
     a = Aileron()
-    print(a.shearcentre())
+    loads = AppliedLoads(gridnum=int(a.span*1000), aileron=a)
+    # a.visualinspection()
+
