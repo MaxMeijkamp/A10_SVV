@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from math import sqrt, sin, cos, acos
 from numericaltools import *
-
+import numpy as np
 
 class Aileron:
     def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
@@ -42,7 +42,7 @@ class Aileron:
         Izz = 0
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
+            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + np.pi / 2 * self.radius **3 * self.skint
         if spar:
             Izz += self.spart * self.height * self.height * self.height / 12
         if stiffener:
@@ -57,7 +57,7 @@ class Aileron:
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
             Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12) #+ np.pi * self.skint * self.height * self.height * self.height / 16
-            Iyy += integrate(lambda theta: -sin(theta)**2 * self.radius**3 * t, 0, np.pi, 10000) # circular part
+            Iyy += np.pi / 2 * self.radius **3 * self.skint
             #Steiner term:
             Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar)**2               # steiner terms for sloped part
             Iyy += (-zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius                 # steiner terms for circular part
@@ -72,7 +72,7 @@ class Aileron:
     def centroid(self, axis=None):
         xbar = self.span * 0.5
         ybar = 0
-        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] +0.0865 for stiff in self.stiffLoc()))
+        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] for stiff in self.stiffLoc()))
         zbar = zbar / (self.skint * self._circumference + self.spart * self.height + self.stiffener_area * self.stiffn)
         if axis == 0:
             return xbar
@@ -159,9 +159,13 @@ class Aileron:
     def _I_stiff(self, stiffener_list, axis):
         # Calculate moment of Inertia, including Steiner terms
         i_stiff = 0
+        if axis == 0:
+            centroid = self.centroid(2)
+        else:
+            centroid = self.centroid(1)
         for stiff in stiffener_list:
             #d_2 = stiff[axis]*stiff[axis]
-            d_2 = (stiff[axis] - self.centroid(2) )
+            d_2 = (stiff[axis] - centroid ) ** 2
             i_stiff += d_2*self.stiffener_area
         return i_stiff
 
@@ -375,3 +379,4 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     print("Hello world")
+    print(Aileron().centroid(2))

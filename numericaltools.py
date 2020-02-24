@@ -2,14 +2,14 @@ import numpy as np
 from functools import *
 
 
-def integrate(func, start, stop, number_of_points):
+def integrate(func, start, stop, number_of_point):
     # Integration function, with func being the (mathematical) function to integrate,
     # start and stop being beginning and end of the integration respectively,
     # and number_of_points is the subdivisions. (Using Numpy)
-    start, stop, number_of_points = float(start), float(stop), float(number_of_points)
+    start, stop, number_of_points = float(start), float(stop), float(number_of_point)
     width = (stop - start) / number_of_points
-    points = np.linspace(start, stop - width, number_of_points)
-    next_points = np.linspace(start + width, stop, number_of_points)
+    points = np.linspace(start, stop - width, number_of_point)
+    next_points = np.linspace(start + width, stop, number_of_point)
     values, next_values = func(points), func(next_points)
     integration = (np.sum((next_values - values) * .5) + np.sum(values)) * width
     return integration
