@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from math import sqrt, sin, cos, acos
 from numericaltools import *
-import numpy as np
+
 
 class Aileron:
     def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
@@ -42,7 +42,7 @@ class Aileron:
         Izz = 0
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + np.pi / 2 * self.radius **3 * self.skint
+            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + np.pi * self.skint * self.height * self.height * self.height / 16
         if spar:
             Izz += self.spart * self.height * self.height * self.height / 12
         if stiffener:
@@ -56,12 +56,12 @@ class Aileron:
         zbar = self.centroid(2)
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Iyy += 2 * (self.skint * self.a ** 3 * cos(beta) ** 2 / 12) #+ np.pi * self.skint * self.height * self.height * self.height / 16
-            Iyy += np.pi / 2 * self.skint * self.radius ** 3
+            Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12) + np.pi * self.skint * self.height * self.height * self.height / 16
             #Steiner term:
             Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar)**2               # steiner terms for sloped part
             Iyy += (-zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius                 # steiner terms for circular part
-
+        if spar:
+            Iyy += self.height * self.spart * self.spart * self.spart / 12
             # Steiner term:
             Iyy += self.spart * self.height * zbar**2                                                   # steiner term for spar
         if stiffener:
@@ -71,7 +71,7 @@ class Aileron:
     def centroid(self, axis=None):
         xbar = self.span * 0.5
         ybar = 0
-        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] for stiff in self.stiffLoc()))
+        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] +0.0865 for stiff in self.stiffLoc()))
         zbar = zbar / (self.skint * self._circumference + self.spart * self.height + self.stiffener_area * self.stiffn)
         if axis == 0:
             return xbar
@@ -100,18 +100,56 @@ class Aileron:
 
     def shearcentre(self):
         xi = self.centroid(1)
-        eta = 'centroid location in z'
+        eta = 'shear centre location in z'
         # We have the starting values of s for each section from 1 to 4, and we use the step value for each boom to
         # calculate their s position relative to s0 in each section. We can then use this to calculate each section
         # even if booms change in number, location or value. Currently not implemented and the implemented version
         # seems like it will be very fucking ugly, so that's to be fixed
-        step = self._circumference/self.stiffn
-        s_1 = 0
-        s_2 = np.pi * self.radius * 0.5
-        s_3 = s_2 + self.a
-        s_4 = s_3 + self.a
-        locations = self.stiffloc(shear=True)
         return xi, eta
+
+    def _stiff_s_pos(self):
+        step = self._circumference / self.stiffn
+        s_2 = np.pi * self.radius * 0.5
+        s_3 = self.a
+        s_4 = self.a
+        s_pos_list = []
+        s_pos = 0
+        s_pos_list.append((1, s_pos))
+        for n in range(self.stiffn):
+            s_pos += step
+            if s_pos >= s_2:
+                s_pos -= s_2
+                s_pos_list.append((2, s_pos))
+                break
+            else:
+                s_pos_list.append((1, s_pos))
+
+        for n in range(self.stiffn):
+            s_pos += step
+            if s_pos >= s_3:
+                s_pos -= s_3
+                s_pos_list.append((3, s_pos))
+                break
+            else:
+                s_pos_list.append((2, s_pos))
+
+        for n in range(self.stiffn):
+            s_pos += step
+            if s_pos >= s_4:
+                s_pos -= s_4
+                s_pos_list.append((4, s_pos))
+                break
+            else:
+                s_pos_list.append((3, s_pos))
+
+        for n in range(self.stiffn):
+            s_pos += step
+            if s_pos >= s_2:
+                break
+            else:
+                s_pos_list.append((4, s_pos))
+
+        return s_pos_list
 
     def _stiffcoord(self, num):
         step = self._circumference/self.stiffn
@@ -137,20 +175,15 @@ class Aileron:
             y = - self.radius + self.radius * current / self.a
             return z, y
         else:
-            raise ValueError("The aileron does not contain this number of stringers")
+            raise ValueError("The aileron does not contain this number of stiffeners")
 
-    def stiffLoc(self, n=None, shear=False):
+    def stiffLoc(self, n=None):
         # Returns a tuple of the given stiffener number.
         # If no arguments are given, a list of tuples containing all stiffener locations is returned.
         if n == None:
             list = []
             for i in range(self.stiffn):
                 list.append(self._stiffcoord(i))
-            return list
-        elif shear:
-            # Append to list elements in 4 divisions, signifying sections 1 through four in shear center calculation
-            # Determine the s-value from
-            list =[]
             return list
         else:
             return self._stiffcoord(n)
@@ -165,7 +198,7 @@ class Aileron:
         for stiff in stiffener_list:
             #d_2 = stiff[axis]*stiff[axis]
             d_2 = (stiff[axis] - centroid ) ** 2
-            i_stiff += d_2*self.stiffener_area
+            i_stiff += d_2*d_2*self.stiffener_area
         return i_stiff
 
     def visualinspection(self):
@@ -378,4 +411,5 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     print("Hello world")
-    print(Aileron().centroid(2))
+    a = Aileron()
+    print(a.shearcentre())
