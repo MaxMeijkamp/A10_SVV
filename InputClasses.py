@@ -56,7 +56,8 @@ class Aileron:
         zbar = self.centroid(2)
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12) + np.pi * self.skint * self.height * self.height * self.height / 16
+            Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12) #+ np.pi * self.skint * self.height * self.height * self.height / 16
+            Iyy += integrate(lambda theta: -sin(theta)**2 * self.radius**3 * t, 0, np.pi, 10000) # circular part
             #Steiner term:
             Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar)**2               # steiner terms for sloped part
             Iyy += (-zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius                 # steiner terms for circular part
