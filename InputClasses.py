@@ -116,6 +116,7 @@ class Aileron:
         s_2 = np.pi * self.radius * 0.5
         s_3 = self.a
         s_4 = self.a
+        s_0 = [s_2, s_3, s_4, s_2]
         s_pos_list = []
         s_pos = 0
         s_pos_list.append((1, s_pos))
