@@ -61,7 +61,6 @@ class Aileron:
             #Steiner term:
             Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar)**2               # steiner terms for sloped part
             Iyy += (-zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius                 # steiner terms for circular part
-
             # Steiner term:
             Iyy += self.spart * self.height * zbar**2                                                   # steiner term for spar
         if stiffener:
@@ -163,9 +162,8 @@ class Aileron:
         else:
             centroid = self.centroid(1)
         for stiff in stiffener_list:
-            #d_2 = stiff[axis]*stiff[axis]
-            d_2 = (stiff[axis] - centroid ) ** 2
-            i_stiff += d_2*self.stiffener_area
+            d_2 = (stiff[axis] - centroid )
+            i_stiff += d_2*d_2*self.stiffener_area
         return i_stiff
 
     def visualinspection(self):
