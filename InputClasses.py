@@ -108,57 +108,69 @@ class Aileron:
 #            return xbar, ybar, zbar
 
     def shearcentre(self):
+        s_pos = self._stiff_s_pos()
+        Vy = 1
+        r = self.radius
+        a = self.a
+        Izz = self.Izz()
+        skint = self.skint
+
+        # def func_s1(s):  # from s = 0 to s = half a quarter
+        #     return (r * np.sin(s / (2 * np.pi * r))) * skint
+        #
+        # def func_s4(s):  # from s = 0 to s = half a quarter
+        #     return (r * np.sin(s / (2 * np.pi * r)) - r) * skint
+        #
+        # def func_s2(s):  # from s = 0 to s = dataset.a
+        #     return (r - s * abs(r) / abs(dataset.maxz)) * skint
+        #
+        # def func_s3(s):  # from s = 0 to s = dataset.a
+        #     return (0. - s * abs(r) / abs(r)) * skint
+        #
+        # def func_s5(s):  # from s = 0 to s = height / 2
+        #     return (dataset.miny + s) * skint
+        #
+        # def func_s6(s):  # from s = 0 to s = height / 2
+        #     return s * skint
+
+        dist_s1, dist_s4 = .5 * np.pi * r, .5 * np.pi * r
+        dist_s2, dist_s3 = a, a
+        dist_s5, dist_s6 = r, r
+        s_0 = 0
+        d = []
+        for i in range(len(s_pos)):
+            for n in range(len(s_pos[i])):
+                d.append((i, n))
+
+        # dqb1 = -1. / Izz * (integrate(func_s1, 0, dist_s1, 100000))
+        # dqb2 = -1. / Izz * (integrate(func_s2, 0, dist_s2, 100000))
+        # dqb3 = -1. / Izz * (integrate(func_s3, 0, dist_s3, 100000))
+        # dqb4 = -1. / Izz * (integrate(func_s4, 0, dist_s4, 100000))
+        # dqb5 = -1. / Izz * (integrate(func_s5, 0, dist_s5, 100000))
+        # dqb6 = -1. / Izz * (integrate(func_s6, 0, dist_s6, 100000))
+
         xi = self.centroid(1)
         eta = 'shear centre location in z'
-        # We have the starting values of s for each section from 1 to 4, and we use the step value for each boom to
-        # calculate their s position relative to s0 in each section. We can then use this to calculate each section
-        # even if booms change in number, location or value. Currently not implemented and the implemented version
-        # seems like it will be very fucking ugly, so that's to be fixed
         return xi, eta
 
     def _stiff_s_pos(self):
         step = self._circumference / self.stiffn
-        s_2 = np.pi * self.radius * 0.5
-        s_3 = self.a
-        s_4 = self.a
-        s_0 = [s_2, s_3, s_4, s_2]
-        s_pos_list = []
+        s_curve = np.pi * self.radius * 0.5
+        s_linear = self.a
+        s_0 = [s_curve, s_linear, s_linear, s_curve]
         s_pos = 0
-        s_pos_list.append((1, s_pos))
-        for n in range(self.stiffn):
-            s_pos += step
-            if s_pos >= s_2:
-                s_pos -= s_2
-                s_pos_list.append((2, s_pos))
-                break
-            else:
-                s_pos_list.append((1, s_pos))
-
-        for n in range(self.stiffn):
-            s_pos += step
-            if s_pos >= s_3:
-                s_pos -= s_3
-                s_pos_list.append((3, s_pos))
-                break
-            else:
-                s_pos_list.append((2, s_pos))
-
-        for n in range(self.stiffn):
-            s_pos += step
-            if s_pos >= s_4:
-                s_pos -= s_4
-                s_pos_list.append((4, s_pos))
-                break
-            else:
-                s_pos_list.append((3, s_pos))
-
-        for n in range(self.stiffn):
-            s_pos += step
-            if s_pos >= s_2:
-                break
-            else:
-                s_pos_list.append((4, s_pos))
-
+        s_pos_sublist = [s_pos]
+        s_pos_list = []
+        for n in range(len(s_0)):
+            for i in range(self.stiffn):
+                s_pos += step
+                if s_pos >= s_0[n]:
+                    s_pos -= s_0[n]
+                    break
+                else:
+                    s_pos_sublist.append(s_pos)
+            s_pos_list.append(s_pos_sublist)
+            s_pos_sublist = [s_pos]
         return s_pos_list
 
     def _stiffcoord(self, num):
@@ -465,6 +477,5 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     a = Aileron()
-    loads = AppliedLoads(gridnum=int(a.span*1000), aileron=a)
-    # a.visualinspection()
+    print(a.shearcentre())
 
