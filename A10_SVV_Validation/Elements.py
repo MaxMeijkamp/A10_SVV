@@ -8,4 +8,3 @@ def elements(n):
         if int(i[0])==n:
             return i[1],i[2],i[3],i[4]
 
-print(elements(600))
