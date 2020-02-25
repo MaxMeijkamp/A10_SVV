@@ -181,35 +181,35 @@ theta = np.linspace(0,m.pi/2,num = 100)
 a = Stressobject.q1f(theta)             # Compute the shear flow distribution in region 1
 b = Stressobject.sigma1f(theta)         # Compute the direct stress distribution in region 1
 c = Stressobject.vm1(theta)             # Compute the Von Mises stress distribution in region 1
-d, e = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
+d1, e1 = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
 
 y = np.linspace(0,ha/2.,num = 100)
 _ = Stressobject.q2f(y)             # Compute the shear flow distribution in region 3
 _ = Stressobject.sigma2f(y)         # Compute the direct stress distribution in region 3
 _ = Stressobject.vm2(y)             # Compute the Von Mises stress distribution in region 3
-_, _ = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
+d2, e2 = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
 
 s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
 _ = Stressobject.q3f(s)             # Compute the shear flow distribution in region 4
 _ = Stressobject.sigma3f(s)         # Compute the direct stress distribution in region 4
 _ = Stressobject.vm3(s)             # Compute the Von Mises stress distribution in region 4
-_, _ = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
+d3, e3 = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
 
 s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
 _ = Stressobject.q4f(s)             # Compute the shear flow distribution in region 4
 _ = Stressobject.sigma4f(s)         # Compute the direct stress distribution in region 4
 _ = Stressobject.vm4(s)             # Compute the Von Mises stress distribution in region 4
-_, _ = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
+d4, e4 = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
 
 y = np.linspace(0,ha/2.,num = 100)
 _ = Stressobject.q5f(y)             # Compute the shear flow distribution in region 5
 _ = Stressobject.sigma5f(y)         # Compute the direct stress distribution in region 5
 _ = Stressobject.vm5(y)             # Compute the Von Mises stress distribution in region 5
-_, _ = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
+d5, e5 = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
 
 theta = np.linspace(-m.pi/2,0,num = 100)
 _ = Stressobject.q6f(theta)             # Compute the shear flow distribution in region 6
 _ = Stressobject.sigma6f(theta)         # Compute the direct stress distribution in region 6
 _ = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
-_, _ = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
+d6, e6 = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
 
