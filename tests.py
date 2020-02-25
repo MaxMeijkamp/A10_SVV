@@ -187,6 +187,9 @@ class MyTestCase(unittest.TestCase):
 
         # Tests _Istiff
 
+#    def test_stiff_s_position(self):
+
+
     def test_spline(self):
         x = [0, 1, 2, 3, 4, 5, 6, 7]
         f = [0, 1, 2, 3, 4, 5, 6, 7]
@@ -258,8 +261,6 @@ class MyTestCase(unittest.TestCase):
  #        self.assertLess(displacements.angle_displ(normal loads, very very large G), some suprt low angle value,))
 
 if __name__ == '__main__':
-    #data = InputClasses.Aileron()
-    #data.visualinspection()
-    for i in range(len(InputClasses.Aileron().stiffLoc())):
-        print(InputClasses.Aileron().stiffLoc()[i])
+    data = InputClasses.Aileron()
+    data.visualinspection()
     unittest.main()
