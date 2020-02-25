@@ -30,7 +30,8 @@ class MyTestCase(unittest.TestCase):
         starray = np.array(st_list)
         starray, stmainfile = np.sort(starray, axis = 0), np.sort(mainfile.stcoord, axis = 0)
         for i in range(len(starray)):
-            self.assertEqual(starray[i], stmainfile[i])
+            self.assertEqual(starray[i][0], stmainfile[i][0])
+            self.assertEqual(starray[i][1], stmainfile[i][1])
 
 if __name__ == '__main__':
 #    print(mainfile.Izz, mainfile.Iyy)
