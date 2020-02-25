@@ -72,7 +72,8 @@ class Aileron:
     def centroid(self, axis=None):
         xbar = self.span * 0.5
         ybar = 0
-        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius)) + (self.stiffener_area * sum(stiff[0] for stiff in self.stiffLoc()))
+        zbar = self.skint * (self.radius * self.radius * 2 - self.a * (self.chord - self.radius))
+        zbar += (self.stiffener_area * sum(stiff[0] for stiff in self.stiffLoc()))
         zbar = zbar / (self.skint * self._circumference + self.spart * self.height + self.stiffener_area * self.stiffn)
         if axis == 0:
             return xbar
@@ -129,14 +130,15 @@ class Aileron:
         dist_s2, dist_s3 = a, a
         dist_s5, dist_s6 = r, r
         s_0 = 0
-        def dqb(Izz, func_s, dist_s):
-            dqb = -1. / Izz * (integrate(func_s, 0, dist_s, 100000))
+
+        def dqb(Izz, dist_s0, func_s, dist_s):
+            dqb = -1. / Izz * (integrate(func_s, dist_s0, dist_s, 100000))
             return dqb
 
         dqb_list = []
         for i in range(len(s_pos)):
             for n in range(len(s_pos[i])):
-                dqb_temp =
+                dqb_temp = dqb(Izz)
                 dqb_list.append((i, dqb_temp))
         dqb5 = dqb(Izz, func_s5(dist_s4), dist_s5)
         dqb6 = dqb(Izz, func_s6(dist_s4), dist_s6)
