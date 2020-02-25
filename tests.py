@@ -187,6 +187,9 @@ class MyTestCase(unittest.TestCase):
 
         # Tests _Istiff
 
+    def test_stiff_s_position(self):
+
+
     def test_spline(self):
         x = [0, 1, 2, 3, 4, 5, 6, 7]
         f = [0, 1, 2, 3, 4, 5, 6, 7]

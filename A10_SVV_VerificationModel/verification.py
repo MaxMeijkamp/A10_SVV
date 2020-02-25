@@ -23,10 +23,7 @@ class MyTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
 #    print(mainfile.Izz, mainfile.Iyy)
-    print(aileron.centroid())
-#    print(mainfile.stcoord,mainfile.totarea)
-#    print(aileron._stiffcoord()[0]-aileron.radius)
-    print('aaaaa', mainfile.zc)
+    print(mainfile.d1, mainfile.e1)
     unittest.main()
 
 
