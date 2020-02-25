@@ -5,7 +5,12 @@ import InputClasses
 
 def von_mises(sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz):
     # Takes arg. sigma_xx, sigma_yy, sigma_zz, tau_xy, tau_yz, tau_xz.
-    sigma_vm = np.sqrt( ( (sigma_xx - sigma_yy)**2 + (sigma_yy - sigma_zz)**2 + (sigma_zz - sigma_xx)**2 ) / 2 + 3*((tau_xy)**2 + (tau_yz)**2 + (tau_xz)**2) )
+    sigma_xy_dif = sigma_xx - sigma_yy
+    sigma_yz_dif = sigma_yy - sigma_zz
+    sigma_xz_dif = sigma_zz - sigma_xx
+    sigma_dif_tot = (sigma_xy_dif*sigma_xy_dif + sigma_yz_dif*sigma_yz_dif + sigma_xz_dif*sigma_xz_dif) / 2
+    tau_tot = 3 * ((tau_xy * tau_xy) + (tau_yz * tau_yz) + (tau_xz * tau_xz))
+    sigma_vm = np.sqrt(sigma_dif_tot + tau_tot)
     return sigma_vm
 
 
