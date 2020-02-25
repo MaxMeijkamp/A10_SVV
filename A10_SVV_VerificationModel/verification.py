@@ -21,6 +21,11 @@ class MyTestCase(unittest.TestCase):
         self.assertAlmostEqual(mainfile.yc, aileron.centroid(1), 9)
         self.assertAlmostEqual(mainfile.zc+aileron.radius, aileron.centroid(2), 9)
 
+    def test_stiffloc(self):
+        for stiffener in aileron.stiffLoc():
+            self.assertTrue(stiffener in mainfile.stcoord)
+        self.assertEqual(len(aileron.stiffLoc()), len(mainfile.stcoord))
+
 if __name__ == '__main__':
 #    print(mainfile.Izz, mainfile.Iyy)
     print(aileron.centroid())
