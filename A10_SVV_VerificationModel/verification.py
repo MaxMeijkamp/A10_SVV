@@ -8,6 +8,7 @@ import sys
 import unittest
 import InputClasses
 import numericaltools
+import numpy as np
 mainfile = main
 aileron = InputClasses.Aileron()
 
@@ -22,16 +23,19 @@ class MyTestCase(unittest.TestCase):
         self.assertAlmostEqual(mainfile.zc+aileron.radius, aileron.centroid(2), 9)
 
     def test_stiffloc(self):
-        for stiffener in aileron.stiffLoc():
-            self.assertTrue(stiffener in mainfile.stcoord)
-        self.assertEqual(len(aileron.stiffLoc()), len(mainfile.stcoord))
+        st_list = aileron.stiffLoc()
+        for stiffener in st_list:
+            stiffener = np.array(stiffener)
+            stiffener[0] += aileron.radius
+        starray = np.array(st_list)
+        starray, stmainfile = np.sort(starray, axis = 0), np.sort(mainfile.stcoord, axis = 0)
+        for i in range(len(starray)):
+            self.assertEqual(starray[i], stmainfile[i])
 
 if __name__ == '__main__':
 #    print(mainfile.Izz, mainfile.Iyy)
-    print(mainfile.d1, mainfile.e1)
+#    print(main.d1, main.e1)
+    print(mainfile.stcoord)
+    print("aaa",np.array(aileron.stiffLoc(3)))
     unittest.main()
 
-
-    def to_int(theta):
-        return -np.sin(theta) ** 2 * self.radius ** 3 * self.skint
-        print('aaaa', numericaltools.integrate(to_int, 0, np.pi, 100))  # circular part
