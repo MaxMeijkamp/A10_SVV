@@ -59,15 +59,12 @@ class Aileron:
         zbar = self.centroid(2)
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            #Iyy += np.pi * .5 * self.skint * self.radius ** 3
-            Iyy += (np.pi/2 - 4/np.pi) * self.skint * self.radius **3
-            Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12) #+ np.pi * self.skint * self.height * self.height * self.height / 16
-            #Steiner term:
-            Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar)**2               # steiner terms for sloped part
-            Iyy += (-zbar + 2*self.radius / np.pi)**2 * np.pi * self.skint * self.radius                 # steiner terms for circular part
-            # Steiner term:
+            Iyy += (np.pi/2 - 4/np.pi) * self.skint * self.radius * self.radius * self.radius
+            Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12)
+            Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar) * ((-self.chord + self.radius) * .5 - zbar)
+            Iyy += (-zbar + 2*self.radius / np.pi) * (-zbar + 2*self.radius / np.pi) * np.pi * self.skint * self.radius
         if spar:
-            Iyy += self.spart * self.height * zbar**2                                                   # steiner term for spar                                               # steiner term for spar
+            Iyy += self.spart * self.height * zbar* zbar
         if stiffener:
             Iyy += self._I_stiff(self.stiffLoc(), 0)
             return Iyy

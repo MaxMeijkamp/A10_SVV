@@ -258,8 +258,6 @@ class MyTestCase(unittest.TestCase):
  #        self.assertLess(displacements.angle_displ(normal loads, very very large G), some suprt low angle value,))
 
 if __name__ == '__main__':
-    #data = InputClasses.Aileron()
-    #data.visualinspection()
-    for i in range(len(InputClasses.Aileron().stiffLoc())):
-        print(InputClasses.Aileron().stiffLoc()[i])
+    data = InputClasses.Aileron()
+    data.visualinspection()
     unittest.main()
