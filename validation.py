@@ -158,63 +158,73 @@ def get_twist(case):
 
     # find hingeline nodes
 
-    hingelinenodes = []
-    hingelinenodes_x = []
+    hingelinenodes = [] # x_position , node nmbr
+    hingeline_x = []
 
     for i in a:
         if i[2] == 0:
             if i[3] == 0:
-                hingelinenodes.append(i[0])
-                hingelinenodes_x.append(i[1])
+                hingelinenodes.append([i[1],i[0]])
+                hingeline_x.append(i[1])
+
 
     # find LE
 
-    LE = []  # LE nodes coord.
-
+    LE = []  # LE nodes coord. ( x, number )
+    LEnode = []
 
     for n in nodes:
+
         if n[2] == 0.0 and round(n[3],2) == 102.5:  # y = 0 and z = 102.5 are the coordinates of the LE
-            #LE.append([n[0],n[1],n[2],n[3]])
-            LE.append(n)
-
-    np.sort(LE, axis=1)
+            LE.append([n[1],n[0]]) #,n[2],n[3]])
+            LEnode.append(n[0])
 
 
-    LE_LO = []  # LE node displacement LOADED CASE (node number, magnitude , x,y,z location)
-
-    for LEO in LE:
+    LE_LO = []  # LE node displacement LOADED CASE (x position, x disp, y disp)
+    i = 0
+    for LEO in LEnode:
         for b0 in b:
-            if LEO[0] == int(b0[0]):
-                LE_LO.append([b0[0],b0[1],b0[2],b0[3],b0[4]])
-
+            if LEO == int(b0[0]):
+                #LE_LO.append([b0[0],b0[1],b0[2],b0[3],b0[4]])
+                LE_LO.append([LE[i][0],b0[2], b0[3]])
+                i += 1
+    LE_LO = np.sort(LE_LO,axis=0)
 
     # hinge position after load is applied
 
-    hingenew = [] # node nmbr , y disp
+    hingenewf = hingelinenodes # node nmbr , y disp
+    hingenew = []
+    f = 0
 
     for s in b:
         for t in hingelinenodes:
-            if s[0] == t:
-                hingenew.append(s[3])
+            if s[0] == t[1]:
+                hingenew.append([s[0],s[3]])
+                hingenewf[f].append(s[3])
+                f += 1
+    hingenewf.sort()
+    print(hingenewf)
 
 
     # Twist angle as a function of x (span) [node number, twist angle (rad), y disp (mm)]
+
     twistcr = []
     for samp in range(len(LE_LO)) :
 
-        theta = np.arctan((-hingenew[samp]+LE_LO[samp][3])/102.5)
+        theta = np.arctan((-hingenewf[samp][2]+LE_LO[samp][1])/102.5)
         #print(LE_LO[samp][3],hingenew[samp])
         twistcr.append(theta)
 
 
 
-    twistcr.sort()
-    hingelinenodes_x.sort()
+    #twistcr.sort()
+    hingeline_x.sort()
 
 
+    #print(hingelinenodes[:,[0]])
 
-    # plt.plot(hingelinenodes_x,twistcr)
-    # plt.show()
+    plt.plot(hingeline_x,twistcr)
+    plt.show()
 
 
-    return(LE)
+    return()
