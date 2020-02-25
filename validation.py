@@ -99,7 +99,7 @@ def get_dat(case, param):
             loaded = np.concatenate((loaded1,loaded2))
 
             for elem in loaded:
-                newload = newload.append([elem[0],(elem[2]+elem[3])/2,(elem[4]+elem[5])/2])
+                newload.append([elem[0],(elem[2]+elem[3])/2,(elem[4]+elem[5])/2])
         if param == 'disp': # returns displacement at each node
             newload = np.genfromtxt(file, dtype=str, skip_header=20074,max_rows = 6588)
 
