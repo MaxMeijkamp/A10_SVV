@@ -187,7 +187,7 @@ class MyTestCase(unittest.TestCase):
 
         # Tests _Istiff
 
-    def test_stiff_s_position(self):
+#    def test_stiff_s_position(self):
 
 
     def test_spline(self):

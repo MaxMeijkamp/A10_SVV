@@ -24,19 +24,20 @@ class MyTestCase(unittest.TestCase):
 
     def test_stiffloc(self):
         st_list = aileron.stiffLoc()
-        for stiffener in st_list:
-            stiffener = np.array(stiffener)
-            stiffener[0] += aileron.radius
         starray = np.array(st_list)
         starray, stmainfile = np.sort(starray, axis = 0), np.sort(mainfile.stcoord, axis = 0)
         for i in range(len(starray)):
-            self.assertEqual(starray[i][0], stmainfile[i][0])
-            self.assertEqual(starray[i][1], stmainfile[i][1])
+            self.assertAlmostEqual(starray[i][0]-aileron.radius, stmainfile[i][0], 9)
+            self.assertAlmostEqual(starray[i][1], stmainfile[i][1], 9)
+
+#    def test_stiff_s_pos(self):
+
 
 if __name__ == '__main__':
 #    print(mainfile.Izz, mainfile.Iyy)
 #    print(main.d1, main.e1)
     print(mainfile.stcoord)
     print("aaa",np.array(aileron.stiffLoc(3)))
+
     unittest.main()
 
