@@ -107,43 +107,45 @@ class Aileron:
         Izz = self.Izz()
         skint = self.skint
 
-        # def func_s1(s):  # from s = 0 to s = half a quarter
-        #     return (r * np.sin(s / (2 * np.pi * r))) * skint
-        #
-        # def func_s4(s):  # from s = 0 to s = half a quarter
-        #     return (r * np.sin(s / (2 * np.pi * r)) - r) * skint
-        #
-        # def func_s2(s):  # from s = 0 to s = dataset.a
-        #     return (r - s * abs(r) / abs(dataset.maxz)) * skint
-        #
-        # def func_s3(s):  # from s = 0 to s = dataset.a
-        #     return (0. - s * abs(r) / abs(r)) * skint
-        #
-        # def func_s5(s):  # from s = 0 to s = height / 2
-        #     return (dataset.miny + s) * skint
-        #
-        # def func_s6(s):  # from s = 0 to s = height / 2
-        #     return s * skint
+        def func_s1(s):  # from s = 0 to s = half a quarter
+            return (r * np.sin(s / (2 * np.pi * r))) * skint
+
+        def func_s4(s):  # from s = 0 to s = half a quarter
+            return (r * np.sin(s / (2 * np.pi * r)) - r) * skint
+
+        def func_s2(s):  # from s = 0 to s = dataset.a
+            return (r - s * abs(r) / abs(dataset.maxz)) * skint
+
+        def func_s3(s):  # from s = 0 to s = dataset.a
+            return (0. - s * abs(r) / abs(r)) * skint
+
+        def func_s5(s):  # from s = 0 to s = height / 2
+            return (dataset.miny + s) * skint
+
+        def func_s6(s):  # from s = 0 to s = height / 2
+            return s * skint
 
         dist_s1, dist_s4 = .5 * np.pi * r, .5 * np.pi * r
         dist_s2, dist_s3 = a, a
         dist_s5, dist_s6 = r, r
         s_0 = 0
-        d = []
+        def dqb(Izz, func_s, dist_s):
+            dqb = -1. / Izz * (integrate(func_s, 0, dist_s, 100000))
+            return dqb
+
+        dqb_list = []
         for i in range(len(s_pos)):
             for n in range(len(s_pos[i])):
-                d.append((i, n))
-
-        # dqb1 = -1. / Izz * (integrate(func_s1, 0, dist_s1, 100000))
-        # dqb2 = -1. / Izz * (integrate(func_s2, 0, dist_s2, 100000))
-        # dqb3 = -1. / Izz * (integrate(func_s3, 0, dist_s3, 100000))
-        # dqb4 = -1. / Izz * (integrate(func_s4, 0, dist_s4, 100000))
-        # dqb5 = -1. / Izz * (integrate(func_s5, 0, dist_s5, 100000))
-        # dqb6 = -1. / Izz * (integrate(func_s6, 0, dist_s6, 100000))
+                dqb_temp =
+                dqb_list.append((i, dqb_temp))
+        dqb5 = dqb(Izz, func_s5(dist_s4), dist_s5)
+        dqb6 = dqb(Izz, func_s6(dist_s4), dist_s6)
+        dqb_list.append((5, dqb5))
+        dqb_list.append((6, dqb6))
 
         xi = self.centroid(1)
         eta = 'shear centre location in z'
-        return xi, eta
+        return d
 
     def _stiff_s_pos(self):
         step = self._circumference / self.stiffn
