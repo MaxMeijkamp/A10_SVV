@@ -390,6 +390,12 @@ class AppliedLoads:
     def int_moment_y(self, x):
         return np.array([-self.res_aeroforces[np.where(np.abs(self.grid - x)<self._geo_error)] * (x-self.res_xlocs), self.mac_step_vect_1(x-self.hinge1_val), self.mac_step_vect_1(x-self.hinge2_val), self.mac_step_vect_1(x-self.hinge3_val)])
 
+    def int_shear_z(self, x):
+        return np.array([-self.P*self.mac_step_vect_0(x-self.act2_val), self.mac_step_vect_0(x-self.hinge1_val), self.mac_step_vect_0(x-self.act1_val), self.mac_step_vect_0(x-self.hinge2_val), self.mac_step_vect_0(x-self.hinge3_val)])
+
+    def int_moment_z(self, x):
+        return np.array([self.P*self.mac_step_vect_1(x-self.act2_val), -self.mac_step_vect_1(x-self.hinge1_val), -self.mac_step_vect_1(x-self.act1_val), -self.mac_step_vect_1(x-self.hinge2_val), -self.mac_step_vect_1(x-self.hinge3_val)])
+
     def _getq(self, coords, forces, x):
         xlocs = np.unique(coords[:, 0])
         if x < xlocs[0]:
@@ -406,7 +412,7 @@ class AppliedLoads:
         new_list.append(a.span)
         return np.asarray(new_list)
 
-    def distr_defl_func(self, q1, q2, L, I, E=71000000000):
+    def distr_defl_func(self, q1, q2, L, I, E=73100000000):
         # deflection return positive in positive direction of q
         if q1 != q2:
             return L*L*L*L/(E*I)*(q2 /8 + (q1-q2)*3/72)
@@ -414,23 +420,63 @@ class AppliedLoads:
             return L*L*L*L*q2/(E*I*8)
 
 
-    def distr_angle_func(self, q1, q2, L, I, E=71000000000):
+    def distr_angle_func(self, q1, q2, L, I, E=73100000000):
         if q1 != q2:
             return L*L*L/(E*I)*(q2/6 + (q1-q2)/18)
         else:
             return L*L*L*q2/(6*E*I)
 
-    def moment_defl(self, M, L, I, E=71000000000):
+    def moment_defl(self, M, L, I, E=73100000000):
         return M*L*L*0.5/(E*I)
 
-    def moment_angle(self, M, L, I, E=71000000000):
+    def moment_angle(self, M, L, I, E=73100000000):
         return M*L/(E*I)
 
-    def pointload_defl(self, P, L, I, E=71000000000):
+    def pointload_defl(self, P, L, I, E=73100000000):
         return P*L*L*L/(3*E*I)
 
-    def pointload_angle(self, P, L, I, E=71000000000):
+    def pointload_angle(self, P, L, I, E=73100000000):
         return P*L*L/(2*E*I)
+
+    def defl_point_z(self, i, force, backward):
+        # force = 0 is Fz1, force = 1 is FzI, force = 2 is Fz2, force = 3 is P, force = 4 is Fz3;
+        # backward = 0 is forward, backward = 1 is backward
+        if force == 0:
+            cutoff = self.hinge1_val
+        elif force == 1:
+            cutoff = self.act1_val
+        elif force == 2:
+            cutoff = self.hinge2_val
+        elif force == 3:
+            cutoff = self.act2_val
+        elif force == 4:
+            cutoff = self.hinge3_val
+        else:
+            raise ValueError("This force is not implemented for this specific function")
+        if abs(self.grid[i] - cutoff) < self._geo_error:
+            return self.pointload_defl(1, self.dx_list[i-backward], self.a.Iyy())
+        else:
+            return 0
+
+    def angle_point_z(self, i, force, backward):
+        # force = 0 is Fz1, force = 1 is FzI, force = 2 is Fz2, force = 3 is P, force = 4 is Fz3;
+        # backward = 0 is forward, backward = 1 is backward
+        if force == 0:
+            cutoff = self.hinge1_val
+        elif force == 1:
+            cutoff = self.act1_val
+        elif force == 2:
+            cutoff = self.hinge2_val
+        elif force == 3:
+            cutoff = self.act2_val
+        elif force == 4:
+            cutoff = self.hinge3_val
+        else:
+            raise ValueError("This force is not implemented for this specific function")
+        if abs(self.grid[i] - cutoff) < self._geo_error:
+            return self.pointload_angle(1, self.dx_list[i-backward], self.a.Iyy())
+        else:
+            return 0
 
     def forward_defl_point(self, i):
         if abs(self.grid[i] - self.hinge1_val) < self._geo_error:
@@ -457,13 +503,13 @@ class AppliedLoads:
             return 0
 
     def forward_defl_distr(self, i):
-        return self.distr_defl_func(-self.q(self.grid[i]), -self.q(self.grid[i + 1]), self.dx_list[i], self.a.Izz())
+        return self.distr_defl_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]), self.dx_list[i], self.a.Izz())
 
     def backward_defl_distr(self, i):
         return self.distr_defl_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]), self.dx_list[i - 1], self.a.Izz())
 
     def forward_angle_distr(self, i):
-        return self.distr_angle_func(-self.q(self.grid[i]), -self.q(self.grid[i + 1]), self.dx_list[i], self.a.Izz())
+        return self.distr_angle_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]), self.dx_list[i], self.a.Izz())
 
     def backward_angle_distr(self, i):
         return self.distr_angle_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]), self.dx_list[i - 1], self.a.Izz())
