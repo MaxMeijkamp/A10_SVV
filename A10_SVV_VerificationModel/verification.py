@@ -11,7 +11,7 @@ import numericaltools
 import numpy as np
 mainfile = main
 aileron = InputClasses.Aileron()
-
+app_loads = InputClasses.AppliedLoads()
 
 class MyTestCase(unittest.TestCase):
     def test_Izz_Iyy(self):
@@ -31,7 +31,6 @@ class MyTestCase(unittest.TestCase):
             self.assertAlmostEqual(starray[i][1], stmainfile[i][1], 9)
 
 #    def test_stiff_s_pos(self):
-
 
 if __name__ == '__main__':
 #    print(mainfile.Izz, mainfile.Iyy)
