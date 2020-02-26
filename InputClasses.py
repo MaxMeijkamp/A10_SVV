@@ -205,21 +205,15 @@ class Aileron:
         # Arms:
         as1 = r
         as2 = np.cos(np.arcsin(r / a)) * r
-        moment = as1 * (s_list[3, idx_s[3]: idx_s[4]] + s_list[3, 0: idx_s[1]] )
-        moment += as2 * (s_list[3, idx_s[1]: idx_s[2]] + s_list[3, idx_s[2]: idx_s[3]])
+        #moment = as1 * (s_list[3, idx_s[3]: idx_s[4]] + s_list[3, 0: idx_s[1]] )
+        #moment += as2 * (s_list[3, idx_s[1]: idx_s[2]] + s_list[3, idx_s[2]: idx_s[3]])
 
         # Then, the shearflow moment created about 0,0 should be equal to the moment caused by force Vy = 1 so moment = arm
         #z location wrt spar
 
-
-        s_list[3, 0: idx_s[1]] = 0
-        s_list[3, idx_s[1]: idx_s[2]] = 0
-        s_list[3, idx_s[2]: idx_s[3]] = 0
-        s_list[3, idx_s[3]: idx_s[4]] = 0
-        s_list[3, idx_s[4]] = 0
         xi = self.centroid(1)
         eta = 'shear centre location in z'
-        return check_c, s_list, idx_s, moment
+        return check_c, s_list, idx_s#, moment
 
     def _stiff_s_pos(self):
         step = self._circumference / self.stiffn
@@ -596,6 +590,5 @@ if __name__ == "__main__":
     plt.show()
     print('correction', a.shearcentre()[0])
     print("idx's: ", a.shearcentre()[2])
-    print("SC_LOC: ", a.shearcentre()[3])
     #plt.plot()
     #a.shearcentre()
