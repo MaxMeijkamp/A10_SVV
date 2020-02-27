@@ -1,49 +1,4 @@
-import numpy as np
 
-#total stresses for every loadcases and region
-#
-# totalstresslist_bending_region1 = np.genfromtxt("B737.rpt", dtype=str, skip_header=20, skip_footer=(59956 - 5799-165))
-# totalstresslist_bending_region2 = np.genfromtxt("B737.rpt", dtype=str, skip_header=5816, skip_footer=(59956 - 6637 -194))
-# totalstresslist_jam_bent_region1 = np.genfromtxt("B737.rpt", dtype=str, skip_header=6705, skip_footer=(59956 - 12484-146))
-# totalstresslist_jam_bent_region2 = np.genfromtxt("B737.rpt", dtype=str, skip_header=12501, skip_footer=(59956 - 13358-139))
-# totalstresslist_jam_straight_region1 = np.genfromtxt("B737.rpt", dtype=str, skip_header=13390, skip_footer=(59956 - 19169-127))
-# totalstresslist_jam_straight_region2 = np.genfromtxt("B737.rpt", dtype=str, skip_header=19186, skip_footer=(59956 - 20043-120))
-# totalstresslist_bending=[]
-
-
-
-
-# totalstresslist_bending = np.genfromtxt("B737.rpt", dtype=str, skip_header=20, skip_footer=(59956 - 5799-165))
-# totalstresslist_jam_bent = np.genfromtxt("B737.rpt", dtype=str, skip_header=6705, skip_footer=(59956 - 12484-146))
-# totalstresslist_jam_straight = np.genfromtxt("B737.rpt", dtype=str, skip_header=13390, skip_footer=(59956 - 19169-127))
-
-#von misses and S12 stresses per loadcase and corresponding elements
-
-# von_misses_bending = []
-# s12_bending = []
-# von_misses_jam_bent = []
-# s12_jam_bent = []
-# von_misses_jam_straight = []
-# s12_jam_straight = []
-
-# for i in totalstresslist_bending:
-#
-#     von_misses_bending.append(((float(i[2]) + float(i[3]))*0.5,int(i[0])))
-#     s12_bending.append(((float(i[4]) + float(i[5]))*0.5,int(i[0])))
-#
-# for i in totalstresslist_jam_bent:
-#
-#     von_misses_jam_bent.append(((float(i[2]) + float(i[3]))*0.5,int(i[0])))
-#     s12_jam_bent.append(((float(i[4]) + float(i[5]))*0.5,int(i[0])))
-#
-# for i in totalstresslist_jam_straight:
-#
-#     von_misses_jam_straight.append(((float(i[2]) + float(i[3]))*0.5,int(i[0])))
-#     s12_jam_straight.append(((float(i[4]) + float(i[5]))*0.5,int(i[0])))
-
-
-# !/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Created on Tue Feb 25 15:23:36 2020
 
