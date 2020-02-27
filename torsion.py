@@ -102,7 +102,6 @@ def shearcentre(a):
     return s_list
 
 
-
 def num_twist(x):
     a = Aileron()
 
@@ -123,7 +122,7 @@ def num_twist(x):
     B2 = s2/a.spart
     D1 = (s3+s4)/a.skint + s5/a.spart
 
-    q2 = 1 / 2*( Am2 + Am1*(C2*D1+B2*C1)/(C1*B1+C2*B2))
+    q2 = 1 / 2*(Am2 + Am1*(C2*D1+B2*C1)/(C1*B1+C2*B2))
     q1 = (q2*(C2*D1+B2*C1))/(C1*B1+C2*B2)
 
     theta_1 = L * C1 * (q1*B1 - q2*B2)
@@ -132,5 +131,6 @@ def num_twist(x):
     theta = L*C1
     print(shearcentre(a))
     return theta_1, theta_2
+
 
 print(num_twist())

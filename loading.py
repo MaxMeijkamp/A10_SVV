@@ -39,25 +39,26 @@ def make_sections(Nx, Nz, a):
 
 def get_aero_resultants(file, coords):
     data = np.genfromtxt(file, delimiter=",")
-    data[0,0] = 0.034398 # Reader gives the first value as nan, this is to fix that problem
-    coords = np.unique(coords[:,1])
+    data[0, 0] = 0.034398  # Reader gives the first value as nan, this is to fix that problem
+    coords = np.unique(coords[:, 1])
     res_forces = []
     res_locations = []
     data = np.flip(data, axis=0)
     for i in range(data.shape[1]):
         Q = 0
-        res_forces.append(integrate(cont_spline(coords, data[:,i]), np.min(coords), np.max(coords), 100))
+        res_forces.append(integrate(cont_spline(coords, data[:, i]), np.min(coords), np.max(coords), 100))
         for j in range(data.shape[0]):
-            Q += data[j,i]*coords[j]
-        res_locations.append(Q/np.sum(data[:,i]))
+            Q += data[j, i]*coords[j]
+        res_locations.append(Q/np.sum(data[:, i]))
     return res_locations, res_forces
+
 
 def getq(coords, forces, a, x):
     if x == 0:
         return forces[0]
     elif x == a.span:
         return forces[-1]
-    xlocs = np.unique(coords[:,0])
+    xlocs = np.unique(coords[:, 0])
     return interpolate(xlocs, forces, x)
 
 
@@ -65,7 +66,7 @@ if __name__ == "__main__":
     a = Aileron()
     aerogrid = aero_points(41, 81, a)
     locs, forces = get_aero_resultants("aerodata.csv", aerogrid)
-    print(np.unique(aerogrid[:,0]))
+    print(np.unique(aerogrid[:, 0]))
     print(forces)
     print(getq(aerogrid, forces, a, 0.5))
 
@@ -85,4 +86,3 @@ if __name__ == "__main__":
     #
     #
     #
-

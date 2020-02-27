@@ -46,7 +46,8 @@ class Aileron:
         Izz = 0
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + np.pi / 2 * self.radius * self.radius * self.radius * self.skint
+            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + \
+                   np.pi / 2 * self.radius * self.radius * self.radius * self.skint
         if spar:
             Izz += self.spart * self.height * self.height * self.height / 12
         if stiffener:
@@ -61,7 +62,8 @@ class Aileron:
             beta = acos((self.chord - self.radius) / self.a)
             Iyy += (np.pi/2 - 4/np.pi) * self.skint * self.radius * self.radius * self.radius
             Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12)
-            Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar) * ((-self.chord + self.radius) * .5 - zbar)
+            Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar) * \
+                   ((-self.chord + self.radius) * .5 - zbar)
             Iyy += (-zbar + 2*self.radius / np.pi) * (-zbar + 2*self.radius / np.pi) * np.pi * self.skint * self.radius
         if spar:
             Iyy += self.spart * self.height * zbar* zbar
@@ -144,31 +146,35 @@ class Aileron:
         stepwidth = s_list[0,1] - s_list[0,0]
         stepcorrection = (num_steps - 1) / float(num_steps)
 
-        shearbasesum1 = stepcorrection * stepwidth * ((np.sum(s_list[3, idx_s[0] : idx_s[1]]) + np.sum(s_list[3, idx_s[3] : idx_s[4]]))/self.skint - np.sum(s56_list[1])/self.spart)
-        shearbasesum2 = stepcorrection * stepwidth * ((np.sum(s_list[3, idx_s[1] : idx_s[3]]) )/self.skint + np.sum(s56_list[1])/self.spart)
+        shearbasesum1 = stepcorrection * stepwidth * ((np.sum(s_list[3, idx_s[0]: idx_s[1]]) +
+                                                       np.sum(s_list[3, idx_s[3]: idx_s[4]]))/self.skint -
+                                                      np.sum(s56_list[1])/self.spart)
+        shearbasesum2 = stepcorrection * stepwidth * ((np.sum(s_list[3, idx_s[1]: idx_s[3]]))/self.skint +
+                                                      np.sum(s56_list[1])/self.spart)
 
-        twistmatrix = np.array([[2 * dist_s1 / self.skint + 2* dist_s5 / self.spart, -2* dist_s5 / self.spart ],
+        twistmatrix = np.array([[2 * dist_s1 / self.skint + 2 * dist_s5 / self.spart, -2 * dist_s5 / self.spart ],
                                 [-2* dist_s5 / self.spart, 2 * dist_s2 / self.skint + 2 * dist_s5 / self.spart]])
         shearbasevector = np.array([[-shearbasesum1],
                                     [-shearbasesum2]])
-        correctionshears = np.linalg.inv(twistmatrix)@shearbasevector#np.linalg.solve(twistmatrix, shearbasevector)
+        correctionshears = np.linalg.inv(twistmatrix)@shearbasevector  # np.linalg.solve(twistmatrix, shearbasevector)
         correctionshear1 = correctionshears[0]
         correctionshear2 = correctionshears[1]
 
         # Add correction shears and base shear to row 4
-        s_list[4, idx_s[0] : idx_s[1]] =  s_list[3, idx_s[0] : idx_s[1]] + correctionshear1
-        s_list[4, idx_s[3] : idx_s[4]] =  s_list[3, idx_s[3] : idx_s[4]] + correctionshear1
-        s_list[4, idx_s[1] : idx_s[3]] =  s_list[3, idx_s[1] : idx_s[3]] + correctionshear2
+        s_list[4, idx_s[0]: idx_s[1]] = s_list[3, idx_s[0]: idx_s[1]] + correctionshear1
+        s_list[4, idx_s[3]: idx_s[4]] = s_list[3, idx_s[3]: idx_s[4]] + correctionshear1
+        s_list[4, idx_s[1]: idx_s[3]] = s_list[3, idx_s[1]: idx_s[3]] + correctionshear2
         s56_list[4] = s56_list[1] - correctionshear1 + correctionshear2
 
         # Arms:
         as1 = r
-        as2 = np.cos( acos((self.chord - self.radius) / self.a) ) * r
+        as2 = np.cos( acos((self.chord - self.radius) / self.a)) * r
 
         # Moment about point z=z_spar and y = 0
-        moment = as1 * stepcorrection * stepwidth *  (np.sum(s_list[4, idx_s[3]: idx_s[4]]) + np.sum(s_list[3, 0: idx_s[1]]))
-        moment += as2 * stepcorrection * stepwidth *  (np.sum(s_list[4, idx_s[1]: idx_s[3]]))
-        #moment += np.pi*r*r * correctionshear1 + r *(self.chord - r) * correctionshear2 * 2
+        moment = as1 * stepcorrection * stepwidth * (np.sum(s_list[4, idx_s[3]: idx_s[4]]) +
+                                                      np.sum(s_list[3, 0: idx_s[1]]))
+        moment += as2 * stepcorrection * stepwidth * (np.sum(s_list[4, idx_s[1]: idx_s[3]]))
+        # moment += np.pi*r*r * correctionshear1 + r *(self.chord - r) * correctionshear2 * 2
 
         distance = moment / - 1
         # distance is defined as z = 0 at spar and positive towards leading edge
@@ -203,11 +209,11 @@ class Aileron:
     def stiffLoc(self, n=None):
         # Returns a tuple of the given stiffener number.
         # If no arguments are given, a list of tuples containing all stiffener locations is returned.
-        if n == None:
-            list = []
+        if n is None:
+            listnum = []
             for i in range(self.stiffn):
-                list.append(self._stiffcoord(i))
-            return list
+                listnum.append(self._stiffcoord(i))
+            return listnum
         else:
             return self._stiffcoord(n)
 
@@ -344,11 +350,12 @@ class AppliedLoads:
             raise ValueError("This hinge does not exist.")
 
     def _getzcoord(self, i, aileron, Nz=81):
-        return -0.5 * (aileron.chord*0.5 * (1-cos(self._get_theta(i, Nz))) + aileron.chord*0.5*(1-cos(self._get_theta(i+1, Nz))))
-
+        return -0.5 * (aileron.chord*0.5 * (1-cos(self._get_theta(i, Nz))) +
+                       aileron.chord*0.5*(1-cos(self._get_theta(i+1, Nz))))
 
     def _getxcoord(self, i, aileron, Nx=41):
-        return 0.5 * (aileron.span*0.5 * (1-cos(self._get_theta(i, Nx))) + aileron.span*0.5*(1-cos(self._get_theta(i+1, Nx))))
+        return 0.5 * (aileron.span*0.5 * (1-cos(self._get_theta(i, Nx))) +
+                      aileron.span*0.5*(1-cos(self._get_theta(i+1, Nx))))
 
     def _get_theta(self, i, N):
         return (i - 1) * np.pi / N
@@ -390,16 +397,24 @@ class AppliedLoads:
         return res_array
 
     def int_shear_y(self, x):
-        return np.array([self.res_aeroforces[np.where(np.abs(self.grid - x)<self._geo_error)], - self.mac_step_vect_0(x-self.hinge1_val), -self.mac_step_vect_0(x-self.hinge2_val), -self.mac_step_vect_0(x-self.hinge3_val)])
+        return np.array([self.res_aeroforces[np.where(np.abs(self.grid - x) < self._geo_error)],
+                         - self.mac_step_vect_0(x-self.hinge1_val),
+                         - self.mac_step_vect_0(x-self.hinge2_val), -self.mac_step_vect_0(x-self.hinge3_val)])
 
     def int_moment_y(self, x):
-        return np.array([-self.res_aeroforces[np.where(np.abs(self.grid - x)<self._geo_error)] * (x-self.res_xlocs), self.mac_step_vect_1(x-self.hinge1_val), self.mac_step_vect_1(x-self.hinge2_val), self.mac_step_vect_1(x-self.hinge3_val)])
+        return np.array([-self.res_aeroforces[np.where(np.abs(self.grid - x)<self._geo_error)] * (x-self.res_xlocs),
+                         self.mac_step_vect_1(x-self.hinge1_val),
+                         self.mac_step_vect_1(x-self.hinge2_val), self.mac_step_vect_1(x-self.hinge3_val)])
 
     def int_shear_z(self, x):
-        return np.array([-self.P*self.mac_step_vect_0(x-self.act2_val), self.mac_step_vect_0(x-self.hinge1_val), self.mac_step_vect_0(x-self.act1_val), self.mac_step_vect_0(x-self.hinge2_val), self.mac_step_vect_0(x-self.hinge3_val)])
+        return np.array([-self.P*self.mac_step_vect_0(x-self.act2_val), self.mac_step_vect_0(x-self.hinge1_val),
+                         self.mac_step_vect_0(x-self.act1_val),
+                         self.mac_step_vect_0(x-self.hinge2_val), self.mac_step_vect_0(x-self.hinge3_val)])
 
     def int_moment_z(self, x):
-        return np.array([self.P*self.mac_step_vect_1(x-self.act2_val), -self.mac_step_vect_1(x-self.hinge1_val), -self.mac_step_vect_1(x-self.act1_val), -self.mac_step_vect_1(x-self.hinge2_val), -self.mac_step_vect_1(x-self.hinge3_val)])
+        return np.array([self.P*self.mac_step_vect_1(x-self.act2_val), -self.mac_step_vect_1(x-self.hinge1_val),
+                         -self.mac_step_vect_1(x-self.act1_val),
+                         -self.mac_step_vect_1(x-self.hinge2_val), -self.mac_step_vect_1(x-self.hinge3_val)])
 
     def _getq(self, coords, forces, x):
         xlocs = np.unique(coords[:, 0])
@@ -412,7 +427,7 @@ class AppliedLoads:
     def make_cuts_sections(self, a, num_sections_x):
         new_list = [0]
         step = a.span/num_sections_x
-        for i in range(1,num_sections_x):
+        for i in range(1, num_sections_x):
             new_list.append(step*i)
         new_list.append(a.span)
         return np.asarray(new_list)
@@ -420,10 +435,9 @@ class AppliedLoads:
     def distr_defl_func(self, q1, q2, L, I, E=73100000000):
         # deflection return positive in positive direction of q
         if q1 != q2:
-            return L*L*L*L/(E*I)*(q2 /8 + (q1-q2)*3/72)
+            return L*L*L*L/(E*I)*(q2 / 8 + (q1-q2)*3/72)
         else:
             return L*L*L*L*q2/(E*I*8)
-
 
     def distr_angle_func(self, q1, q2, L, I, E=73100000000):
         if q1 != q2:
@@ -508,18 +522,20 @@ class AppliedLoads:
             return 0
 
     def forward_defl_distr(self, i):
-        return self.distr_defl_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]), self.dx_list[i], self.a.Izz())
+        return self.distr_defl_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]),
+                                    self.dx_list[i], self.a.Izz())
 
     def backward_defl_distr(self, i):
-        return self.distr_defl_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]), self.dx_list[i - 1], self.a.Izz())
+        return self.distr_defl_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]),
+                                    self.dx_list[i - 1], self.a.Izz())
 
     def forward_angle_distr(self, i):
-        return self.distr_angle_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]), self.dx_list[i], self.a.Izz())
+        return self.distr_angle_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]),
+                                     self.dx_list[i], self.a.Izz())
 
     def backward_angle_distr(self, i):
-        return self.distr_angle_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]), self.dx_list[i - 1], self.a.Izz())
-
-
+        return self.distr_angle_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]),
+                                     self.dx_list[i - 1], self.a.Izz())
 
 
 if __name__ == "__main__":
@@ -528,12 +544,12 @@ if __name__ == "__main__":
     print('moment: ', sc)
 
     plt.subplot(2, 1, 1)
-    plt.plot(sc[1][0], sc[1][1], label = '1')
-    plt.plot(sc[1][0], sc[1][2], label = '2')
-    plt.plot(sc[1][0], sc[1][3], label = '3')
-    plt.plot(sc[1][0], sc[1][4], label = '4')
+    plt.plot(sc[1][0], sc[1][1], label='1')
+    plt.plot(sc[1][0], sc[1][2], label='2')
+    plt.plot(sc[1][0], sc[1][3], label='3')
+    plt.plot(sc[1][0], sc[1][4], label='4')
     plt.subplot(2, 1, 2)
-    plt.plot(sc[2][1], sc[2][0], label = '56 - 1')
+    plt.plot(sc[2][1], sc[2][0], label='56 - 1')
     plt.plot(sc[2][4], sc[2][0], label='56 - 4')
     plt.xlabel('shearflow 56')
     plt.ylabel('y value')

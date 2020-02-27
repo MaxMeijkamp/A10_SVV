@@ -17,18 +17,18 @@ class MyTestCase(unittest.TestCase):
         Iyy = b * h ** 3 / 12
         Izz = h * b ** 3 / 12
         centroid = (0, 5, 2.5)
-        #No moments
+        # No moments
         self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, 0, 0, centroid), 0)
         self.assertEqual(stress_modules.bending(5, 0, Iyy, Izz, 0, 0, centroid), 0)
         self.assertEqual(stress_modules.bending(5, 10, Iyy, Izz, 0, 0, centroid), 0)
         self.assertEqual(stress_modules.bending(0, 10, Iyy, Izz, 0, 0, centroid), 0)
 
-        #On NA
+        # On NA
         self.assertEqual(stress_modules.bending(5, 2.5, Iyy, Izz, 99999, 99999, centroid), 0)
         self.assertEqual(stress_modules.bending(5, 0, Iyy, Izz, 0, 99999, centroid), 0)
         self.assertEqual(stress_modules.bending(0, 2.5, Iyy, Izz, 99999, 0, centroid), 0)
 
-        #One moment
+        # One moment
         self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, 1, 0, centroid), -2.5 / Iyy)
         self.assertEqual(stress_modules.bending(0, 5, Iyy, Izz, 1, 0, centroid), 2.5 / Iyy)
         self.assertEqual(stress_modules.bending(10, 5, Iyy, Izz, 1, 0, centroid), 2.5 / Iyy)
@@ -40,13 +40,13 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(stress_modules.bending(10, 5, Iyy, Izz, 0, 1, centroid), 5 / Izz)
         self.assertEqual(stress_modules.bending(10, 0, Iyy, Izz, 0, 1, centroid), 5 / Izz)
 
-        #Superposition
+        # Superposition
         self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, 1, 1, centroid), -5 / Izz - 2.5 / Iyy)
         self.assertEqual(stress_modules.bending(0, 5, Iyy, Izz, 1, 1, centroid), -5 / Izz + 2.5 / Iyy)
         self.assertEqual(stress_modules.bending(10, 5, Iyy, Izz, 1, 1, centroid), 5 / Izz + 2.5 / Iyy)
         self.assertEqual(stress_modules.bending(10, 0, Iyy, Izz, 1, 1, centroid), 5 / Izz - 2.5 / Iyy)
 
-        #very small input
+        # very small input
         self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, .000000001, 0, centroid), -.0000000025 / Iyy)
 
     def test_vonmis(self):
@@ -56,39 +56,52 @@ class MyTestCase(unittest.TestCase):
         Izz = h * b ** 3 / 12
         centroid = (0, 5, 2.5)
 
-        #No stresses:
-        self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 0), 0)
+        # No stresses:
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), 0)
 
-        #One unit stress
+        # One unit stress
         self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), 1)
         self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=1, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), 1)
         self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=1, tau_xy=0, tau_yz=0, tau_xz=0), 1)
 
-        #Two unit stresses
-        self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=1, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt((1)))
-        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=1, sigma_zz=1, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt((1)))
+        # Two unit stresses
+        self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=1, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0),
+                         math.sqrt((1)))
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=1, sigma_zz=1, tau_xy=0, tau_yz=0, tau_xz=0),
+                         math.sqrt((1)))
 
-        #Three unit stresses (they should cancel out)
+        # Three unit stresses (they should cancel out)
         self.assertEqual(stress_modules.von_mises(sigma_xx=1, sigma_yy=1, sigma_zz=1, tau_xy=0, tau_yz=0, tau_xz=0), 0)
 
-        #Checking for different Tau combinations
-        self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= 1, tau_yz= 0, tau_xz= 0), math.sqrt(6* 1**2 /2))
-        self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= 2, tau_yz= 0, tau_xz= 0), math.sqrt(6* 2**2 /2))
-        self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= 0, tau_yz= 1, tau_xz= 0), math.sqrt(6* 1**2 /2))
-        self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= 0, tau_yz= 2, tau_xz= 0), math.sqrt(6* 2**2 /2))
-        self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 1), math.sqrt(6* 1**2 /2))
-        self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 2), math.sqrt(6* 2**2 /2))
+        # Checking for different Tau combinations
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=0, tau_xy=1, tau_yz=0, tau_xz=0),
+                         math.sqrt(6 * 1**2 / 2))
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=0, tau_xy=2, tau_yz=0, tau_xz=0),
+                         math.sqrt(6 * 2**2 / 2))
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=1, tau_xz=0),
+                         math.sqrt(6 * 1**2 / 2))
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=2, tau_xz=0),
+                         math.sqrt(6 * 2**2 / 2))
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=1),
+                         math.sqrt(6 * 1**2 / 2))
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=2),
+                         math.sqrt(6 * 2**2 / 2))
 
-        #Check for negative tau
-        self.assertEqual(stress_modules.von_mises(sigma_xx= 0, sigma_yy= 0, sigma_zz= 0, tau_xy= -1, tau_yz= 0, tau_xz= 0), math.sqrt(6* 1**2 /2))
+        # Check for negative tau
+        self.assertEqual(stress_modules.von_mises(sigma_xx=0, sigma_yy=0, sigma_zz=0, tau_xy=-1, tau_yz=0, tau_xz=0),
+                         math.sqrt(6 * 1**2 / 2))
 
-        #Negative unit stress
-        self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= 0, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 0), 1)
-        self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= -1, sigma_zz= 0, tau_xy= 0, tau_yz= 0, tau_xz= 0), 1)
-        self.assertEqual(stress_modules.von_mises(sigma_xx= -1, sigma_yy= -1, sigma_zz= -1, tau_xy= 0, tau_yz= 0, tau_xz= 0), 0)
+        # Negative unit stress
+        self.assertEqual(stress_modules.von_mises(sigma_xx=-1, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0),
+                         1)
+        self.assertEqual(stress_modules.von_mises(sigma_xx=-1, sigma_yy=-1, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0),
+                         1)
+        self.assertEqual(stress_modules.von_mises(sigma_xx=-1, sigma_yy=-1, sigma_zz=-1, tau_xy=0, tau_yz=0, tau_xz=0),
+                         0)
 
-        #Very small input
-        self.assertEqual(stress_modules.von_mises(sigma_xx=.0000001, sigma_yy=0, sigma_zz=0, tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt(.0000001**2))
+        # Very small input
+        self.assertEqual(stress_modules.von_mises(sigma_xx=.0000001, sigma_yy=0, sigma_zz=0,
+                                                  tau_xy=0, tau_yz=0, tau_xz=0), math.sqrt(.0000001**2))
 
     def test_integration(self):
         # integrate(func, start, stop, number_of_points)
@@ -99,7 +112,7 @@ class MyTestCase(unittest.TestCase):
             return 1 + x * 0
         n = 1
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places=8)
-        n =100
+        n = 100
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 1., places=8)
         start = -5
         self.assertAlmostEqual(numericaltools.integrate(tempfunc, start, stop, n), 6., places=8)
@@ -165,13 +178,13 @@ class MyTestCase(unittest.TestCase):
         a = Aileron(chord=chord, height=height, skint=skint, spart=spart, span=span)
         # self.assertEqual(a.Izz(stiffener=False, spar=False), 0.001865283305) # Exact value different from
         # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
-        # self.assertEqual(a.Izz(skin=False, spar=False),) todo
+        # self.assertEqual(a.Izz(skin=False, spar=False),)
         # self.assertEqual(a.Izz(skin=False, stiffener=False), 0.0256/12) Works
 
         # Tests Iyy
         # self.assertEqual(a.Iyy(stiffener=False, spar=False), 0.003638774597) # Exact value different from
         # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
-        # self.assertEqual(a.Iyy(skin=False, spar=False),) todo
+        # self.assertEqual(a.Iyy(skin=False, spar=False),)
         # self.assertEqual(a.Iyy(skin=False, stiffener=False), 0.0001/12) Works
 
         # Tests centroid
@@ -188,7 +201,6 @@ class MyTestCase(unittest.TestCase):
         # Tests _Istiff
 
 #    def test_stiff_s_position(self):
-
 
     def test_spline(self):
         x = [0, 1, 2, 3, 4, 5, 6, 7]
@@ -237,12 +249,11 @@ class MyTestCase(unittest.TestCase):
         x = [0, 0.00000001, 0.000000002]
         f = [0, 0.000000015, 0.000000003]
         slopes = [1.5, 1.5]
-        self.assertAlmostEqual(numericaltools.spline(x, f, 3)[1][0], slopes[0], places= 8)
+        self.assertAlmostEqual(numericaltools.spline(x, f, 3)[1][0], slopes[0], places=8)
 
-    #def test_validation_read_data(self):
-        #self.assertEqual(validation.get_dat("bending", "stresses").size[1],  5)
-        #pass
-
+    # def test_validation_read_data(self):
+        # self.assertEqual(validation.get_dat("bending", "stresses").size[1],  5)
+        # pass
 
 
 if __name__ == '__main__':
