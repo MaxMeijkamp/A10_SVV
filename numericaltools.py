@@ -17,6 +17,16 @@ def integrate(func, start, stop, number_of_points):
     return integration
 
 
+def integrate_array(array):
+    func_value = 0
+    n = len(array)
+    func_step = np.arange(n)
+    start_to_integrate, slope_to_integrate = spline(func_step, array, n)
+    for i in range(0, n-1):
+        func_value += integrate(slope_to_integrate[i], start_to_integrate[i], start_to_integrate[i+1], 1)
+    return func_value
+
+
 def cont_spline(x_discrete, f_discrete):
     return np.vectorize(partial(interpolate, x_discrete, f_discrete))
 
