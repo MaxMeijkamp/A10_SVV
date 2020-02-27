@@ -244,21 +244,6 @@ class MyTestCase(unittest.TestCase):
         #pass
 
 
- # class SystemTests(unittest.TestCase):
- #     def test_no_load_no_deformation(self):
- #
- #    def test_unit_loads_applied(self):
- #
- #    def test_normal_loads_compared_with_hand_calculations_at_different_points(self):
- #
- #    def test_check_hinge_2_deflection_0_at_different_loads(self):
- #        self.assertIsNone(displacements.displ(normal loads))
- #
- #    def test_check_large_E_G_give_small_displacements(self):
- #        self.assertLess(displacements.displ(normal loads, large E), some low displacement value,))
- #        self.assertLess(displacements.displ(normal loads, very very large E), some super low displacement value,))
- #        self.assertLess(displacements.angle_displ(normal loads, large G), some low angle value,))
- #        self.assertLess(displacements.angle_displ(normal loads, very very large G), some suprt low angle value,))
 
 if __name__ == '__main__':
     data = InputClasses.Aileron()
