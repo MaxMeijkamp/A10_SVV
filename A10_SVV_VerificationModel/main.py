@@ -117,7 +117,7 @@ _ = aileron.My(x)               # Compute the moment around the y-axis
 _ = aileron.Mz(x)               # Compute the moment around the z-axis
 _ = aileron.T(x)                # Compute the torque
 _ = aileron.tau(x)              # Compute the distributed torque
-print("vdefl = ",vdefl)
+print(x, "vdefl = ",vdefl)
 print("wdefl = ",wdefl)
 print("phidefl = ",phidefl)
 ## Value of the total potential energy
