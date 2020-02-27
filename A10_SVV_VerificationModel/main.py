@@ -99,12 +99,12 @@ aileron.compute_deflections("CRJ700") ### Switch aerodynamic loading to the airc
 """" A number of auxiliary functions and results are given to you. """
 
 ## Simplistic plotting procedures for a first check
-aileron.plotv()             # Plot the deflections in y-direction, its derivative, the bending moment about the z-axis, and the shear force in y.
-aileron.plotw()             # Plot the deflections in z-direction, its derivative, the bending moment about the y-axis, and the shear force in z.
-aileron.plotphi()           # Plot the twist distribution, the torque and the distributed torque.
+#aileron.plotv()             # Plot the deflections in y-direction, its derivative, the bending moment about the z-axis, and the shear force in y.
+#aileron.plotw()             # Plot the deflections in z-direction, its derivative, the bending moment about the y-axis, and the shear force in z.
+#aileron.plotphi()           # Plot the twist distribution, the torque and the distributed torque.
 
 ## For custom post-processing of the solution
-x = np.linspace(0,la, 41)  # Subsequent functions accept numpy-arrays
+x = np.linspace(0, 1.691, 1691)  # Subsequent functions accept numpy-arrays
 # Compute the deflections
 vdefl, wdefl, phidefl = aileron.eval(x)       # Compute the three deflections
 _, _, _ = aileron.fdeval(x)     # Compute their their first order derivative
@@ -117,9 +117,15 @@ _ = aileron.My(x)               # Compute the moment around the y-axis
 _ = aileron.Mz(x)               # Compute the moment around the z-axis
 _ = aileron.T(x)                # Compute the torque
 _ = aileron.tau(x)              # Compute the distributed torque
-print(x, "vdefl = ",vdefl)
-print("wdefl = ",wdefl)
-print("phidefl = ",phidefl)
+print( "x = ", x[154], x[554], x[1541])
+print( "vdefl = ",vdefl[154],vdefl[554],vdefl[1541])
+print( "wdefl = ",wdefl[154],wdefl[554],wdefl[1541])
+print( "phidefl = ",phidefl[154],phidefl[554],phidefl[1541])
+print( "y deflection =", vdefl[154] * np.cos(28/180*np.pi) - wdefl[154] * np.sin(28/180*np.pi))
+print( "z deflection =", vdefl[154] * np.sin(28/180*np.pi) + wdefl[154] * np.cos(28/180*np.pi))
+
+#print("wdefl = ",wdefl)
+#print("phidefl = ",phidefl)
 ## Value of the total potential energy
 _ = aileron.cPI()               # Compute the total potential energy of the beam for the computed solution.
 i,k = 0, 1.01                   # Parameters for next line
