@@ -26,6 +26,7 @@ def integrate_array(array):
         func_value += integrate(slope_to_integrate[i], start_to_integrate[i], start_to_integrate[i+1], 1)
     return func_value
 
+
 def cont_spline(x_discrete, f_discrete):
     return np.vectorize(partial(interpolate, x_discrete, f_discrete))
 
