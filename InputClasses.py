@@ -114,13 +114,10 @@ class Aileron:
         def func_s(s):
             if s <= dist_s1:
                 return (r * np.sin(s / r)) * skint
-
             elif dist_s1 < s <= dist_s1 + dist_s2:
                 return (r - (s - dist_s1) * r / a) * skint
-
             elif dist_s2 + dist_s1 < s <= dist_s3 + dist_s2 + dist_s1:
                 return (0. - (s - dist_s1 - dist_s2) * r / a) * skint
-
             elif dist_s3 + dist_s2 + dist_s1 < s <= dist_s4 + dist_s3 + dist_s2 +dist_s1:
                 return (r * -np.cos((s - .5 * r * np.pi - a * 2) / r)) * skint
 
@@ -134,7 +131,6 @@ class Aileron:
 
         s_list = np.zeros((4, num_steps)) # array with s value, integral shear, booms
         s_list[0] = np.linspace(0, self._circumference, num_steps)
-        #idx_s = [0, 1250, 4990, 8740, 9999]
         idx_s = [
                 0, int((np.abs(s_list[0] - dist_s1)).argmin()),
                 int(np.abs(s_list[0] - dist_s1 - dist_s2).argmin()),
@@ -142,10 +138,8 @@ class Aileron:
                 int(np.abs(s_list[0] - dist_s1 - dist_s2 - dist_s3 - dist_s4).argmin())
                 ]
 
-
         ss = np.arange(-r, r, self._circumference / num_steps)
         s56_list = np.zeros((3, ss.size))
-        #print(ss)
 
         s56_list[0] = np.arange(-r, r, self._circumference / num_steps)
         idx_s56 = [int(ss.size/2), int(ss.size)]
@@ -179,13 +173,29 @@ class Aileron:
         #correction /= (s_list[3, 0: idx_s[1]].size * 2 + s56_list[1].size)
 
         stepwidth = self._circumference / num_steps
+        shearbasesum1 = 1
+        shearbasesum2 = 1
+        twistmatrix = np.matrix([2 * dist_s1 / self.skint + 2* dist_s5 / self.spart, -2* dist_s5 / self.spart ], [-2* dist_s5 / self.spart, 2 * dist_s2 / self.skint + 2 * dist_s5 / self.spart])
+        shearbasevector = np.matrix([-shearbasesum1],[-shearbasesum2])
+        correctionshears = np.linalg.solve(twistmatrix, shearbasevector)
+        correctionshear1 = correctionshears[0]
+        correctionshear2 = correctionshears[1]
+
+        # Add correction shears and base shear to row 4
+        s_list[4, idx_s[0] : idx_s[1]] =  s_list[3, idx_s[0] : idx_s[1]] + correctionshear1
+        s_list[4, idx_s[3] : idx_s[4]] =  s_list[3, idx_s[3] : idx_s[4]] + correctionshear1
+        s_list[4, idx_s[1] : idx_s[2]] =  s_list[3, idx_s[1] : idx_s[2]] + correctionshear2
+        s_list[4, idx_s[2] : idx_s[3]] =  s_list[3, idx_s[2] : idx_s[3]] + correctionshear2
+
+
+        '''
         correction = (np.sum(stepwidth * s_list[3, 0: idx_s[1]]) + np.sum( stepwidth * s_list[3, idx_s[3]: idx_s[4]])) / self.skint
         correction -= np.sum(stepwidth * s56_list) / self.spart
         correction_q = correction / ((dist_s1*2/self.skint) + (dist_s5*2/self.spart))
         s_list[3, 0: idx_s[1]] -= correction_q
         s_list[3, idx_s[3]: idx_s[4]] -= correction_q
         s56_list[1] += correction_q
-
+        
         check_c = (np.sum(s_list[3, 0: idx_s[1]]) + np.sum(s_list[3, idx_s[3]: idx_s[4]])) * self._circumference / num_steps / self.skint
         check_c -= np.sum(s56_list) * self._circumference / num_steps / self.spart
 
@@ -200,7 +210,7 @@ class Aileron:
         check_c = (np.sum(s_list[3, 0: idx_s[1]]) + np.sum(
             s_list[3, idx_s[3]: idx_s[4]])) * self._circumference / num_steps / self.skint
         check_c -= np.sum(s56_list) * self._circumference / num_steps / self.spart
-
+        '''
 
         # Arms:
         as1 = r
@@ -588,7 +598,7 @@ if __name__ == "__main__":
     #print(a._stiff_s_pos())
     plt.plot(a.shearcentre()[1][0], a.shearcentre()[1][3])
     plt.show()
-    print('correction', a.shearcentre()[0])
-    print("idx's: ", a.shearcentre()[2])
+    print('s_list: ', a.shearcentre()[1][0])
+    #print("idx's: ", a.shearcentre()[2])
     #plt.plot()
     #a.shearcentre()
