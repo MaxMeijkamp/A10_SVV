@@ -133,4 +133,4 @@ def num_twist(x):
     print(shearcentre(a))
     return theta_1, theta_2
 
-print(num_twist(10))
+print(num_twist())
