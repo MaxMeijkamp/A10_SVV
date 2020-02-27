@@ -58,8 +58,8 @@ crosssection.compute_torsionalstiffness()   # Run the calculations
 
 ### Access to important results
 """" If you desire, you can manually overwrite these values. """
-_ = crosssection.ysc                 # y-coordinate of the centroid
-_ = crosssection.zsc                 # z-coordinate of the centroid
+_ = crosssection.ysc                 # y-coordinate of the shear center
+_ = crosssection.zsc                 # z-coordinate of the shear center
 _ = crosssection.J                   # torsional constant
 
 ######################## Part IV - Deflection calculations #######################################
@@ -83,7 +83,7 @@ aileron.addbcss(x3,0.,-ha/2.,m.pi/2-theta,0)
 aileron.addbcss(x2-xa/2.,ha/2.,0,m.pi/2.-theta,0)
 
 """"Define your applied loading; see manual for explanations."""
-aileron.addfpl(x2+xa/2.,ha/2.,0,m.pi/2.-theta,P)
+aileron.addfpl(x2+xa/2.,ha/2.,0,m.pi/2.-theta, -P)
 
 ### Primary functions
 """ The following line computes the deflections. If you do not want to include the aerodynamic loading, simply write
@@ -93,7 +93,7 @@ If you do want to include the aerodynamic loading, let the variable aircraft (se
 Note that the name should be spelled exactly as listed above. Note that if the aircraft you write is inconsistent with the
 geometry you define at the beginning of this file, the program will not return an error, but will simply produce bogus
 results."""
-aileron.compute_deflections() ### Switch aerodynamic loading to the aircraft that is being considered
+aileron.compute_deflections("CRJ700") ### Switch aerodynamic loading to the aircraft that is being considered
 
 ### Auxiliary functions
 """" A number of auxiliary functions and results are given to you. """
@@ -104,20 +104,28 @@ aileron.compute_deflections() ### Switch aerodynamic loading to the aircraft tha
 #aileron.plotphi()           # Plot the twist distribution, the torque and the distributed torque.
 
 ## For custom post-processing of the solution
-x = np.linspace(0,la,num = 10)  # Subsequent functions accept numpy-arrays
+x = np.linspace(0, 1.691, 1691)  # Subsequent functions accept numpy-arrays
 # Compute the deflections
-_, _, _ = aileron.eval(x)       # Compute the three deflections
+vdefl, wdefl, phidefl = aileron.eval(x)       # Compute the three deflections
 _, _, _ = aileron.fdeval(x)     # Compute their their first order derivative
 _, _, _ = aileron.sdeval(x)     # Compute their their second order derivative
 _, _, _ = aileron.tdeval(x)     # Compute their their third order derivative
 # Compute the loading
-_ = aileron.Sy(x)               # Compute the shear force in y
+Syyy = aileron.Sy(x)               # Compute the shear force in y
 _ = aileron.Sz(x)               # Compute the shear force in z
 _ = aileron.My(x)               # Compute the moment around the y-axis
 _ = aileron.Mz(x)               # Compute the moment around the z-axis
 _ = aileron.T(x)                # Compute the torque
 _ = aileron.tau(x)              # Compute the distributed torque
+print( "x = ", x[154], x[554], x[1541])
+print( "vdefl = ",vdefl[154],vdefl[554],vdefl[1541])
+print( "wdefl = ",wdefl[154],wdefl[554],wdefl[1541])
+print( "phidefl = ",phidefl[154],phidefl[554],phidefl[1541])
+print( "y deflection =", vdefl[154] * np.cos(28/180*np.pi) - wdefl[154] * np.sin(28/180*np.pi))
+print( "z deflection =", vdefl[154] * np.sin(28/180*np.pi) + wdefl[154] * np.cos(28/180*np.pi))
 
+#print("wdefl = ",wdefl)
+#print("phidefl = ",phidefl)
 ## Value of the total potential energy
 _ = aileron.cPI()               # Compute the total potential energy of the beam for the computed solution.
 i,k = 0, 1.01                   # Parameters for next line
@@ -157,8 +165,8 @@ _ = aileron.sol.coef        # Resulting coefficients, collected in bar(alpha) (a
 Stressobject = Stress.Stressstate(crosssection)
 
 ### Define the forces and moments for which you want to know the stress distributions
-x = 1.691
-Sy = aileron.Sy(x)
+x = 1.5
+Sy = (x, aileron.Sy(x))
 Sz = aileron.Sz(x)
 My = aileron.My(x)
 Mz = aileron.Mz(x)
@@ -172,9 +180,10 @@ Stressobject.compute_unitstressdistributions()
 Stressobject.compute_stressdistributions(Sy,Sz,My,Mz,T)
 
 ### Some plotting functions
-#Stressobject.plot_shearflowdistributions()
-#Stressobject.plot_directstressdistributions()
-#Stressobject.plot_vonmisesstressdistributions()
+
+Stressobject.plot_shearflowdistributions()
+Stressobject.plot_directstressdistributions()
+Stressobject.plot_vonmisesstressdistributions()
 
 ### Access to important results
 theta = np.linspace(0,m.pi/2,num = 100)
