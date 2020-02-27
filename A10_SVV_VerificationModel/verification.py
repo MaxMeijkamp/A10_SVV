@@ -11,7 +11,7 @@ import numericaltools
 import numpy as np
 mainfile = main
 aileron = InputClasses.Aileron()
-loads = InputClasses.AppliedLoads()
+app_loads = InputClasses.AppliedLoads()
 
 class MyTestCase(unittest.TestCase):
     def test_Izz_Iyy(self):
@@ -30,17 +30,13 @@ class MyTestCase(unittest.TestCase):
             self.assertAlmostEqual(starray[i][0]-aileron.radius, stmainfile[i][0], 9)
             self.assertAlmostEqual(starray[i][1], stmainfile[i][1], 9)
 
-    def test_distributions(self):
-        Sy_sim = loads.int_shear_y(np.linspace(0, aileron.span, 100))
-        Sy_verdif = mainfile.Sy
-
+#    def test_stiff_s_pos(self):
 
 if __name__ == '__main__':
 #    print(mainfile.Izz, mainfile.Iyy)
 #    print(main.d1, main.e1)
-#    print(mainfile.stcoord)
-#    print("aaa",np.array(aileron.stiffLoc(3)))
-    print(loads.int_shear_y(np.linspace(0, aileron.span, 100)))
-    print("aa", mainfile.Sy)
+    print(mainfile.stcoord)
+    print("aaa",np.array(aileron.stiffLoc(3)))
+
     unittest.main()
 
