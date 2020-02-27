@@ -86,9 +86,7 @@ class Aileron:
         else:
             raise ValueError("The axis is invalid")
 
-    def shearcentre(self, verif = True):
-        if verif:
-            return -0.00535594953
+    def shearcentre(self):
         r = self.radius
         a = self.a
         Izz = self.Izz()
@@ -99,21 +97,21 @@ class Aileron:
         dist_s5 = dist_s6 = r
 
         def func_s(s):
-            if s <= dist_s1:
-                return (r * np.sin(s / r)) * skint
-            elif dist_s1 < s <= dist_s1 + dist_s2:
-                return (r - (s - dist_s1) * r / a) * skint
-            elif dist_s2 + dist_s1 < s <= dist_s3 + dist_s2 + dist_s1:
-                return (0. - (s - dist_s1 - dist_s2) * r / a) * skint
-            elif dist_s3 + dist_s2 + dist_s1 < s <= dist_s4 + dist_s3 + dist_s2 +dist_s1:
-                return (r * -np.cos((s - .5 * r * np.pi - a * 2) / r)) * skint
+            if s < dist_s1:
+                return (r * np.sin(s / r))
+            elif dist_s1 <= s < dist_s1 + dist_s2:
+                return (r - (s - dist_s1) * r / a)
+            elif dist_s2 + dist_s1 <= s < dist_s3 + dist_s2 + dist_s1:
+                return (0. - (s - dist_s1 - dist_s2) * r / a)
+            elif dist_s3 + dist_s2 + dist_s1 <= s <= dist_s4 + dist_s3 + dist_s2 + dist_s1:
+                return  - r * np.cos((s - dist_s1 - dist_s2 - dist_s3)/r)
 
         def func_s56(s):  # from s = 0 to s = height / 2
-            return s * self.spart
+            return s
 
         integrateV = np.vectorize(integrate)
         func_s = np.vectorize(func_s)
-        num_steps = 10000
+        num_steps = 1000
 
         s_list = np.zeros((7, num_steps)) # array with s value, integral shear, booms
         s_list[0] = np.linspace(0, self._circumference, num_steps)
@@ -126,71 +124,55 @@ class Aileron:
 
         ss = np.arange(-r, r, self._circumference / num_steps)
         s56_list = np.zeros((7, ss.size))
-
         s56_list[0] = ss
-        idx_s56 = [int(ss.size/2), int(ss.size-1)]
-        s56_list[1] = - 1. / Izz * (integrateV(func_s56, 0, s56_list[0], 1000))
 
-        s_list[1] = -1. / Izz * (integrateV(func_s, 0, s_list[0], 4000))
+        # Skin base shear flows
+        s56_list[1] = -1. / Izz * (integrateV(func_s56, -r, s56_list[0], 3000)) * self.spart
+        s_list[1] = -1. / Izz * (integrateV(func_s, 0, s_list[0], 6000)) * skint
 
-        #Base shear flow of booms:
-        stepsize = self._circumference/self.stiffn
-
+        # Base shear flow of booms:
+        boom_stepsize = self._circumference/self.stiffn
         for i in range(self.stiffn):
-            boomdist = stepsize * i
+            boomdist = boom_stepsize * i
             idx = (np.abs(s_list[0] - boomdist)).argmin()
-            s_list[2, idx : -1] +=  -1. / Izz * self.stiffener_area * func_s(s_list[0, idx]) / self.skint
+            s_list[2, idx : -1] += (-1. / Izz * self.stiffener_area * func_s(s_list[0, idx]))
 
-        # Combined in row 3:
+        # Booms and skin contribution combined in row 3 of s_list:
         s_list[3] = s_list[2] + s_list[1]
 
         # Find correction shear flow:
-        stepwidth = self._circumference / num_steps
-        stepcorrection = (num_steps - 1) / num_steps
+        stepwidth = s_list[0,1] - s_list[0,0]
+        stepcorrection = (num_steps - 1) / float(num_steps)
 
-        '''
-        splineshear = cont_spline(s_list[0], s_list[3])
-        splineshear56 = cont_spline(s56_list[0], s56_list[1])
+        shearbasesum1 = stepcorrection * stepwidth * ((np.sum(s_list[3, idx_s[0] : idx_s[1]]) + np.sum(s_list[3, idx_s[3] : idx_s[4]]))/self.skint - np.sum(s56_list[1])/self.spart)
+        shearbasesum2 = stepcorrection * stepwidth * ((np.sum(s_list[3, idx_s[1] : idx_s[3]]) )/self.skint + np.sum(s56_list[1])/self.spart)
 
-        shearbasesum1 = (integrate(splineshear, 0, dist_s1, 1000) + integrate(splineshear, self._circumference - dist_s4, self._circumference, 1000 ))/self.skint
-        shearbasesum1 -= integrate(splineshear56, -r + .001, r - 0.001, 1000)
-
-        shearbasesum2 = (integrate(splineshear, dist_s1, dist_s1 + dist_s2, 1000) + integrate(splineshear, dist_s1 + dist_s2, dist_s1 + dist_s2 + dist_s3, 1000 ))/self.skint
-        shearbasesum2 += integrate(splineshear56, -r+0.001, r - 0.001, 1000)
-        '''
-        shearbasesum1 = stepcorrection * stepwidth * ((np.sum(s_list[3, idx_s[0] : idx_s[1]]) + np.sum(s_list[3, idx_s[3] : idx_s[4]]))/self.skint + np.sum(s56_list[1])/self.spart)
-        shearbasesum2 = stepcorrection * stepwidth * ((np.sum(s_list[3, idx_s[1] : idx_s[2]]) + np.sum(s_list[3, idx_s[2] : idx_s[3]]))/self.skint + np.sum(s56_list[1])/self.spart)
-
-        twistmatrix = np.array([[2 * dist_s1 / self.skint + 2* dist_s5 / self.spart, -2* dist_s5 / self.spart ], [-2* dist_s5 / self.spart, 2 * dist_s2 / self.skint + 2 * dist_s5 / self.spart]])
-        shearbasevector = np.array([[-shearbasesum1],[-shearbasesum2]])
-        correctionshears = np.linalg.solve(twistmatrix, shearbasevector)
+        twistmatrix = np.array([[2 * dist_s1 / self.skint + 2* dist_s5 / self.spart, -2* dist_s5 / self.spart ],
+                                [-2* dist_s5 / self.spart, 2 * dist_s2 / self.skint + 2 * dist_s5 / self.spart]])
+        shearbasevector = np.array([[-shearbasesum1],
+                                    [-shearbasesum2]])
+        correctionshears = np.linalg.inv(twistmatrix)@shearbasevector#np.linalg.solve(twistmatrix, shearbasevector)
         correctionshear1 = correctionshears[0]
         correctionshear2 = correctionshears[1]
-
 
         # Add correction shears and base shear to row 4
         s_list[4, idx_s[0] : idx_s[1]] =  s_list[3, idx_s[0] : idx_s[1]] + correctionshear1
         s_list[4, idx_s[3] : idx_s[4]] =  s_list[3, idx_s[3] : idx_s[4]] + correctionshear1
-        s_list[4, idx_s[1] : idx_s[2]] =  s_list[3, idx_s[1] : idx_s[2]] + correctionshear2
-        s_list[4, idx_s[2] : idx_s[3]] =  s_list[3, idx_s[2] : idx_s[3]] + correctionshear2
+        s_list[4, idx_s[1] : idx_s[3]] =  s_list[3, idx_s[1] : idx_s[3]] + correctionshear2
         s56_list[4] = s56_list[1] - correctionshear1 + correctionshear2
-        s_list[6] = s_list[4]
+
         # Arms:
         as1 = r
         as2 = np.cos( acos((self.chord - self.radius) / self.a) ) * r
 
-        check1 = stepcorrection * stepwidth * ((np.sum(s_list[4, idx_s[0] : idx_s[1]]) + np.sum(s_list[4, idx_s[3] : idx_s[4]]))/self.skint - np.sum(s56_list[4])/self.spart)
-        check2 = stepcorrection * stepwidth * ((np.sum(s_list[4, idx_s[1] : idx_s[2]]) + np.sum(s_list[4, idx_s[2] : idx_s[3]]))/self.skint + np.sum(s56_list[4])/self.spart)
+        # Moment about point z=z_spar and y = 0
+        moment = as1 * stepcorrection * stepwidth *  (np.sum(s_list[4, idx_s[3]: idx_s[4]]) + np.sum(s_list[3, 0: idx_s[1]]))
+        moment += as2 * stepcorrection * stepwidth *  (np.sum(s_list[4, idx_s[1]: idx_s[3]]))
+        #moment += np.pi*r*r * correctionshear1 + r *(self.chord - r) * correctionshear2 * 2
 
-        moment = as1 * stepcorrection * stepwidth *  (np.sum(s_list[3, idx_s[3]: idx_s[4]]) + np.sum(s_list[3, 0: idx_s[1]]))
-        moment += np.pi*r*r * correctionshear1 + r*(self.chord-r) * correctionshear2 * 2
-        moment += as2 * stepcorrection * stepwidth *  (np.sum(s_list[3, idx_s[1]: idx_s[2]]) + np.sum(s_list[3, idx_s[2]: idx_s[3]]))
-        moment = moment[0]
-
-        # Then, the shearflow moment created about 0,0 should be equal to the moment caused by force Vy = 1 so moment = arm
-        #z location wrt spar
-
-        return moment, s_list, s56_list, correctionshears, [check1, check2]
+        distance = moment / - 1
+        # distance is defined as z = 0 at spar and positive towards leading edge
+        return distance, s_list, s56_list
 
     def _stiffcoord(self, num):
         step = self._circumference/self.stiffn
@@ -542,14 +524,9 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     a = Aileron()
-    #print(a._stiff_s_pos())
-    #plt.plot(a.shearcentre()[1][0], a.shearcentre()[4])
-    #plt.show()
-    sc = a.shearcentre(False)
-    print('moment: ', sc[0])
-    print('corrections: ', sc[3])
-    print('checks: ', sc[4])
-    #print("idx's: ", a.shearcentre()[2])
+    sc = a.shearcentre()
+    print('moment: ', sc)
+
     plt.subplot(2, 1, 1)
     plt.plot(sc[1][0], sc[1][1], label = '1')
     plt.plot(sc[1][0], sc[1][2], label = '2')
@@ -562,4 +539,4 @@ if __name__ == "__main__":
     plt.ylabel('y value')
     plt.legend()
     plt.show()
-    #a.shearcentre()
+
