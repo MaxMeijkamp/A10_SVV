@@ -1,55 +1,20 @@
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Created on Tue Feb 25 15:23:36 2020
 
 @author: mustafawahid
 """
 import numpy as np
+from validation import *
 
-
-def get_dat(case, param):
-    file = "B737.rpt"
-    newload = []
-
-    if str(case) == 'bending':
-
-        if param == 'stresses':  # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=20, max_rows=5778).astype(float)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=5816, max_rows=856).astype(float)
-            loaded = np.concatenate((loaded1, loaded2))
-
-            for elem in loaded:
-                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
-        if param == 'disp':  # returns displacement at each node
-            newload = np.genfromtxt(file, dtype=str, skip_header=20074, max_rows=6588)
-
-    if case == 'Jam_Bent':
-
-        if param == 'stresses':  # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=6705, max_rows=5778)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=12501, max_rows=856)
-            loaded = np.concatenate((loaded1, loaded2)).astype(float)
-
-            for elem in loaded:
-                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
-
-        if param == 'disp':  # returns displacement at each node
-            newload = np.genfromtxt(file, dtype=str, skip_header=26724,
-                                    max_rows=6588)
-
-    if case == 'Jam_Straight':
-        if param == 'stresses':  # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=13390, max_rows=5778)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=19186, max_rows=856)
-            loaded = np.concatenate((loaded1, loaded2)).astype(float)
-
-            for elem in loaded:
-                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
-
-        if param == 'disp':  # returns displacement at each node
-            newload = np.genfromtxt(file, dtype=str, skip_header=33374, max_rows=6588)
-
-    return (newload)
+def node_x(node):
+    # returns x-coordinate OF GIVEN NODE
+    nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+    nodelist = nodelist.astype(np.float)
+    for i in nodelist:
+        if int(i[0]) == node:
+            return i[1]
 
 
 def nodes(element):
@@ -78,20 +43,50 @@ def elements(node):
     return elements
 
 
+def integrationpoint(element):
+    elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=6598, skip_footer=(14594 - 13233), delimiter=",")
+    elementlist = elementlist.astype(np.float)
+    allnodes = nodes(element)
+    x = 0
+    for i in allnodes:
+        x = x + node_x(i)
+    return x / len(allnodes)
+
+
 # fix this part
-def crossection(element):
+def crossection(node):
     # finds all the nodes in the crossection of given node
     elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
     elementlist = elementlist.astype(np.float)
     crossection_list = []
 
     for i in elementlist:
-        if int(i[0]) == element:  # find line with corresponding element
+        if int(i[0]) == node:  # find line with corresponding element
             for n in elementlist:
                 if int(n[1]) == int(i[1]):  # finds all the elements with the same x coordinate as the input element
                     crossection_list.append(int(n[0]))
 
-    return crossection_list
+    return np.array(crossection_list)
+
+
+def crossection_element(element):
+    a1 = crossection(nodes(element)[0])
+    a2 = crossection(nodes(element)[2])
+    a = list(np.hstack((a1, a2)))
+
+    lst = []  # list of all the nodes of the crossection of nodes on the left and right of the element
+    for i in a:
+        lst = lst + elements(i)
+    crossectionlist = []
+    for i in lst:
+        if lst.count(i) == 4:
+            if crossectionlist.count(i) == 0:
+                crossectionlist.append(i)
+        if lst.count(i) == 6:
+            if crossectionlist.count(i) == 0:
+                crossectionlist.append(i)
+
+    return np.sort(crossectionlist)
 
 
 def max_von_mises(case):
@@ -127,7 +122,7 @@ def s12(case, element):
 
 def crossection_von_mises(case):
     a = max_von_mises(case)[1]
-    b = crossection(a)
+    b = crossection_element(a)
     crossection_von_mises_list = []
 
     for i in b:
@@ -138,10 +133,36 @@ def crossection_von_mises(case):
 
 def crossection_s12(case):
     a = max_s12(case)[1]
-    b = crossection(a)
+    b = crossection_element(a)
     crossection_s12_list = []
 
     for i in b:
         crossection_s12_list.append(s12(case, i))
 
     return crossection_s12_list
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
