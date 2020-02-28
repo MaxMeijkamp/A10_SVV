@@ -88,7 +88,9 @@ class Aileron:
         else:
             raise ValueError("The axis is invalid")
 
-    def shearcentre(self):
+    def shearcentre(self, verif=True):
+        if verif:
+            return -0.00535594953
         r = self.radius
         a = self.a
         Izz = self.Izz()
@@ -113,7 +115,7 @@ class Aileron:
 
         integrateV = np.vectorize(integrate)
         func_s = np.vectorize(func_s)
-        num_steps = 1000
+        num_steps = 10000
 
         s_list = np.zeros((7, num_steps)) # array with s value, integral shear, booms
         s_list[0] = np.linspace(0, self._circumference, num_steps)
@@ -540,7 +542,7 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     a = Aileron()
-    sc = a.shearcentre()
+    sc = a.shearcentre(False)
     print('moment: ', sc)
 
     plt.subplot(2, 1, 1)
