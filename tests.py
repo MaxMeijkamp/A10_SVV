@@ -2,58 +2,72 @@ import unittest
 import stress_modules
 import numericaltools
 import math
-import A10_SVV_VerificationModel.Energy
-import A10_SVV_VerificationModel.Stiffness
-import A10_SVV_VerificationModel.Stress
-import A10_SVV_VerificationModel.main as main
+
 import numpy as np
 import InputClasses
 import displacements
 import equilibrium
 from InputClasses import *
-from torsion import *
+#from torsion import *
 #import validation
-mainfile = main
-
+aileron = InputClasses.Aileron()
 class MyTestCase(unittest.TestCase):
-
+    '''
     def test_bend(self):
         h = 10
         b = 5
-        Iyy = b * h ** 3 / 12
-        Izz = h * b ** 3 / 12
-        centroid = (0, 5, 2.5)
+        class a:
+            def __init__(self, b = 5, h = 10):
+                self.Iyy = 5 * 10 ** 3 / 12
+                self.Izz = 10 * 5 ** 3 / 12
+                #self.centroid = (0, 5, 2.5)
+            def Izz():
+                return 10 * 5 ** 3 / 12
+            def Iyy():
+                return 5 * 10 ** 3 / 12
+
+            def centroid(axis = None):
+                if axis == 0:
+                    return 0
+                if axis == 1:
+                    return 5
+                if axis == 2:
+                    return 10
+                if axis == None:
+                    return 0, 5, 2.5
+
         # No moments
-        self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, 0, 0, centroid), 0)
-        self.assertEqual(stress_modules.bending(5, 0, Iyy, Izz, 0, 0, centroid), 0)
-        self.assertEqual(stress_modules.bending(5, 10, Iyy, Izz, 0, 0, centroid), 0)
-        self.assertEqual(stress_modules.bending(0, 10, Iyy, Izz, 0, 0, centroid), 0)
+        self.assertEqual(stress_modules.bending((0, 0), (1, 3), a), 0)
+        self.assertEqual(stress_modules.bending((0, 0), (3 ,1), a), 0)
+        self.assertEqual(stress_modules.bending((0, 0), (-2, 4), a), 0)
+        self.assertEqual(stress_modules.bending((0, 0), (2, 2), a), 0)
 
         # On NA
-        self.assertEqual(stress_modules.bending(5, 2.5, Iyy, Izz, 99999, 99999, centroid), 0)
-        self.assertEqual(stress_modules.bending(5, 0, Iyy, Izz, 0, 99999, centroid), 0)
-        self.assertEqual(stress_modules.bending(0, 2.5, Iyy, Izz, 99999, 0, centroid), 0)
+        self.assertEqual(stress_modules.bending((0, 0), (5, 2.5), a), 0)
+        self.assertEqual(stress_modules.bending((0, 0), (0, 0), a), 0)
+        self.assertEqual(stress_modules.bending((0, 1), (2 ,0), a), 0)
 
         # One moment
-        self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, 1, 0, centroid), -2.5 / Iyy)
-        self.assertEqual(stress_modules.bending(0, 5, Iyy, Izz, 1, 0, centroid), 2.5 / Iyy)
-        self.assertEqual(stress_modules.bending(10, 5, Iyy, Izz, 1, 0, centroid), 2.5 / Iyy)
-        self.assertEqual(stress_modules.bending(10, 0, Iyy, Izz, 1, 0, centroid), -2.5 / Iyy)
+        self.assertEqual(stress_modules.bending((1, 0), (-2.5 , 0), a), -2.5 / Iyy)
+        self.assertEqual(stress_modules.bending((1, 0), (2.5, 0), a), 2.5 / Iyy)
+        self.assertEqual(stress_modules.bending((1, 0), (2.5 , 5), a), 2.5 / Iyy)
+        self.assertEqual(stress_modules.bending((1, 1), (-2.5 , 5), a), -2.5 / Iyy)
 
         # other moment
-        self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, 0, 1, centroid), -5 / Izz)
-        self.assertEqual(stress_modules.bending(0, 5, Iyy, Izz, 0, 1, centroid), -5 / Izz)
-        self.assertEqual(stress_modules.bending(10, 5, Iyy, Izz, 0, 1, centroid), 5 / Izz)
-        self.assertEqual(stress_modules.bending(10, 0, Iyy, Izz, 0, 1, centroid), 5 / Izz)
+        self.assertEqual(stress_modules.bending((0, 1), (0, -5), a), -5 / Izz)
+        self.assertEqual(stress_modules.bending((0, 1), (2 , -5), a), -5 / Izz)
+        self.assertEqual(stress_modules.bending((0, 1), (4 , 5), a), 5 / Izz)
+        self.assertEqual(stress_modules.bending((0, 1), (0 , 5), a), 5 / Izz)
 
         # Superposition
-        self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, 1, 1, centroid), -5 / Izz - 2.5 / Iyy)
-        self.assertEqual(stress_modules.bending(0, 5, Iyy, Izz, 1, 1, centroid), -5 / Izz + 2.5 / Iyy)
-        self.assertEqual(stress_modules.bending(10, 5, Iyy, Izz, 1, 1, centroid), 5 / Izz + 2.5 / Iyy)
-        self.assertEqual(stress_modules.bending(10, 0, Iyy, Izz, 1, 1, centroid), 5 / Izz - 2.5 / Iyy)
+        self.assertEqual(stress_modules.bending((1, 1), ( , ), a), -5 / Izz - 2.5 / Iyy)
+        self.assertEqual(stress_modules.bending((1, 1), ( , ), a), -5 / Izz + 2.5 / Iyy)
+        self.assertEqual(stress_modules.bending((1, 1), ( , ), a), 5 / Izz + 2.5 / Iyy)
+        self.assertEqual(stress_modules.bending((1, 1), ( , ), a), 5 / Izz - 2.5 / Iyy)
 
         # very small input
-        self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, .000000001, 0, centroid), -.0000000025 / Iyy)
+        self.assertEqual(stress_modules.bending((.000000001, 0), (0, 0), ), -.0000000025 / Iyy)
+    '''
 
     def test_vonmis(self):
         h = 10
@@ -182,27 +196,20 @@ class MyTestCase(unittest.TestCase):
         spart = 0.05
         span = 5
         a = Aileron(chord=chord, height=height, skint=skint, spart=spart, span=span)
-        # self.assertEqual(a.Izz(stiffener=False, spar=False), 0.001865283305) # Exact value different from
+        self.assertAlmostEqual(a.Izz(stiffener=False, spar=False), 0.001865283305)  # Exact value different from
         # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
-        # self.assertEqual(a.Izz(skin=False, spar=False),)
-        # self.assertEqual(a.Izz(skin=False, stiffener=False), 0.0256/12) Works
+        self.assertAlmostEqual(a.Izz(skin=False, stiffener=False), 0.0256/12)
 
         # Tests Iyy
-        # self.assertEqual(a.Iyy(stiffener=False, spar=False), 0.003638774597) # Exact value different from
+        #self.assertAlmostEqual(a.Iyy(stiffener=False, spar=False), 0.003638774597) # Exact value different from
         # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
-        # self.assertEqual(a.Iyy(skin=False, spar=False),)
-        # self.assertEqual(a.Iyy(skin=False, stiffener=False), 0.0001/12) Works
+        #self.assertAlmostEqual(a.Iyy(skin=False, stiffener=False), 0.0001/12)
 
         # Tests centroid
         self.assertEqual(a.centroid(0), 2.5)
         self.assertEqual(a.centroid(1), 0)
-        # self.assertEqual(a.centroid(2), )
-        # self.assertEqual(a.centroid(), (2.5, 0, ))
+        self.assertEqual(a.centroid()[0:2], (2.5, 0))
 
-        # Tests shearcentre
-        # TODO: implement in InputClasses.py
-
-        # Tests visualinspection?
 
         # Tests _Istiff
 
@@ -263,6 +270,6 @@ class MyTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    data = InputClasses.Aileron()
-    data.visualinspection()
+    #data = InputClasses.Aileron()
+    #data.visualinspection()
     unittest.main()

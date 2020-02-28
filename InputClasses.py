@@ -38,7 +38,7 @@ class Aileron:
         self.radius = self.height * 0.5
         self.a = sqrt(self.radius * self.radius + (self.chord - self.radius) * (self.chord - self.radius))
         self._circumference = 2 * self.a + np.pi * self.radius
-        self.shear_centre = self.shearcentre()
+        #self.shear_centre = self.shearcentre()
         # Protected variables
 
 
