@@ -6,52 +6,7 @@ Created on Tue Feb 25 15:23:36 2020
 @author: mustafawahid
 """
 import numpy as np
-
-
-def get_dat(case, param):
-    file = "B737.rpt"
-    newload = []
-
-    if str(case) == 'bending':
-
-        if param == 'stresses':  # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=20, max_rows=5778).astype(float)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=5816, max_rows=856).astype(float)
-            loaded = np.concatenate((loaded1, loaded2))
-
-            for elem in loaded:
-                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
-        if param == 'disp':  # returns displacement at each node
-            newload = np.genfromtxt(file, dtype=str, skip_header=20074, max_rows=6588)
-
-    if case == 'Jam_Bent':
-
-        if param == 'stresses':  # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=6705, max_rows=5778)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=12501, max_rows=856)
-            loaded = np.concatenate((loaded1, loaded2)).astype(float)
-
-            for elem in loaded:
-                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
-
-        if param == 'disp':  # returns displacement at each node
-            newload = np.genfromtxt(file, dtype=str, skip_header=26724,
-                                    max_rows=6588)
-
-    if case == 'Jam_Straight':
-        if param == 'stresses':  # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=13390, max_rows=5778)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=19186, max_rows=856)
-            loaded = np.concatenate((loaded1, loaded2)).astype(float)
-
-            for elem in loaded:
-                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
-
-        if param == 'disp':  # returns displacement at each node
-            newload = np.genfromtxt(file, dtype=str, skip_header=33374, max_rows=6588)
-
-    return (newload)
-
+from validation import *
 
 def node_x(node):
     # returns x-coordinate OF GIVEN NODE
@@ -92,10 +47,10 @@ def integrationpoint(element):
     elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=6598, skip_footer=(14594 - 13233), delimiter=",")
     elementlist = elementlist.astype(np.float)
     allnodes = nodes(element)
-    for i in elementlist:
-        if int(i[0]) == element:
-            integrationpoint_x = (node_x(int(max(allnodes))) + node_x(int(min(allnodes)))) * 0.5
-            return integrationpoint_x
+    x = 0
+    for i in allnodes:
+        x = x + node_x(i)
+    return x / len(allnodes)
 
 
 # fix this part
@@ -132,9 +87,6 @@ def crossection_element(element):
                 crossectionlist.append(i)
 
     return np.sort(crossectionlist)
-
-
-# nodeslist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
 
 
 def max_von_mises(case):
@@ -190,119 +142,98 @@ def crossection_s12(case):
     return crossection_s12_list
 
 
-print (crossection_element(max_von_mises('bending')[1]))
-print (crossection_von_mises('bending'))
+import matplotlib.pyplot as plt
 
-# element=5190
-# nodes_list=nodes(element)
-# crossection1 = crossection(min(nodes(element)))
-# crossection2 = crossection(max(nodes(element)))
-# crossectionlist_nodes=crossection1+crossection2
-# crossectionlist=[]
-# for i in range (6000):
-#    nodes_list=nodes(i)
-#    print(nodes_list)
+# input file
+nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+nodelist = nodelist.astype(np.float)
 
+hingelinenodes = []
+hingelinenodes_x_coordinate = []
+for i in nodelist:
+    if i[2] == 0:
+        if i[3] == 0:
+            hingelinenodes.append(i[0])
+            hingelinenodes_x_coordinate.append(i[1])
 
-# def crossection_element(element):
-#    crossection1 = crossection(min(nodes(element)))
-#    crossection2 = crossection(max(nodes(element)))
-#    crossectionlist_nodes=crossection1+crossection2
-#    crossectionlist=[]
-#    for i  in  range(1,max(crossectionlist_nodes)+1):
-#        if crossectionlist_nodes.count(nodes(i)[0])+crossectionlist_nodes.count(nodes(i)[1])+crossectionlist_nodes.count(nodes(i)[2])+crossectionlist_nodes.count(nodes(i)[3])=4:
-#            crossectionlist.append(i)
-#    return crossectionlist
-#
-# print(crossection_element(5190))
+# Deflection data - loading case: bending
+c = get_dat('bending', 'disp')
+c = c.astype(np.float)
+hingelinedata_bend = []
+x_bend = []
+y_bend = []
+z_bend = []
+mag_bend = []
 
-#    a = nodes(i)
-#    if crossectionlist_nodes.count(a[0])+crossectionlist_nodes.count(a[1])+crossectionlist_nodes.count(a[2])+crossectionlist_nodes.count(a[3])=4:
-#        crossectionlist.append(i)
-# print(crossectionlist)
+# Deflection data - loading case: jam_bent
+d = get_dat('Jam_Bent', 'disp')
+d = d.astype(np.float)
+hingelinedata_jam_bent = []
+x_jam_bent = []
+y_jam_bent = []
+z_jam_bent = []
+mag_jam_bent = []
 
+# Deflection data - loading case: jam_bent
+e = get_dat('Jam_Straight', 'disp')
+e = e.astype(np.float)
+hingelinedata_jam_straight = []
+x_jam_straight = []
+y_jam_straight = []
+z_jam_straight = []
+mag_jam_straight = []
 
-# def crossection_elements(element):
-#    crossection1 = crossection(min(nodes(element)))
-#    crossection2 = crossection(max(nodes(element)))
-#    
-#    crossectionlist_nodes=crossection1+crossection2
-#    crossectionlist = []
+# Find hingeline data for loading cases
+s = 0
+for i in hingelinenodes:
+    i = int(i) - 1
+    hingelinedata_bend.append(c[i])
+    mag_bend.append(c[i][1])
+    x_bend.append(c[i][2] + hingelinenodes_x_coordinate[s])
+    y_bend.append(c[i][3])
+    z_bend.append(c[i][4])
 
-# print (nodes(5190))
+    hingelinedata_jam_bent.append(d[i])
+    mag_jam_bent.append(d[i][1])
+    x_jam_bent.append(d[i][2] + hingelinenodes_x_coordinate[s])
+    y_jam_bent.append(d[i][3])
+    z_jam_bent.append(d[i][4])
 
+    hingelinedata_jam_straight.append(e[i])
+    mag_jam_straight.append(e[i][1])
+    x_jam_straight.append(e[i][2] + hingelinenodes_x_coordinate[s])
+    y_jam_straight.append(e[i][3])
+    z_jam_straight.append(e[i][4])
 
-# import matplotlib.pyplot as plt
-#
-## input file
-# nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
-# nodelist = nodelist.astype(np.float)
-#
-# hingelinenodes = []
-# hingelinenodes_x_coordinate = []
-# for i in nodelist:
-#    if i[2] == 0:
-#        if i[3] == 0:
-#            hingelinenodes.append(i[0])
-#            hingelinenodes_x_coordinate.append(i[1])
-#
-## Deflection data - loading case: bending
-# c = get_dat('bending','disp')
-# c = c.astype(np.float)
-# hingelinedata_bend = []
-# x_bend = []
-# y_bend = []
-# z_bend = []
-# mag_bend = []
-# print(c)
-## Deflection data - loading case: jam_bent
-# d = get_dat('Jam_Bent','disp')
-# d = d.astype(np.float)
-# hingelinedata_jam_bent = []
-# x_jam_bent = []
-# y_jam_bent = []
-# z_jam_bent = []
-# mag_jam_bent = []
-# print(d)
-## Deflection data - loading case: jam_bent
-# e = get_dat('Jam_Straight','disp')
-# e = e.astype(np.float)
-# hingelinedata_jam_straight = []
-# x_jam_straight = []
-# y_jam_straight = []
-# z_jam_straight = []
-# mag_jam_straight = []
-# print(e)
-## Find hingeline data for loading cases
-# s=0
-# for i in hingelinenodes:
-#    i = int(i) - 1
-#    hingelinedata_bend.append(c[i])
-#    mag_bend.append(c[i][1])
-#    x_bend.append(c[i][2]+hingelinenodes_x_coordinate[s])
-#    y_bend.append(c[i][3])
-#    z_bend.append(c[i][4])
-#
-#    hingelinedata_jam_bent.append(d[i])
-#    mag_jam_bent.append(d[i][1])
-#    x_jam_bent.append(d[i][2]+hingelinenodes_x_coordinate[s])
-#    y_jam_bent.append(d[i][3])
-#    z_jam_bent.append(d[i][4])
-#
-#    hingelinedata_jam_straight.append(e[i])
-#    mag_jam_straight.append(e[i][1])
-#    x_jam_straight.append(e[i][2]+hingelinenodes_x_coordinate[s])
-#    y_jam_straight.append(e[i][3])
-#    z_jam_straight.append(e[i][4])
-#
-#    s=s+1
-#
+    s = s + 1
+
 # plt.title('Vertical Hingeline deflection x-y plane')
 # plt.xlabel('Location x-axis[mm]')
 # plt.ylabel('Vertical deflection [mm]')
-# plt.plot(x_bend, y_bend, 'bo') #bluedots
-# plt.plot(x_jam_bent, y_jam_bent, 'ro') #reddots
-# plt.plot(x_jam_straight, y_jam_straight, 'go') #greendots
+# plt.plot(y_bend, z_bend, 'bo') #bluedots
+# plt.plot(y_jam_bent, z_jam_bent, 'ro') #reddots
+# plt.plot(y_jam_straight, z_jam_straight, 'go') #greendots
 # plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
