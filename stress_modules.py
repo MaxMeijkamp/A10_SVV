@@ -68,7 +68,7 @@ def bending(M_vect, point_vect, a):
 # For bending, not only sigma_x is needed, but also the displacements and angular displacements
 # at all sections caused by the bending.
 
-def shearflow(dataset, shearforce = 1.):
+def shearflow(dataset, shearforce = 1., checking = False):
     # Calculates shear flows around circumference and in spar due to shear force applied in SC
     aileron = dataset
     r = aileron.radius
@@ -149,7 +149,8 @@ def shearflow(dataset, shearforce = 1.):
 
     # check should be 0 vector
     check = twistmatrix @ correctionshears - shearbasevector
-
+    if checking:
+        return check
     # Add correction shears and base shear to row 4
     s_list[4, idx_s[0]: idx_s[1]] = s_list[3, idx_s[0]: idx_s[1]] + correctionshear1
     s_list[4, idx_s[3]: idx_s[4]] = s_list[3, idx_s[3]: idx_s[4]] + correctionshear1
