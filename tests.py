@@ -2,12 +2,18 @@ import unittest
 import stress_modules
 import numericaltools
 import math
+import A10_SVV_VerificationModel.Energy
+import A10_SVV_VerificationModel.Stiffness
+import A10_SVV_VerificationModel.Stress
+import A10_SVV_VerificationModel.main as main
 import numpy as np
 import InputClasses
 import displacements
 import equilibrium
 from InputClasses import *
+from torsion import *
 #import validation
+mainfile = main
 
 class MyTestCase(unittest.TestCase):
 

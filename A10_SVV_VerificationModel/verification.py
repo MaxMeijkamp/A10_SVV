@@ -1,5 +1,5 @@
 import InputClasses
-from A10_SVV_VerificationModel import main, Energy
+import main, Energy
 import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -8,8 +8,7 @@ import sys
 import unittest
 import InputClasses
 import numericaltools
-import numpy as np
-mainfile = main
+import numpy as main
 aileron = InputClasses.Aileron()
 app_loads = InputClasses.AppliedLoads()
 import equilibrium
@@ -22,6 +21,10 @@ class MyTestCase(unittest.TestCase):
     def test_centroid(self):
         self.assertAlmostEqual(mainfile.yc, aileron.centroid(1), 9)
         self.assertAlmostEqual(mainfile.zc+aileron.radius, aileron.centroid(2), 9)
+
+    def test_shear_centre(self):
+        self.assertIsNone(mainfile.ysc)
+        self.assertAlmostEqual(mainfile.zsc, aileron.shearcentre(self)[0], 9)
 
     def test_stiffloc(self):
         st_list = aileron.stiffLoc()
@@ -75,6 +78,5 @@ if __name__ == '__main__':
 #    print(main.d1, main.e1)
 #    print(mainfile.stcoord)
 #    print("aaa",np.array(aileron.stiffLoc(3)))
-
     unittest.main()
 
