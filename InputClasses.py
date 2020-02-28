@@ -3,6 +3,7 @@ from matplotlib import pyplot as plt
 from math import sqrt, sin, cos, acos
 from numericaltools import *
 
+
 class Aileron:
     def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
                  spart=0.0025, stifft=0.0012, stiffh=0.014, stiffw=0.018, stiffn=13, actdist=0.272):
@@ -36,9 +37,9 @@ class Aileron:
         self.stiffener_area = self.stifft * (self.stiffh + self.stiffw)
         self.radius = self.height * 0.5
         self.a = sqrt(self.radius * self.radius + (self.chord - self.radius) * (self.chord - self.radius))
-
-        # Protected variables
         self._circumference = 2 * self.a + np.pi * self.radius
+        self.shear_centre = self.shearcentre()
+        # Protected variables
 
 
     def Izz(self, skin=True, spar=True, stiffener=True):
@@ -89,6 +90,7 @@ class Aileron:
             raise ValueError("The axis is invalid")
 
     def shearcentre(self, verif=True, checking = False ):
+
         # Returns shear centre location
         r = self.radius
         a = self.a
@@ -133,7 +135,7 @@ class Aileron:
         # Skin base shear flows
         s56_list[1, 0:int(ss.size/2)] = 1. / Izz * (integrateV(func_s56, 0, s56_list[0, 0:int(ss.size/2)], 2000)) * self.spart
         s56_list[1, int(ss.size/2):int(ss.size)] = -1. / Izz * (integrateV(func_s56, 0, s56_list[0, int(ss.size/2):int(ss.size)], 2000)) * self.spart
-        s_list[1] = -1. / Izz * (integrateV(func_s, 0, s_list[0], 5000)) * self.skint
+        s_list[1] = -1. / Izz * (integrateV(func_s, 0, s_list[0], 3000)) * self.skint
 
         # Base shear flow of booms:
         boom_stepsize = self._circumference/self.stiffn
@@ -146,7 +148,7 @@ class Aileron:
         s_list[3] = s_list[2] + s_list[1]
 
         # Find correction shear flow:
-        stepwidth = self._circumference / num_steps#s_list[0,1] - s_list[0,0]
+        stepwidth = self._circumference / num_steps
 
         shearbasesum1 = (stepwidth  * ((np.sum(s_list[3, 0: idx_s[1]]) +
                                                        np.sum(s_list[3, idx_s[3]: idx_s[4]]))/self.skint -
@@ -160,11 +162,8 @@ class Aileron:
         shearbasevector = np.array([[-shearbasesum1],
                                     [-shearbasesum2]])
         correctionshears = np.linalg.solve(twistmatrix, shearbasevector)
-        correctionshear1 = correctionshears[0]
-        correctionshear2 = correctionshears[1]
-
-        #check should be 0 vector
-        check = twistmatrix @ correctionshears - shearbasevector
+        correctionshear1 = correctionshears[0][0]
+        correctionshear2 = correctionshears[1][0]
 
         # Add correction shears and base shear to row 4
         s_list[4, idx_s[0]: idx_s[1]] = s_list[3, idx_s[0]: idx_s[1]] + correctionshear1
@@ -172,17 +171,18 @@ class Aileron:
         s_list[4, idx_s[1]: idx_s[3]] = s_list[3, idx_s[1]: idx_s[3]] + correctionshear2
         s56_list[4] = s56_list[1] - correctionshear1 + correctionshear2
 
+        r = self.radius
+        a = self.a
+
         # Arms:
-        as1 = r
-        as2 = np.cos( acos((self.chord - self.radius) / self.a)) * r
+        as1 = self.radius
+        as2 = np.cos( acos((self.chord - self.radius) / self.a)) * self.radius
 
         # Moment about point z=z_spar and y = 0
-        moment = as1 * stepwidth * ((np.sum(s_list[3, idx_s[3]: idx_s[4]]) +
-                                                      np.sum(s_list[4, 0: idx_s[1]])))
-        moment += as2 * stepwidth *(np.sum(s_list[3, idx_s[1]: idx_s[3]]))
-        moment += np.pi*r*r * correctionshear1 + r *(self.chord - r) * correctionshear2 * 2
-
-        distance = moment[0] / - 1
+        moment = as1 * stepwidth * ((np.sum(s_list[4, idx_s[3]: idx_s[4]]) +
+                                                      np.sum(s_list[3, 0: idx_s[1]])))
+        moment += as2 * stepwidth *(np.sum(s_list[4, idx_s[1]: idx_s[3]]))
+        distance = moment
         # distance is defined as z = 0 at spar and positive towards leading edge
 
         if checking:
@@ -550,7 +550,7 @@ class AppliedLoads:
 
 if __name__ == "__main__":
     a = Aileron()
-    sc = a.shearcentre(False)
+    sc = a.shear_centre
     print('moment: ', sc)
     '''
     plt.subplot(2, 1, 1)
