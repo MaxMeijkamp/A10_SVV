@@ -185,7 +185,7 @@ def get_twist(case):
     for LEO in LEnode:
         for b0 in b:
             if LEO == int(b0[0]):
-                #LE_LO.append([b0[0],b0[1],b0[2],b0[3],b0[4]])
+                # LE_LO.append([b0[0],b0[1],b0[2],b0[3],b0[4]])
                 LE_LO.append([LE[i][0],b0[2], b0[3]])
                 i += 1
     LE_LO = np.sort(LE_LO,axis=0)

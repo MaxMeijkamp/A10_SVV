@@ -1,108 +1,14 @@
 import numpy as np
 from math import *
 from InputClasses import *
+import matplotlib.pyplot as plt
 
-
-a = Aileron()
-
+a1 = Aileron()
 ##########################################################
 
+d, shear_list, s_56, idx_s, iki = a1.shearcentre()
 
-def shearcentre(a):
-    r = a.radius
-    a = a.a
-    Izz = a.Izz()
-    skint = a.skint
-
-    dist_s1 = dist_s4 = .5 * np.pi * r
-    dist_s2 = dist_s3 = a
-    dist_s5 = dist_s6 = r
-
-    def func_s(s):
-        if s <= dist_s1:
-            return (r * np.sin(s / r)) * skint
-        elif dist_s1 < s <= dist_s1 + dist_s2:
-            return (r - (s - dist_s1) * r / a) * skint
-        elif dist_s2 + dist_s1 < s <= dist_s3 + dist_s2 + dist_s1:
-            return (0. - (s - dist_s1 - dist_s2) * r / a) * skint
-        elif dist_s3 + dist_s2 + dist_s1 < s <= dist_s4 + dist_s3 + dist_s2 + dist_s1:
-            return (r * -np.cos((s - .5 * r * np.pi - a * 2) / r)) * skint
-
-    def func_s56(s):  # from s = 0 to s = height / 2
-        return s * a.spart
-
-    integrateV = np.vectorize(integrate)
-    func_s = np.vectorize(func_s)
-    num_steps = 10000
-
-    s_list = np.zeros((7, num_steps))  # array with s value, integral shear, booms
-    s_list[0] = np.linspace(0, a._circumference, num_steps)
-    idx_s = [
-        0, int((np.abs(s_list[0] - dist_s1)).argmin()),
-        int(np.abs(s_list[0] - dist_s1 - dist_s2).argmin()),
-        int(np.abs(s_list[0] - dist_s1 - dist_s2 - dist_s3).argmin()),
-        int(np.abs(s_list[0] - dist_s1 - dist_s2 - dist_s3 - dist_s4).argmin())
-    ]
-
-    ss = np.arange(-r, r, a._circumference / num_steps)
-    s56_list = np.zeros((7, ss.size))
-
-    s56_list[0] = ss
-    idx_s56 = [int(ss.size / 2), int(ss.size - 1)]
-    s56_list[1, idx_s56[0]: idx_s56[1]] = - 1. / Izz * (
-        integrateV(func_s56, 0, s56_list[0, idx_s56[0]: idx_s56[1]], 100))
-    s56_list[1, 0: idx_s56[0]] = - 1. / Izz * (integrateV(func_s56, 0, s56_list[0, 0: idx_s56[0]], 100))
-
-    # Base shear flow of skin:
-    s_list[1, 0: idx_s[1]] = -1. / Izz * (integrateV(func_s, 0, s_list[0, 0: idx_s[1]], 100))
-    s_list[1, idx_s[1]: idx_s[2]] = -1. / Izz * (
-        integrateV(func_s, s_list[0, idx_s[1]], s_list[0, idx_s[1]: idx_s[2]], 100)) + s_list[1, idx_s[1] - 1]
-    s_list[1, idx_s[2]: idx_s[3]] = -1. / Izz * (
-        integrateV(func_s, s_list[0, idx_s[2]], s_list[0, idx_s[2]: idx_s[3]], 100)) + s_list[1, idx_s[2] - 1]
-    s_list[1, idx_s[3]: idx_s[4]] = -1. / Izz * (
-        integrateV(func_s, s_list[0, idx_s[3]], s_list[0, idx_s[3]: idx_s[4]], 100)) + s_list[1, idx_s[3] - 1]
-    s_list[1, idx_s[4]] = -1. / Izz * (integrateV(func_s, s_list[0, idx_s[3]], s_list[0, idx_s[4]], 100)) + s_list[
-        1, idx_s[3] - 1]
-
-    # Base shear flow of booms:
-    stepsize = a._circumference / a.stiffn
-
-    for i in range(a.stiffn):
-        boomdist = stepsize * i
-        idx = (np.abs(s_list[0] - boomdist)).argmin()
-        s_list[2, idx: -1] += -1. / Izz * a.stiffener_area * func_s(s_list[0, idx]) / a.skint
-
-    # Combined in row 3:
-    s_list[3] = s_list[2] + s_list[1]
-
-    stepcorrection = (num_steps - 1) / num_steps
-    # Find correction shear flow:
-    self1 = a
-    stepwidth = self1._circumference / num_steps
-    shearbasesum1 = stepwidth * (
-            (np.sum(s_list[3, idx_s[0]: idx_s[1]]) + np.sum(s_list[3, idx_s[3]: idx_s[4]])) / self1.skint - np.sum(
-            s56_list[1]) / self1.spart)
-    shearbasesum2 = stepwidth * (
-            (np.sum(s_list[3, idx_s[1]: idx_s[2]]) + np.sum(s_list[3, idx_s[2]: idx_s[3]])) / self1.skint + np.sum(
-            s56_list[1]) / self1.spart)
-    twistmatrix = np.array([[2 * dist_s1 / self1.skint + 2 * dist_s5 / self1.spart, -2 * dist_s5 / self1.spart],
-                            [-2 * dist_s5 / self1.spart, 2 * dist_s2 / self1.skint + 2 * dist_s5 / self1.spart]])
-    shearbasevector = np.array([[-shearbasesum1], [-shearbasesum2]])
-    correctionshears = np.linalg.solve(twistmatrix, shearbasevector)
-    correctionshear1 = correctionshears[0]
-    correctionshear2 = correctionshears[1]
-
-    # Add correction shears and base shear to row 4
-    s_list[4, idx_s[0]: idx_s[1]] = s_list[3, idx_s[0]: idx_s[1]] + correctionshear1
-    s_list[4, idx_s[3]: idx_s[4]] = s_list[3, idx_s[3]: idx_s[4]] + correctionshear1
-    s_list[4, idx_s[1]: idx_s[2]] = s_list[3, idx_s[1]: idx_s[2]] + correctionshear2
-    s_list[4, idx_s[2]: idx_s[3]] = s_list[3, idx_s[2]: idx_s[3]] + correctionshear2
-    s56_list[4] = np.absolute(s56_list[1] - correctionshear1 + correctionshear2)
-
-    return s_list
-
-
-def num_twist(x):
+def num_twist(x, shear_list, s_56, idx_s):
     a = Aileron()
 
     L = x
@@ -122,15 +28,65 @@ def num_twist(x):
     B2 = s2/a.spart
     D1 = (s3+s4)/a.skint + s5/a.spart
 
-    q2 = 1 / 2*(Am2 + Am1*(C2*D1+B2*C1)/(C1*B1+C2*B2))
-    q1 = (q2*(C2*D1+B2*C1))/(C1*B1+C2*B2)
+    qs02 = 1 / 2*( Am2 + Am1*(C2*D1+B2*C1)/(C1*B1+C2*B2))
+    qs01 = (qs02*(C2*D1+B2*C1))/(C1*B1+C2*B2)
 
-    theta_1 = L * C1 * (q1*B1 - q2*B2)
-    theta_2 = L * C2 * (q2*D1 - q1*B2)
-
-    theta = L*C1
-    print(shearcentre(a))
-    return theta_1, theta_2
+    # theta_1 = L * C1 * (qs01*B1 - qs02*B2)
+    # theta_2 = L * C2 * (qs02*D1 - qs01*B2)
 
 
-print(num_twist())
+    #good one
+
+    # d, shear_list, s_56, idx_s, iki = a.shearcentre()
+
+
+    qs1 = shear_list[3,0:idx_s[1]]
+    n1 = len(qs1)
+    t1 = a.skint
+
+    qs2 = s_56[3,0:idx_s[1]]
+    n2 = len(qs2)
+    t2 = a.spart
+
+    qs3 = shear_list[3,idx_s[3]:idx_s[4]]
+    n3 = len(qs3)
+
+    qs4 = shear_list[3,idx_s[1]:idx_s[2]]
+    n4 = len(qs4)
+
+    qs5 = shear_list[3,idx_s[2]:idx_s[3]]
+    n5 = len(qs5)
+
+    elem_width = a._circumference / shear_list.size
+
+    X = (2*n1+n2)*elem_width
+    Y = (2*n4+n2)*elem_width
+
+    theta_01 = L*C1*((sum(qs1)-n1*qs01)/t1 + (sum(qs2)+n2*(qs01-qs02))/t2 + (sum(qs3)-n2*qs01)/t1)*X
+
+    theta_02 = L*C2*((sum(qs4)-n4*qs02)/t2 + (sum(qs5)-n5*qs02)/t1 + (sum(qs2)-n2*(qs02-qs01))/t2)*Y
+
+    print(L)
+
+
+
+
+    return theta_01, theta_02
+
+
+
+
+#list = num_twist()
+
+
+ang = []
+x1 = []
+
+for x in np.linspace(0,a1.span,1000):
+    ang.append([num_twist(x, shear_list, s_56, idx_s)[0],num_twist(x, shear_list, s_56, idx_s)[1]])
+    print(ang)
+    x1.append(x)
+
+plt.plot(x1,ang[:][0])
+plt.plot(x1,ang[:][1])
+plt.show()
