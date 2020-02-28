@@ -42,12 +42,12 @@ that the position of the centroid makes sense. """
 
 ### Access to important results
 """" If you desire, you can manually overwrite these values. """
-_ = crosssection.stcoord            # array containing stringer coordinates
+stcoord = crosssection.stcoord            # array containing stringer coordinates
 _ = crosssection.totarea            # total cross-section area
 yc = crosssection.yc                 # y-coordinate of the centroid
 zc = crosssection.zc                 # z-coordinate of the centroid
-_ = crosssection.Iyy                # moment of inertia about y-axis
-_ = crosssection.Izz                # moment of inertia about z-axis
+Iyy = crosssection.Iyy                # moment of inertia about y-axis
+Izz = crosssection.Izz                # moment of inertia about z-axis
 #print(zc)
 
 ######################## Part III - Torsional stiffness calculations #######################################
@@ -122,7 +122,7 @@ If you do want to include the aerodynamic loading, let the variable aircraft (se
 Note that the name should be spelled exactly as listed above. Note that if the aircraft you write is inconsistent with the
 geometry you define at the beginning of this file, the program will not return an error, but will simply produce bogus
 results."""
-aileron.compute_deflections("CRJ700") ### Switch aerodynamic loading to the aircraft that is being considered
+aileron.compute_deflections() ### Switch aerodynamic loading to the aircraft that is being considered
 
 ### Auxiliary functions
 """" A number of auxiliary functions and results are given to you. """
@@ -236,9 +236,9 @@ Stressobject.Tq6f = solution[0]
 Stressobject.compute_stressdistributions(Sy,Sz,My,Mz,T)
 
 ### Some plotting functions
-Stressobject.plot_shearflowdistributions()
-Stressobject.plot_directstressdistributions()
-Stressobject.plot_vonmisesstressdistributions()
+#Stressobject.plot_shearflowdistributions()
+#Stressobject.plot_directstressdistributions()
+#Stressobject.plot_vonmisesstressdistributions()
 
 ### Access to important results
 theta = np.linspace(0,m.pi/2,num = 100)
