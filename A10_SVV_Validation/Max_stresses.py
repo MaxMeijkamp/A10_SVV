@@ -3,9 +3,8 @@
 """
 Created on Tue Feb 25 15:23:36 2020
 
-@author: mustafawahid
+@author: mustafa wahid
 """
-import numpy as np
 from validation import *
 
 def node_x(node):
@@ -142,27 +141,4 @@ def crossection_s12(case):
     return crossection_s12_list
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+print(crossection_s12('bending'))
