@@ -3,10 +3,9 @@ from matplotlib import pyplot as plt
 import equilibrium
 
 
-
-
-def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_rel=True, label="Verification", vertlabel="u", unit="m", fullscreen=True, extraplot=lambda: True) -> None:
-    subplots=0
+def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_rel=True,
+              label="Verification", vertlabel="u", unit="m", fullscreen=True, extraplot=lambda: True) -> None:
+    subplots = 0
     if label == "Validation":
         smalllabel = "val"
     else:
@@ -47,7 +46,7 @@ def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_
     elif subplots == 2:
         plot = 1
         if plot_raw:
-            plt.subplot(1,2,plot)
+            plt.subplot(1, 2, plot)
             plt.plot(x, data_num)
             plt.plot(x, data_v)
             extraplot()
@@ -56,21 +55,21 @@ def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_
             plt.ylabel(vertlabel+rawunit)
             plot += 1
         if plot_diff_abs:
-            plt.subplot(1,2,plot)
+            plt.subplot(1, 2, plot)
             plt.plot(x, data_num-data_v)
             plt.legend(abslabel, loc="upper right")
             plt.xlabel("x  [m]")
             plt.ylabel(vertlabel+"_num-"+vertlabel+ "_"+smalllabel+""+absunit)
             plot += 1
         if plot_diff_rel:
-            plt.subplot(1,2,plot)
+            plt.subplot(1, 2, plot)
             plt.plot(x, (data_num-data_v)/data_v)
             plt.legend(rellabel, loc="upper right")
             plt.xlabel("x  [m]")
-            ylabel = "("+vertlabel+"_num-"+vertlabel+ "_"+smalllabel+")/("+vertlabel+"_"+smalllabel+")"+relunit
+            ylabel = "("+vertlabel+"_num-"+vertlabel + "_"+smalllabel+")/("+vertlabel+"_"+smalllabel+")"+relunit
     elif subplots == 3:
         if plot_raw:
-            plt.subplot(1,3,1)
+            plt.subplot(1, 3, 1)
             plt.plot(x, data_num)
             plt.plot(x, data_v)
             extraplot()
@@ -78,17 +77,17 @@ def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_
             plt.xlabel("x  [m]")
             plt.ylabel(vertlabel+rawunit)
         if plot_diff_abs:
-            plt.subplot(1,3,2)
+            plt.subplot(1, 3, 2)
             plt.plot(x, data_num-data_v)
             plt.legend(abslabel, loc="upper right")
             plt.xlabel("x  [m]")
-            plt.ylabel(vertlabel+"_num-"+vertlabel+ "_"+smalllabel+""+absunit)
+            plt.ylabel(vertlabel+"_num-"+vertlabel + "_"+smalllabel+""+absunit)
         if plot_diff_rel:
-            plt.subplot(1,3,3)
+            plt.subplot(1, 3, 3)
             plt.plot(x, (data_num-data_v)/data_v)
             plt.legend(rellabel, loc="upper right")
             plt.xlabel("x  [m]")
-            plt.ylabel("("+vertlabel+"_num-"+vertlabel+ "_"+smalllabel+")/("+vertlabel+"_"+smalllabel+")"+relunit)
+            plt.ylabel("("+vertlabel+"_num-"+vertlabel + "_"+smalllabel+")/("+vertlabel+"_"+smalllabel+")"+relunit)
     if fullscreen:
         figManager = plt.get_current_fig_manager()
         figManager.full_screen_toggle()

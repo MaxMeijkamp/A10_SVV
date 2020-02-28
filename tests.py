@@ -5,7 +5,6 @@ import math
 
 import numpy as np
 import InputClasses
-import displacements
 import equilibrium
 from InputClasses import *
 #from torsion import *
@@ -145,17 +144,14 @@ class MyTestCase(unittest.TestCase):
         self.assertAlmostEqual(a.Izz(skin=False, stiffener=False), 0.0256/12)
 
         # Tests Iyy
-        #self.assertAlmostEqual(a.Iyy(stiffener=False, spar=False), 0.003638774597) # Exact value different from
+        self.assertAlmostEqual(a.Iyy(stiffener=False, spar=False), 0.003638774597)  # Exact value different from
         # manually calculated value by less than 0.1%, hence human error, and can be interpreted as correct (Works)
-        #self.assertAlmostEqual(a.Iyy(skin=False, stiffener=False), 0.0001/12)
+        self.assertAlmostEqual(a.Iyy(skin=False, stiffener=False), 0.0001/12)
 
         # Tests centroid
         self.assertEqual(a.centroid(0), 2.5)
         self.assertEqual(a.centroid(1), 0)
         self.assertEqual(a.centroid()[0:2], (2.5, 0))
-
-
-        # Tests _Istiff
 
 #    def test_stiff_s_position(self):
 
@@ -249,7 +245,8 @@ class MyTestCase(unittest.TestCase):
         # very small input
         self.assertEqual(stress_modules.bending(0, 0, Iyy, Izz, .000000001, 0, centroid), -.0000000025 / Iyy)
 
+
 if __name__ == '__main__':
-    #data = InputClasses.Aileron()
-    #data.visualinspection()
+    # data = InputClasses.Aileron()
+    # data.visualinspection()
     unittest.main()

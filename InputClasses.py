@@ -133,8 +133,11 @@ class Aileron:
         s56_list[0] = ss
 
         # Skin base shear flows
-        s56_list[1, 0:int(ss.size/2)] = 1. / Izz * (integrateV(func_s56, 0, s56_list[0, 0:int(ss.size/2)], 2000)) * self.spart
-        s56_list[1, int(ss.size/2):int(ss.size)] = -1. / Izz * (integrateV(func_s56, 0, s56_list[0, int(ss.size/2):int(ss.size)], 2000)) * self.spart
+        s56_list[1, 0:int(ss.size/2)] = 1. / Izz * (integrateV(func_s56, 0,
+                                                               s56_list[0, 0:int(ss.size/2)], 2000)) * self.spart
+        s56_list[1, int(ss.size/2):int(ss.size)] = -1. / Izz * (integrateV(func_s56, 0,
+                                                                           s56_list[0, int(ss.size/2):int(ss.size)],
+                                                                           2000)) * self.spart
         s_list[1] = -1. / Izz * (integrateV(func_s, 0, s_list[0], 3000)) * self.skint
 
         # Base shear flow of booms:
