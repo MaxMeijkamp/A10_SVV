@@ -21,10 +21,3 @@ def bending(y, z, Iyy, Izz, M_y, M_z, centroid):
 
 # For bending, not only sigma_x is needed, but also the displacements and angular displacements
 # at all sections caused by the bending.
-
-
-def torsion_1(q1, q2, L, A, G):
-    integration_part = q1 * numericaltools.integrate() - q2 * numericaltools.integrate()
-    # To be implemented, q1 over section I minus q2 in the spar
-    theta = (q1*L)/(4*A*G) * integration_part
-    return theta
