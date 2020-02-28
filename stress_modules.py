@@ -157,7 +157,7 @@ def shearflow(dataset, shearforce = 1., checking = False):
     s_list[4, idx_s[1]: idx_s[3]] = s_list[3, idx_s[1]: idx_s[3]] + correctionshear2
     s56_list[4] = s56_list[1] - correctionshear1 + correctionshear2
 
-    return s_list[[0,4,3]], s56_list[[0,4,1]]
+    return s_list[[0,4]], s56_list[[0,4]]
 
 if __name__ == '__main__':
     flow = shearflow(InputClasses.Aileron())[0]
