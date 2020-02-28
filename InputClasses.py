@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from math import sqrt, sin, cos, acos
 from numericaltools import *
+from stress_modules import *
 
 class Aileron:
     def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
@@ -89,6 +90,7 @@ class Aileron:
             raise ValueError("The axis is invalid")
 
     def shearcentre(self, verif=True, checking = False ):
+        '''
         # Returns shear centre location
         r = self.radius
         a = self.a
@@ -171,18 +173,37 @@ class Aileron:
         s_list[4, idx_s[3]: idx_s[4]] = s_list[3, idx_s[3]: idx_s[4]] + correctionshear1
         s_list[4, idx_s[1]: idx_s[3]] = s_list[3, idx_s[1]: idx_s[3]] + correctionshear2
         s56_list[4] = s56_list[1] - correctionshear1 + correctionshear2
+        '''
 
+        r = self.radius
+        a = self.a
+
+        s_list, s56_list = shearflow(self)
+        correctionshear1 = s_list[1,3] - s_list[2,3]
+        correctionshear2 = s56_list[1,3] - s56_list[2,3]
+        stepwidth =s_list[0,1] - s_list[0, 0]
+
+        dist_s1 = dist_s4 = .5 * np.pi * r
+        dist_s2 = dist_s3 = a
+        dist_s5 = dist_s6 = r
+
+        idx_s = [
+            0, int((np.abs(s_list[0] - dist_s1)).argmin()),
+            int(np.abs(s_list[0] - dist_s1 - dist_s2).argmin()),
+            int(np.abs(s_list[0] - dist_s1 - dist_s2 - dist_s3).argmin()),
+            int(np.abs(s_list[0] - dist_s1 - dist_s2 - dist_s3 - dist_s4).argmin())
+        ]
         # Arms:
-        as1 = r
-        as2 = np.cos( acos((self.chord - self.radius) / self.a)) * r
+        as1 = self.radius
+        as2 = np.cos( acos((self.chord - self.radius) / self.a)) * self.radius
 
         # Moment about point z=z_spar and y = 0
-        moment = as1 * stepwidth * ((np.sum(s_list[3, idx_s[3]: idx_s[4]]) +
-                                                      np.sum(s_list[4, 0: idx_s[1]])))
-        moment += as2 * stepwidth *(np.sum(s_list[3, idx_s[1]: idx_s[3]]))
-        moment += np.pi*r*r * correctionshear1 + r *(self.chord - r) * correctionshear2 * 2
+        moment = as1 * stepwidth * ((np.sum(s_list[1, idx_s[3]: idx_s[4]]) +
+                                                      np.sum(s_list[1, 0: idx_s[1]])))
+        moment += as2 * stepwidth *(np.sum(s_list[1, idx_s[1]: idx_s[3]]))
+        #moment += np.pi*r*r * correctionshear1 + r *(self.chord - r) * correctionshear2 * 2
 
-        distance = moment[0] / - 1
+        distance = -moment
         # distance is defined as z = 0 at spar and positive towards leading edge
 
         if checking:
