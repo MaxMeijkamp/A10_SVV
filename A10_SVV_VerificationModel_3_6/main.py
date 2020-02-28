@@ -4,7 +4,6 @@ import Energy
 import Stiffness
 import Stress
 import math as m
-import matplotlib.pyplot as plt
 
 ######################## Part I - parameters as in assignment #######################################
 aircraft = "CRJ700" # Write either A320, F100, CRJ700 or Do228 (bear in mind capitals); this is used for aerodynamic loading
@@ -44,12 +43,12 @@ that the position of the centroid makes sense. """
 
 ### Access to important results
 """" If you desire, you can manually overwrite these values. """
-_ = crosssection.stcoord            # array containing stringer coordinates
-_ = crosssection.totarea            # total cross-section area
-_ = crosssection.yc                 # y-coordinate of the centroid
-_ = crosssection.zc                 # z-coordinate of the centroid
-_ = crosssection.Iyy                # moment of inertia about y-axis
-_ = crosssection.Izz                # moment of inertia about z-axis
+stcoord = crosssection.stcoord            # array containing stringer coordinates
+totarea = crosssection.totarea            # total cross-section area
+yc = crosssection.yc                 # y-coordinate of the centroid
+zc = crosssection.zc                 # z-coordinate of the centroid
+Iyy = crosssection.Iyy                # moment of inertia about y-axis
+Izz = crosssection.Izz                # moment of inertia about z-axis
 
 ######################## Part III - Torsional stiffness calculations #######################################
 ### Primary functions
@@ -100,7 +99,7 @@ aileron.compute_deflections() ### Switch aerodynamic loading to the aircraft tha
 """" A number of auxiliary functions and results are given to you. """
 
 ## Simplistic plotting procedures for a first check
-
+#aileron.plotv()             # Plot the deflections in y-direction, its derivative, the bending moment about the z-axis, and the shear force in y.
 #aileron.plotw()             # Plot the deflections in z-direction, its derivative, the bending moment about the y-axis, and the shear force in z.
 #aileron.plotphi()           # Plot the twist distribution, the torque and the distributed torque.
 
@@ -108,10 +107,9 @@ aileron.compute_deflections() ### Switch aerodynamic loading to the aircraft tha
 x = np.linspace(0,la,num = int(la*1000+1))  # Subsequent functions accept numpy-arrays
 # Compute the deflections
 v, w, phi = aileron.eval(x)       # Compute the three deflections
-v1, w1, phi1 = aileron.fdeval(x)     # Compute their their first order derivative
+v1, w1, phi1= aileron.fdeval(x)     # Compute their their first order derivative
 v2, w2, phi2 = aileron.sdeval(x)     # Compute their their second order derivative
 v3, w3, phi3 = aileron.tdeval(x)     # Compute their their third order derivative
-aileron.plotv()             # Plot the deflections in y-direction, its derivative, the bending moment about the z-axis, and the shear force in y.
 # Compute the loading
 Sy = aileron.Sy(x)               # Compute the shear force in y
 Sz = aileron.Sz(x)               # Compute the shear force in z
@@ -119,7 +117,24 @@ My = aileron.My(x)               # Compute the moment around the y-axis
 Mz = aileron.Mz(x)               # Compute the moment around the z-axis
 T = aileron.T(x)                # Compute the torque
 tau = aileron.tau(x)              # Compute the distributed torque
-
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\v.csv", v, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\v1.csv", v1, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\v2.csv", v2, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\v3.csv", v3, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\w.csv", w, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\w1.csv", w1, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\w2.csv", w2, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\w3.csv", w3, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\phi.csv", phi, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\phi1.csv", phi1, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\phi2.csv", phi2, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\phi3.csv", phi3, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\Sy.csv", Sy, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\Sz.csv", Sz, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\My.csv", My, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\Mz.csv", Mz, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\T.csv", T, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\tau.csv", tau, delimiter=",")
 ## Value of the total potential energy
 _ = aileron.cPI()               # Compute the total potential energy of the beam for the computed solution.
 i,k = 0, 1.01                   # Parameters for next line
@@ -183,34 +198,35 @@ theta = np.linspace(0,m.pi/2,num = 100)
 a = Stressobject.q1f(theta)             # Compute the shear flow distribution in region 1
 b = Stressobject.sigma1f(theta)         # Compute the direct stress distribution in region 1
 c = Stressobject.vm1(theta)             # Compute the Von Mises stress distribution in region 1
-d, e = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
+d1, e1 = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
 
 y = np.linspace(0,ha/2.,num = 100)
 _ = Stressobject.q2f(y)             # Compute the shear flow distribution in region 3
 _ = Stressobject.sigma2f(y)         # Compute the direct stress distribution in region 3
 _ = Stressobject.vm2(y)             # Compute the Von Mises stress distribution in region 3
-_, _ = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
+d2, e2 = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
 
 s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
 _ = Stressobject.q3f(s)             # Compute the shear flow distribution in region 4
 _ = Stressobject.sigma3f(s)         # Compute the direct stress distribution in region 4
 _ = Stressobject.vm3(s)             # Compute the Von Mises stress distribution in region 4
-_, _ = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
+d3, e3 = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
 
 s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
 _ = Stressobject.q4f(s)             # Compute the shear flow distribution in region 4
 _ = Stressobject.sigma4f(s)         # Compute the direct stress distribution in region 4
 _ = Stressobject.vm4(s)             # Compute the Von Mises stress distribution in region 4
-_, _ = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
+d4, e4 = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
 
 y = np.linspace(0,ha/2.,num = 100)
 _ = Stressobject.q5f(y)             # Compute the shear flow distribution in region 5
 _ = Stressobject.sigma5f(y)         # Compute the direct stress distribution in region 5
 _ = Stressobject.vm5(y)             # Compute the Von Mises stress distribution in region 5
-_, _ = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
+d5, e5 = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
 
 theta = np.linspace(-m.pi/2,0,num = 100)
 _ = Stressobject.q6f(theta)             # Compute the shear flow distribution in region 6
 _ = Stressobject.sigma6f(theta)         # Compute the direct stress distribution in region 6
 _ = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
-_, _ = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
+d6, e6 = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
+

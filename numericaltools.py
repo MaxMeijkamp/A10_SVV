@@ -75,3 +75,15 @@ def mac_step(difference, pow=1):
             return difference**pow
     else:
         return 0
+
+def derivative(u, x):
+    # Internal symmetric difference, edges forward or backward difference
+    result = np.zeros(u.size)
+    for i in range(1,u.size-1):
+        result[i] = (u[i+1]-u[i-1])/(x[i+1]-x[i-1])
+    result[0] = (u[1]-u[0])/(x[1]-x[0])
+    result[-1] = (u[-1]-u[-2])/(x[-1]-x[-2])
+    return result
+
+
+
