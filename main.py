@@ -87,7 +87,7 @@ if verification_gen: # Does not work 100% yet
     np.savetxt(str(data_path)+"\\tau.csv", Sy, delimiter=",")
 
 def dataimport(file):
-    return np.genfromtxt(data_path+"\\"+file+".csv", delimiter=",")
+    return np.genfromtxt(data_path+"/"+file+".csv", delimiter=",")
 
 sol_y = dataimport("x_y") # Angle at D wrt x axis, Fy1, Fy2, Fy3
 sol_z = dataimport("x_z") # Angle at D wrt z axis, Fz1, Fza, Fz2, Fz3
@@ -103,6 +103,13 @@ uy_num = np.sum(dataimport("usolved_y"),axis=1)
 uy_ver = dataimport("v")
 uz_num = np.sum(dataimport("usolved_z"),axis=1)
 uz_ver = dataimport("usolved_z")
+
+# uz_val = dataimport("VM_Jam_bent_values")
+# print(uz_val)
+# b = dataimport("VM_Jam_straight_coordinates")[:,0]
+# func = cont_spline(x, uz_num)
+# values = func(b)
+# comp_data(b, uz_num, uz_val, plot_diff=False, plot_rel=False, label="Validation")
 
 uy1_num = derivative(uy_num, x)
 uy1_ver = dataimport("v1")

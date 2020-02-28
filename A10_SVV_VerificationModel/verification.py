@@ -8,10 +8,11 @@ import sys
 import unittest
 import InputClasses
 import numericaltools
-import numpy as main
+import numpy as np
 aileron = InputClasses.Aileron()
-app_loads = InputClasses.AppliedLoads()
+#app_loads = InputClasses.AppliedLoads()
 import equilibrium
+mainfile = main
 
 class MyTestCase(unittest.TestCase):
     def test_Izz_Iyy(self):
@@ -23,7 +24,6 @@ class MyTestCase(unittest.TestCase):
         self.assertAlmostEqual(mainfile.zc+aileron.radius, aileron.centroid(2), 9)
 
     def test_shear_centre(self):
-        self.assertIsNone(mainfile.ysc)
         self.assertAlmostEqual(mainfile.zsc, aileron.shearcentre(self)[0], 9)
 
     def test_stiffloc(self):

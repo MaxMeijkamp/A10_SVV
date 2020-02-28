@@ -42,12 +42,12 @@ that the position of the centroid makes sense. """
 
 ### Access to important results
 """" If you desire, you can manually overwrite these values. """
-_ = crosssection.stcoord            # array containing stringer coordinates
+stcoord = crosssection.stcoord            # array containing stringer coordinates
 _ = crosssection.totarea            # total cross-section area
 yc = crosssection.yc                 # y-coordinate of the centroid
 zc = crosssection.zc                 # z-coordinate of the centroid
-_ = crosssection.Iyy                # moment of inertia about y-axis
-_ = crosssection.Izz                # moment of inertia about z-axis
+Iyy = crosssection.Iyy                # moment of inertia about y-axis
+Izz = crosssection.Izz                # moment of inertia about z-axis
 #print(zc)
 
 ######################## Part III - Torsional stiffness calculations #######################################
@@ -189,103 +189,127 @@ _ = aileron.sol.coef        # Resulting coefficients, collected in bar(alpha) (a
 Stressobject = Stress.Stressstate(crosssection)
 
 ### Define the forces and moments for which you want to know the stress distributions
-x = 0.69
-Sy = aileron.Sy(x)
-Sz = aileron.Sz(x)
-My = aileron.My(x)
-Mz = aileron.Mz(x)
-T = aileron.T(x)
+xmax = []
+xmin = []
+vmmax = []
+vmmin = []
 
-### Primary functions
-""""The following line should never be disabled, as its results are used in the auxiliary functions"""
-Stressobject.compute_unitstressdistributions()
+for x in range(1692):
+    xtemp = x/1000
+    Sy = aileron.Sy(x)
+    Sz = aileron.Sz(x)
+    My = aileron.My(x)
+    Mz = aileron.Mz(x)
+    T = aileron.T(x)
 
-h = Stressobject.ha / 2.
-A1 = m.pi * h ** 2 / 2.
-A2 = (Stressobject.Ca - h) * h
+    ### Primary functions
+    """"The following line should never be disabled, as its results are used in the auxiliary functions"""
+    Stressobject.compute_unitstressdistributions()
 
-A = np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]])
-b = np.array([0., 0., 0.])
+    h = Stressobject.ha / 2.
+    A1 = m.pi * h ** 2 / 2.
+    A2 = (Stressobject.Ca - h) * h
 
-### First row
-A[0, 0] = 2. * A1
-A[0, 1] = 2. * A2
-b[0] = -1
+    A = np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]])
+    b = np.array([0., 0., 0.])
 
-### Second row
-A[1, 0] = (h * m.pi / Stressobject.tsk + 2 * h / Stressobject.tsp) / (2 * A1)
-A[1, 1] = (-2 * h / Stressobject.tsp) / (2 * A1)
-A[1, 2] = -1.
-b[1] = 0.
+    ### First row
+    A[0, 0] = 2. * A1
+    A[0, 1] = 2. * A2
+    b[0] = -1
 
-### Third row
-A[2, 0] = (-2 * h / Stressobject.tsp) / (2 * A2)
-A[2, 1] = (2 * Stressobject.lsk / Stressobject.tsk + 2 * h / Stressobject.tsp) / (2 * A2)
-A[2, 2] = -1
-b[2] = 0.
+    ### Second row
+    A[1, 0] = (h * m.pi / Stressobject.tsk + 2 * h / Stressobject.tsp) / (2 * A1)
+    A[1, 1] = (-2 * h / Stressobject.tsp) / (2 * A1)
+    A[1, 2] = -1.
+    b[1] = 0.
 
-solution = np.linalg.solve(A, b)
-Stressobject.Tq1f = solution[0]
-Stressobject.Tq2f = -solution[0] + solution[1]
-Stressobject.Tq3f = solution[1]
-Stressobject.Tq4f = solution[1]
-Stressobject.Tq5f = -solution[0] + solution[1]
-Stressobject.Tq6f = solution[0]
+    ### Third row
+    A[2, 0] = (-2 * h / Stressobject.tsp) / (2 * A2)
+    A[2, 1] = (2 * Stressobject.lsk / Stressobject.tsk + 2 * h / Stressobject.tsp) / (2 * A2)
+    A[2, 2] = -1
+    b[2] = 0.
 
-### Auxiliary functions
-Stressobject.compute_stressdistributions(Sy,Sz,My,Mz,T)
+    solution = np.linalg.solve(A, b)
+    Stressobject.Tq1f = solution[0]
+    Stressobject.Tq2f = -solution[0] + solution[1]
+    Stressobject.Tq3f = solution[1]
+    Stressobject.Tq4f = solution[1]
+    Stressobject.Tq5f = -solution[0] + solution[1]
+    Stressobject.Tq6f = solution[0]
 
-### Some plotting functions
-Stressobject.plot_shearflowdistributions()
-Stressobject.plot_directstressdistributions()
-Stressobject.plot_vonmisesstressdistributions()
+    ### Auxiliary functions
+    Stressobject.compute_stressdistributions(Sy,Sz,My,Mz,T)
 
-### Access to important results
-theta = np.linspace(0,m.pi/2,num = 100)
-_ = Stressobject.q1f(theta)             # Compute the shear flow distribution in region 1
-sss1 = Stressobject.sigma1f(theta)         # Compute the direct stress distribution in region 1
-c = Stressobject.vm1(theta)             # Compute the Von Mises stress distribution in region 1
-d, e = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
+    ### Some plotting functions
+    #Stressobject.plot_shearflowdistributions()
+    #Stressobject.plot_directstressdistributions()
+    #Stressobject.plot_vonmisesstressdistributions()
 
-y = np.linspace(0,ha/2.,num = 100)
-_ = Stressobject.q2f(y)             # Compute the shear flow distribution in region 3
-sss2 = Stressobject.sigma2f(y)         # Compute the direct stress distribution in region 3
-_ = Stressobject.vm2(y)             # Compute the Von Mises stress distribution in region 3
-_, _ = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
+    ### Access to important results
+    theta = np.linspace(0,m.pi/2,num = 100)
+    _ = Stressobject.q1f(theta)             # Compute the shear flow distribution in region 1
+    sss1 = Stressobject.sigma1f(theta)         # Compute the direct stress distribution in region 1
+    vm1 = Stressobject.vm1(theta)             # Compute the Von Mises stress distribution in region 1
+    d, e = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
 
-s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
-_ = Stressobject.q3f(s)             # Compute the shear flow distribution in region 4
-sss3 = Stressobject.sigma3f(s)         # Compute the direct stress distribution in region 4
-_ = Stressobject.vm3(s)             # Compute the Von Mises stress distribution in region 4
-_, _ = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
+    y = np.linspace(0,ha/2.,num = 100)
+    _ = Stressobject.q2f(y)             # Compute the shear flow distribution in region 3
+    sss2 = Stressobject.sigma2f(y)         # Compute the direct stress distribution in region 3
+    vm2 = Stressobject.vm2(y)             # Compute the Von Mises stress distribution in region 3
+    _, _ = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
 
-s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
-_ = Stressobject.q4f(s)             # Compute the shear flow distribution in region 4
-sss4 = Stressobject.sigma4f(s)         # Compute the direct stress distribution in region 4
-_ = Stressobject.vm4(s)             # Compute the Von Mises stress distribution in region 4
-_, _ = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
+    s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
+    _ = Stressobject.q3f(s)             # Compute the shear flow distribution in region 4
+    sss3 = Stressobject.sigma3f(s)         # Compute the direct stress distribution in region 4
+    vm3 = Stressobject.vm3(s)             # Compute the Von Mises stress distribution in region 4
+    _, _ = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
 
-y = np.linspace(0,ha/2.,num = 100)
-_ = Stressobject.q5f(y)             # Compute the shear flow distribution in region 5
-sss5 = Stressobject.sigma5f(y)         # Compute the direct stress distribution in region 5
-_ = Stressobject.vm5(y)             # Compute the Von Mises stress distribution in region 5
-_, _ = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
+    s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
+    _ = Stressobject.q4f(s)             # Compute the shear flow distribution in region 4
+    sss4 = Stressobject.sigma4f(s)         # Compute the direct stress distribution in region 4
+    vm4 = Stressobject.vm4(s)             # Compute the Von Mises stress distribution in region 4
+    _, _ = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
 
-theta = np.linspace(-m.pi/2,0,num = 100)
-_ = Stressobject.q6f(theta)             # Compute the shear flow distribution in region 6
-sss6 = Stressobject.sigma6f(theta)         # Compute the direct stress distribution in region 6
-_ = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
-_, _ = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
+    y = np.linspace(0,ha/2.,num = 100)
+    _ = Stressobject.q5f(y)             # Compute the shear flow distribution in region 5
+    sss5 = Stressobject.sigma5f(y)         # Compute the direct stress distribution in region 5
+    vm5 = Stressobject.vm5(y)             # Compute the Von Mises stress distribution in region 5
+    _, _ = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
 
-print("sss1 max= ", max(sss1))
-print("sss1 min= ", min(sss1))
-print("sss2 max= ", max(sss2))
-print("sss2 min= ", min(sss2))
-print("sss3 max= ", max(sss3))
-print("sss3 min= ", min(sss3))
-print("sss4 max= ", max(sss4))
-print("sss4 min= ", min(sss4))
-print("sss5 max= ", max(sss5))
-print("sss5 min= ", min(sss5))
-print("sss6 max= ", max(sss6))
-print("sss6 min= ", min(sss6))
+    theta = np.linspace(-m.pi/2,0,num = 100)
+    _ = Stressobject.q6f(theta)             # Compute the shear flow distribution in region 6
+    sss6 = Stressobject.sigma6f(theta)         # Compute the direct stress distribution in region 6
+    vm6 = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
+    _, _ = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
+    #print(xtemp, max(vm1), min(vm1))
+    #print(xtemp, max(vm2), min(vm2))
+    #print(xtemp, max(vm3), min(vm3))
+    #print(xtemp, max(vm4), min(vm4))
+    #print(xtemp, max(vm5), min(vm5))
+    #print(xtemp, max(vm6), min(vm6))
+    vmmaxtemp = max(max(vm1), max(vm2), max(vm3), max(vm4), max(vm5), max(vm6))
+    vmmintemp = min(min(vm1), min(vm2), min(vm3), min(vm4), min(vm5), min(vm6))
+    xmax.append(xtemp)
+    vmmax.append(vmmaxtemp)
+    vmmin.append(vmmintemp)
+
+i = vmmax.index(max(vmmax))
+j = vmmin.index(min(vmmin))
+
+print(xmax[j],vmmin[j],xmax[i],vmmax[i])
+
+
+
+#print("sss1 max= ", max(sss1))
+#print("sss1 min= ", min(sss1))
+#print("sss2 max= ", max(sss2))
+#print("sss2 min= ", min(sss2))
+#print("sss3 max= ", max(sss3))
+#print("sss3 min= ", min(sss3))
+#print("sss4 max= ", max(sss4))
+#print("sss4 min= ", min(sss4))
+#print("sss5 max= ", max(sss5))
+#print("sss5 min= ", min(sss5))
+#print("sss6 max= ", max(sss6))
+#print("sss6 min= ", min(sss6))

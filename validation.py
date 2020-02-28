@@ -1,7 +1,7 @@
 import numpy as np
 from operator import itemgetter
 #from mpl_toolkits import mplot3d  # 3d plotting
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 # # input file
 # a = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
