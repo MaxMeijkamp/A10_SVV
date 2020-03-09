@@ -93,3 +93,5 @@ def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_
         figManager.full_screen_toggle()
     plt.tight_layout()
     plt.show()
+
+print(comp_data())

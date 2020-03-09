@@ -1,7 +1,7 @@
 import numpy as np
 from operator import itemgetter
 #from mpl_toolkits import mplot3d  # 3d plotting
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 # # input file
 # a = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
@@ -203,7 +203,6 @@ def get_twist(case):
                 hingenewf[f].append(s[3])
                 f += 1
     hingenewf.sort()
-    print(hingenewf)
 
     # Twist angle as a function of x (span) [node number, twist angle (rad), y disp (mm)]
 
@@ -226,4 +225,5 @@ def get_twist(case):
 
     plt.show()
 
-    return()
+    return(twistcr)
+print(get_twist('bending'))
