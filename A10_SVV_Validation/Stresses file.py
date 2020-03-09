@@ -6,9 +6,12 @@ Created on Fri Feb 28 13:34:55 2020
 @author: mustafawahid
 """
 
-"Von Mises Bending Values"
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+"Von Mises Bending Values"
+
 
 a = np.array([0.21416849999999998, 0.2491405, 0.275432, 0.3018725, 0.3160955, 0.34132949999999995, 0.35193850000000004, 0.250922, 0.21329199999999998, 0.18317, 0.15722, 0.13265300000000002, 0.1086245, 0.08616805, 0.06534845, 0.050042249999999996, 0.044589050000000005, 0.0533709, 0.07051815, 0.09196105, 0.11489450000000001, 0.138847, 0.163308, 0.1882005, 0.21488000000000002, 0.2438735, 0.2960785, 0.06448155, 0.01781195, 0.039232050000000004, 0.08005465, 0.11964149999999998, 0.1628055, 0.2084945, 0.2857475, 0.10112080000000001, 0.108149, 0.1171475, 0.125912, 0.135342, 0.144457, 0.15379500000000002, 0.1629555, 0.1721955, 0.18135649999999998, 0.19052200000000002, 0.199684, 0.208844, 0.218179, 0.228055, 0.2387625, 0.2541775, 0.27699, 0.3617365, 0.09582925, 0.09399555, 0.1731305, 0.1321405, 0.09707725, 0.07126735000000001, 0.06569354999999999, 0.08091860000000001])
 
@@ -52,18 +55,27 @@ s12jb=(0.1326395, 2390.0) #s12 Jam Bent
 s12js=(0.0831562, 5181.0) #s12 Jam Straight
 
 
+
+def plotcrossection(values,coordinates):
+
     ylist=[]
     zlist=[]
-    for l in j:
+    for l in coordinates:
         ylist.append(l[1])
         zlist.append(l[2])
-        
-    
-    
-    print(abs(max(zlist)-min(zlist)))
-    plt.scatter(zlist,ylist,c=i)
+
+    plt.scatter(zlist,ylist,c=values)
     plt.colorbar()
     plt.show()
+    return
+
+
+plotcrossection(a,b)
+#plotcrossection(c,d)
+#plotcrossection(e,f)
+#plotcrossection(g,h)
+#plotcrossection(i,j)
+#plotcrossection(k,l)
 
 
 
