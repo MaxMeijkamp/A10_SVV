@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="4c9ce60f-9425-4ff2-a792-5952d02b9cd9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compare.py" beforeDir="false" afterPath="$PROJECT_DIR$/compare.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation.py" beforeDir="false" afterPath="$PROJECT_DIR$/validation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,14 +16,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/validation.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="126">
-              <caret line="204" column="20" lean-forward="true" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
+              <caret line="204" column="20" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
                 <element signature="e#2605#4607#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1649">
+              <caret line="97" column="106" selection-start-line="97" selection-start-column="106" selection-end-line="97" selection-end-column="106" />
+              <folding>
+                <element signature="e#32#50#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -75,15 +86,7 @@
         <option value="$PROJECT_DIR$/torsion.py" />
         <option value="$PROJECT_DIR$/compare.py" />
         <option value="$PROJECT_DIR$/validation.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/A10_SVV.iml" />
-        <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.idea/modules.xml" />
+        <option value="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py" />
       </list>
     </option>
   </component>
@@ -105,6 +108,11 @@
               <item name="A10_SVV" type="b2602c69:ProjectViewProjectNode" />
               <item name="A10_SVV" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="A10_SVV" type="b2602c69:ProjectViewProjectNode" />
+              <item name="A10_SVV" type="462c0819:PsiDirectoryNode" />
+              <item name="A10_SVV_VerificationModel2.0" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -117,10 +125,12 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Dario\PycharmProjects\A10_SVV\A10_SVV_VerificationModel2.0" />
+      <recent name="C:\Users\Dario\PycharmProjects\A10_SVV" />
       <recent name="C:\Users\Dario\PycharmProjects\A10_SVV\A10_SVV_DataSets" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Dario\PycharmProjects\A10_SVV\A10_SVV_DataSets" />
     </key>
   </component>
@@ -136,7 +146,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.validation">
+  <component name="RunManager" selected="Python.main">
     <configuration name="Hingeline deflection" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="A10_SVV" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -200,7 +210,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="testval" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="A10_SVV" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -208,11 +218,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/A10_SVV_VerificationModel2.0" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testval.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -244,11 +254,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.validation" />
         <item itemvalue="Python.compare" />
         <item itemvalue="Python.Max_stresses" />
         <item itemvalue="Python.Hingeline deflection" />
-        <item itemvalue="Python.testval" />
       </list>
     </recent_temporary>
   </component>
@@ -410,7 +420,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582817311560</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Function n_twist(x) gives the twist as a function of the span for the num.model">
+      <created>1583743298989</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1583743298989</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TodoView">
@@ -424,14 +441,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48734176" visible="true" weight="0.34015852" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48734176" visible="true" weight="0.34015852" />
       <window_info id="Structure" order="1" sideWeight="0.51265824" side_tool="true" weight="0.15587847" />
       <window_info id="Favorites" order="2" sideWeight="0.5007072" side_tool="true" weight="0.22523117" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.32956153" />
       <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5019815" side_tool="true" weight="0.24186705" />
-      <window_info active="true" anchor="bottom" x="11" y="127" width="1514" height="570" id="Run" order="2" sideWeight="0.4980185" visible="true" weight="0.20084865" />
+      <window_info anchor="bottom" x="11" y="127" width="1514" height="570" id="Run" order="2" sideWeight="0.4980185" visible="true" weight="0.20084865" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39745402" />
       <window_info anchor="bottom" id="Python Console" order="4" weight="0.42149928" />
       <window_info anchor="bottom" id="Message" order="5" />
@@ -660,6 +676,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="204" column="20" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#2605#4607#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/compare.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="415">
@@ -670,13 +697,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/validation.py">
+    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Energy.cp38-win_amd64.pyd">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="204" column="20" lean-forward="true" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
+        <state relative-caret-position="1649">
+          <caret line="97" column="106" selection-start-line="97" selection-start-column="106" selection-end-line="97" selection-end-column="106" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#2605#4607#0" />
+            <element signature="e#32#50#0" expanded="true" />
           </folding>
         </state>
       </provider>
