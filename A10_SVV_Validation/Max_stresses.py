@@ -214,3 +214,45 @@ def crossection_s12(case):
         crossection_s12_list.append(s12(case, i))
 
     return crossection_s12_list
+
+print (max_von_mises('bending'))
+print (max_von_mises('Jam_Bent'))
+print (max_von_mises('Jam_Straight'))
+print (max_s12('bending'))
+print (max_s12('Jam_Bent'))
+print (max_s12('Jam_Straight'))
+
+
+
+
+
+(0.3617365, 5190.0) #von mises bending
+(0.4141685, 2391.0) #von mises Jam Bent
+(0.178384, 5369.0) #von mises Jam Straight
+(0.07755395000000001, 384.0) #s12 bending
+(0.1326395, 2390.0) #s12 Jam Bent
+(0.0831562, 5181.0) #s12 Jam Straight
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
