@@ -198,8 +198,10 @@ sssmax = []
 sssmin = []
 vmmax = []
 vmmin = []
+verstress = np.array([])
 
-for x in range(0,1692):
+for x in range(0,5):
+    verstresstemp = []
     xtemp = x/1000
     Sy = aileron.Sy(xtemp)
     Sz = aileron.Sz(xtemp)
@@ -257,36 +259,49 @@ for x in range(0,1692):
     sss1 = Stressobject.sigma1f(theta)         # Compute the direct stress distribution in region 1
     vm1 = Stressobject.vm1(theta)             # Compute the Von Mises stress distribution in region 1
     z1, y1 = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
+    verstresstemp = np.array([xtemp,y1,z1,q1,sss1,vm1])
+    verstress.append(verstresstemp)
 
     y = np.linspace(0,ha/2.,num = 100)
     q2 = Stressobject.q2f(y)             # Compute the shear flow distribution in region 3
     sss2 = Stressobject.sigma2f(y)         # Compute the direct stress distribution in region 3
     vm2 = Stressobject.vm2(y)             # Compute the Von Mises stress distribution in region 3
     z2, y2 = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
+    verstresstemp = [xtemp,y2,z2,q2,sss2,vm2]
+    verstress.append(verstresstemp)
 
     s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
     q3 = Stressobject.q3f(s)             # Compute the shear flow distribution in region 4
     sss3 = Stressobject.sigma3f(s)         # Compute the direct stress distribution in region 4
     vm3 = Stressobject.vm3(s)             # Compute the Von Mises stress distribution in region 4
     z3, y3 = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
+    verstresstemp = [xtemp,y3,z3,q3,sss3,vm3]
+    verstress.append(verstresstemp)
 
     s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
     q4 = Stressobject.q4f(s)             # Compute the shear flow distribution in region 4
     sss4 = Stressobject.sigma4f(s)         # Compute the direct stress distribution in region 4
     vm4 = Stressobject.vm4(s)             # Compute the Von Mises stress distribution in region 4
     z4, y4 = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
+    verstresstemp = [xtemp,y4,z4,q4,sss4,vm4]
+    verstress.append(verstresstemp)
 
     y = np.linspace(0,ha/2.,num = 100)
     q5 = Stressobject.q5f(y)             # Compute the shear flow distribution in region 5
     sss5 = Stressobject.sigma5f(y)         # Compute the direct stress distribution in region 5
     vm5 = Stressobject.vm5(y)             # Compute the Von Mises stress distribution in region 5
     z5, y5 = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
+    verstresstemp = [xtemp,y5,z5,q5,sss5,vm5]
+    verstress.append(verstresstemp)
 
     theta = np.linspace(-m.pi/2,0,num = 100)
     q6 = Stressobject.q6f(theta)             # Compute the shear flow distribution in region 6
     sss6 = Stressobject.sigma6f(theta)         # Compute the direct stress distribution in region 6
     vm6 = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
     z6, y6 = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
+    verstresstemp = [xtemp,y6,z6,q6,sss6,vm6]
+    verstress.append(verstresstemp)
+
     #print(xtemp, max(vm1), min(vm1))
     #print(xtemp, max(vm2), min(vm2))
     #print(xtemp, max(vm3), min(vm3))
