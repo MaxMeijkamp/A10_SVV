@@ -56,7 +56,7 @@ s12js=(0.0831562, 5181.0) #s12 Jam Straight
 
 
 
-def plotcrossection(values,coordinates):
+def plotcrossection(values,coordinates,plotname):
 
     ylist=[]
     zlist=[]
@@ -65,17 +65,36 @@ def plotcrossection(values,coordinates):
         zlist.append(l[2])
 
     plt.scatter(zlist,ylist,c=values)
+    plt.title(plotname)
+    plt.xlabel('z-location')
+    plt.ylabel('y-location')
+    plt.colorbar()
+    plt.show()
+    return
+
+def plotcrossection(values,coordinates,plotname):
+
+    ylist=[]
+    zlist=[]
+    for l in coordinates:
+        ylist.append(l[1])
+        zlist.append(l[2])
+
+    plt.scatter(zlist,ylist,c=values)
+    plt.title(plotname)
+    plt.xlabel('z-location')
+    plt.ylabel('y-location')
     plt.colorbar()
     plt.show()
     return
 
 
-plotcrossection(a,b)
-#plotcrossection(c,d)
-#plotcrossection(e,f)
-#plotcrossection(g,h)
-#plotcrossection(i,j)
-#plotcrossection(k,l)
+plotcrossection(a,b,'Von Mises Bending')
+#plotcrossection(c,d,'Von Mises Jam Bent' )
+#plotcrossection(e,f,'Von Mises Jam Straight')
+#plotcrossection(g,h, 'S12 Bending')
+#plotcrossection(i,j,'S12 Jam Bent')
+#plotcrossection(k,l,'S12 Jam Straight')
 
 
 
