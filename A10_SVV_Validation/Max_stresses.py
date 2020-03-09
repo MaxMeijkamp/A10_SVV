@@ -6,7 +6,52 @@ Created on Tue Feb 25 15:23:36 2020
 @author: mustafawahid
 """
 import numpy as np
-from validation import *
+
+
+def get_dat(case, param):
+    file = "B737.rpt"
+    newload = []
+
+    if str(case) == 'bending':
+
+        if param == 'stresses':  # returns VMS and S12 at each element
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=20, max_rows=5778).astype(float)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=5816, max_rows=856).astype(float)
+            loaded = np.concatenate((loaded1, loaded2))
+
+            for elem in loaded:
+                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
+        if param == 'disp':  # returns displacement at each node
+            newload = np.genfromtxt(file, dtype=str, skip_header=20074, max_rows=6588)
+
+    if case == 'Jam_Bent':
+
+        if param == 'stresses':  # returns VMS and S12 at each element
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=6705, max_rows=5778)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=12501, max_rows=856)
+            loaded = np.concatenate((loaded1, loaded2)).astype(float)
+
+            for elem in loaded:
+                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
+
+        if param == 'disp':  # returns displacement at each node
+            newload = np.genfromtxt(file, dtype=str, skip_header=26724,
+                                    max_rows=6588)
+
+    if case == 'Jam_Straight':
+        if param == 'stresses':  # returns VMS and S12 at each element
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=13390, max_rows=5778)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=19186, max_rows=856)
+            loaded = np.concatenate((loaded1, loaded2)).astype(float)
+
+            for elem in loaded:
+                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
+
+        if param == 'disp':  # returns displacement at each node
+            newload = np.genfromtxt(file, dtype=str, skip_header=33374, max_rows=6588)
+
+    return (newload)
+
 
 def node_x(node):
     # returns x-coordinate OF GIVEN NODE
@@ -15,6 +60,24 @@ def node_x(node):
     for i in nodelist:
         if int(i[0]) == node:
             return i[1]
+
+
+def node_y(node):
+    # returns y-coordinate OF GIVEN NODE
+    nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+    nodelist = nodelist.astype(np.float)
+    for i in nodelist:
+        if int(i[0]) == node:
+            return i[2]
+
+
+def node_z(node):
+    # returns z-coordinate OF GIVEN NODE
+    nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+    nodelist = nodelist.astype(np.float)
+    for i in nodelist:
+        if int(i[0]) == node:
+            return i[3]
 
 
 def nodes(element):
@@ -48,12 +111,15 @@ def integrationpoint(element):
     elementlist = elementlist.astype(np.float)
     allnodes = nodes(element)
     x = 0
+    y = 0
+    z = 0
     for i in allnodes:
         x = x + node_x(i)
-    return x / len(allnodes)
+        y = y + node_y(i)
+        z = z + node_z(i)
+    return x / len(allnodes), y / len(allnodes), z / len(allnodes)
 
 
-# fix this part
 def crossection(node):
     # finds all the nodes in the crossection of given node
     elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
@@ -86,7 +152,15 @@ def crossection_element(element):
             if crossectionlist.count(i) == 0:
                 crossectionlist.append(i)
 
-    return np.sort(crossectionlist)
+    return crossectionlist
+
+
+def crossection_coordinates(element):
+    a = crossection_element(element)
+    lst = []
+    for i in a:
+        lst.append(integrationpoint(i))
+    return lst
 
 
 def max_von_mises(case):
@@ -140,29 +214,3 @@ def crossection_s12(case):
         crossection_s12_list.append(s12(case, i))
 
     return crossection_s12_list
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -63,12 +63,13 @@ def bending(M_vect, point_vect, a):
     # returns sigma_x for location y, z on the aileron. Inputs: Internal moment vector (y, z); position of the point to
     # calculate the stresses (y, z); an instance of Aileron class.
     # the relevant moments M_z, M_y (tension in + plane positive), centroid: tuple with xyz centroid of the aileron
-    return - M_vect[1] * (point_vect[0] - a.centroid(axis=1)) / a.Izz() + M_vect[0] * (point_vect[1] - a.centroid(2)) / a.Iyy()
+    return - M_vect[1] * (point_vect[0] - a.centroid(axis=1)) / \
+           a.Izz() + M_vect[0] * (point_vect[1] - a.centroid(2)) / a.Iyy()
 
 # For bending, not only sigma_x is needed, but also the displacements and angular displacements
 # at all sections caused by the bending.
 
-def shearflow(dataset, shearforce = 1.):
+def shearflow(dataset, shearforce = 1., checking = False):
     # Calculates shear flows around circumference and in spar due to shear force applied in SC
     aileron = dataset
     r = aileron.radius
@@ -149,14 +150,15 @@ def shearflow(dataset, shearforce = 1.):
 
     # check should be 0 vector
     check = twistmatrix @ correctionshears - shearbasevector
-
+    if checking:
+        return check
     # Add correction shears and base shear to row 4
     s_list[4, idx_s[0]: idx_s[1]] = s_list[3, idx_s[0]: idx_s[1]] + correctionshear1
     s_list[4, idx_s[3]: idx_s[4]] = s_list[3, idx_s[3]: idx_s[4]] + correctionshear1
     s_list[4, idx_s[1]: idx_s[3]] = s_list[3, idx_s[1]: idx_s[3]] + correctionshear2
     s56_list[4] = s56_list[1] - correctionshear1 + correctionshear2
 
-    return s_list[[0,4,3]], s56_list[[0,4,1]]
+    return s_list[[0,4]], s56_list[[0,4]]
 
 if __name__ == '__main__':
     flow = shearflow(InputClasses.Aileron())[0]

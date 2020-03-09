@@ -1,7 +1,7 @@
 import numpy as np
 from operator import itemgetter
 #from mpl_toolkits import mplot3d  # 3d plotting
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 # # input file
 # a = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
@@ -205,7 +205,6 @@ def get_twist(case):
     hingenewf.sort()
     print(hingenewf)
 
-
     # Twist angle as a function of x (span) [node number, twist angle (rad), y disp (mm)]
 
     twistcr = []
@@ -215,16 +214,12 @@ def get_twist(case):
         #print(LE_LO[samp][3],hingenew[samp])
         twistcr.append(theta)
 
-
-
-    #twistcr.sort()
+    # t wistcr.sort()
     hingeline_x.sort()
 
-
-    #print(hingelinenodes[:,[0]])
+    # print(hingelinenodes[:,[0]])
 
     plt.plot(hingeline_x,twistcr)
     plt.show()
-
 
     return()

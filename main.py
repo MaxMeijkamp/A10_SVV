@@ -41,7 +41,8 @@ if renew_data_y:
     uy_save[:,2] *= xy[1]
     uy_save[:,3] *= xy[2]
     uy_save[:,4] *= xy[3]
-    save_data(xy, appendix="y", prefix=str(data_path)+"\\", shear_blank=sheary, shear_solved=shearsolvedy, moment_blank=momenty, moment_solved=momentsolvedy, u_blank=uy, u=uy_save)
+    save_data(xy, appendix="y", prefix=str(data_path)+"\\", shear_blank=sheary, shear_solved=shearsolvedy,
+              moment_blank=momenty, moment_solved=momentsolvedy, u_blank=uy, u=uy_save)
 
 if renew_data_z:
     uz, shearz, momentz = make_u_z(loads)
@@ -54,7 +55,8 @@ if renew_data_z:
     uz_save[:,3] *= xz[2]
     uz_save[:,4] *= xz[3]
     uz_save[:,5] *= xz[4]
-    save_data(xz, appendix="z", prefix=str(data_path)+"\\", shear_blank=shearz, shear_solved=shearsolvedz, moment_blank=momentz, moment_solved=momentsolvedz, u_blank=uz, u=uz_save)
+    save_data(xz, appendix="z", prefix=str(data_path)+"\\", shear_blank=shearz, shear_solved=shearsolvedz,
+              moment_blank=momentz, moment_solved=momentsolvedz, u_blank=uz, u=uz_save)
 
 if verification_gen: # Does not work 100% yet
     if sys.version_info.minor == 7:
@@ -87,7 +89,7 @@ if verification_gen: # Does not work 100% yet
     np.savetxt(str(data_path)+"\\tau.csv", Sy, delimiter=",")
 
 def dataimport(file):
-    return np.genfromtxt(data_path+"\\"+file+".csv", delimiter=",")
+    return np.genfromtxt(data_path+"/"+file+".csv", delimiter=",")
 
 sol_y = dataimport("x_y") # Angle at D wrt x axis, Fy1, Fy2, Fy3
 sol_z = dataimport("x_z") # Angle at D wrt z axis, Fz1, Fza, Fz2, Fz3
@@ -103,6 +105,13 @@ uy_num = np.sum(dataimport("usolved_y"),axis=1)
 uy_ver = dataimport("v")
 uz_num = np.sum(dataimport("usolved_z"),axis=1)
 uz_ver = dataimport("usolved_z")
+
+# uz_val = dataimport("VM_Jam_bent_values")
+# print(uz_val)
+# b = dataimport("VM_Jam_straight_coordinates")[:,0]
+# func = cont_spline(x, uz_num)
+# values = func(b)
+# comp_data(b, uz_num, uz_val, plot_diff=False, plot_rel=False, label="Validation")
 
 uy1_num = derivative(uy_num, x)
 uy1_ver = dataimport("v1")
