@@ -88,7 +88,7 @@ from operator import itemgetter
 #     # plt.show()
 def get_dat(case, param):
 
-    file = "A10_SVV_DataSets/B737RPT.rpt"
+    file = "B737.rpt"
     newload = []
 
     if str(case) == 'bending' :
@@ -220,6 +220,10 @@ def get_twist(case):
     # print(hingelinenodes[:,[0]])
 
     plt.plot(hingeline_x,twistcr)
+    plt.title('Rate of twist for : '+case)
+    plt.xlabel('x - location')
+    plt.ylabel('Angle [rad]')
+
     plt.show()
 
     return()
