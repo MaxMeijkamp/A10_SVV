@@ -1,7 +1,7 @@
 import numpy as np
 from operator import itemgetter
 #from mpl_toolkits import mplot3d  # 3d plotting
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 # # input file
 # a = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
@@ -88,7 +88,7 @@ from operator import itemgetter
 #     # plt.show()
 def get_dat(case, param):
 
-    file = "A10_SVV_DataSets/B737RPT.rpt"
+    file = "B737.rpt"
     newload = []
 
     if str(case) == 'bending' :
@@ -185,7 +185,7 @@ def get_twist(case):
     for LEO in LEnode:
         for b0 in b:
             if LEO == int(b0[0]):
-                #LE_LO.append([b0[0],b0[1],b0[2],b0[3],b0[4]])
+                # LE_LO.append([b0[0],b0[1],b0[2],b0[3],b0[4]])
                 LE_LO.append([LE[i][0],b0[2], b0[3]])
                 i += 1
     LE_LO = np.sort(LE_LO,axis=0)
@@ -203,8 +203,6 @@ def get_twist(case):
                 hingenewf[f].append(s[3])
                 f += 1
     hingenewf.sort()
-    print(hingenewf)
-
 
     # Twist angle as a function of x (span) [node number, twist angle (rad), y disp (mm)]
 
@@ -215,16 +213,17 @@ def get_twist(case):
         #print(LE_LO[samp][3],hingenew[samp])
         twistcr.append(theta)
 
-
-
-    #twistcr.sort()
+    # t wistcr.sort()
     hingeline_x.sort()
 
-
-    #print(hingelinenodes[:,[0]])
+    # print(hingelinenodes[:,[0]])
 
     plt.plot(hingeline_x,twistcr)
+    plt.title('Rate of twist for : '+case)
+    plt.xlabel('x - location')
+    plt.ylabel('Angle [rad]')
+
     plt.show()
 
-
-    return()
+    return(twistcr)
+print(get_twist('bending'))

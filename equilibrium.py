@@ -14,24 +14,32 @@ def make_u_y(loads):
         # Previous known deflection plus aero distributed load
         u[i, 0] += u[i + 1, 0] + loads.forward_defl_distr(i)
         # Contribution of internal shear and moment due to aero load
-        u[i, 0] += -loads.pointload_defl(shearforces[i,0], loads.dx_list[i], loads.a.Izz()) + loads.moment_defl(moments[i,0], loads.dx_list[i], loads.a.Izz())
+        u[i, 0] += -loads.pointload_defl(shearforces[i, 0], loads.dx_list[i],
+                                         loads.a.Izz()) + loads.moment_defl(moments[i, 0],
+                                                                            loads.dx_list[i], loads.a.Izz())
         # Angle due to aero load
-        thetas[i,0] = loads.forward_angle_distr(i)
+        thetas[i, 0] = loads.forward_angle_distr(i)
         # Angle due to internal shear and moment due to aero load
-        thetas[i,0] += loads.moment_angle(moments[i,0], loads.dx_list[i], loads.a.Izz()) - loads.pointload_angle(shearforces[i,0], loads.dx_list[i], loads.a.Izz())
+        thetas[i, 0] += loads.moment_angle(moments[i, 0], loads.dx_list[i],
+                                           loads.a.Izz()) - loads.pointload_angle(shearforces[i, 0],
+                                                                                  loads.dx_list[i], loads.a.Izz())
 
         # Previous deflection due to angle at D and new contribution
-        u[i, 1] += u[i+1,1] - loads.dx_list[i]
+        u[i, 1] += u[i+1, 1] - loads.dx_list[i]
 
         if loads.bending:
             # Previous deflection plus contribution of force 1
             u[i, 2] += u[i + 1, 2] + loads.forward_defl_point(i)
             # Adding deflection due to internal shear and moment due to force 1
-            u[i, 2] += -loads.pointload_defl(shearforces[i,1], loads.dx_list[i], loads.a.Izz()) + loads.moment_defl(moments[i,1], loads.dx_list[i], loads.a.Izz())
+            u[i, 2] += -loads.pointload_defl(shearforces[i, 1], loads.dx_list[i],
+                                             loads.a.Izz()) + loads.moment_defl(moments[i, 1],
+                                                                                loads.dx_list[i], loads.a.Izz())
             # Angle due to force 1
             thetas[i,1] = loads.forward_angle_point(i)
             # Angle due to internal shear and moment due to force 1
-            thetas[i,1] += -loads.pointload_angle(shearforces[i,1], loads.dx_list[i], loads.a.Izz()) + loads.moment_angle(moments[i,1], loads.dx_list[i], loads.a.Izz())
+            thetas[i,1] += -loads.pointload_angle(shearforces[i,1], loads.dx_list[i],
+                                                  loads.a.Izz()) + loads.moment_angle(moments[i,1],
+                                                                                      loads.dx_list[i], loads.a.Izz())
 
         for j in range(1, loads.hinge2_idx - i):
             # Add contribution of the angle depending on the aero load
@@ -44,28 +52,44 @@ def make_u_y(loads):
         # Previous known deflection plus aero distributed load
         u[i, 0] += u[i - 1, 0] + loads.backward_defl_distr(i)
         # Contribution of internal shear and moment due to aero load
-        u[i, 0] += -loads.pointload_defl(shearforces[i-1,0], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_defl(moments[i-1,0], loads.dx_list[i-1], loads.a.Izz())
+        u[i, 0] += -loads.pointload_defl(shearforces[i-1,0], loads.dx_list[i-1],
+                                         loads.a.Izz()) + loads.moment_defl(moments[i-1,0],
+                                                                            loads.dx_list[i-1], loads.a.Izz())
         # Angle due to aero load
         thetas[i, 0] = loads.backward_angle_distr(i)
         # Angle due to internal shear and moment due to aero load
-        thetas[i, 0] += loads.moment_angle(moments[i-1,0], loads.dx_list[i-1], loads.a.Izz()) - loads.pointload_angle(shearforces[i-1,0], loads.dx_list[i-1], loads.a.Izz())
+        thetas[i, 0] += loads.moment_angle(moments[i-1,0], loads.dx_list[i-1],
+                                           loads.a.Izz()) - loads.pointload_angle(shearforces[i-1,0],
+                                                                                  loads.dx_list[i-1], loads.a.Izz())
 
         # Previous deflection due to angle at D and new contribution
         u[i, 1] += u[i-1,1] + loads.dx_list[i - 1]
 
 
-        u[i, 3] += u[i-1,3] - loads.pointload_defl(shearforces[i-1,2], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_defl(moments[i-1,2], loads.dx_list[i-1], loads.a.Izz())
-        thetas[i,2] = -loads.pointload_angle(shearforces[i-1,2], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_angle(moments[i-1,2], loads.dx_list[i-1], loads.a.Izz())
+        u[i, 3] += u[i-1,3] - loads.pointload_defl(shearforces[i-1,2], loads.dx_list[i-1],
+                                                   loads.a.Izz()) + loads.moment_defl(moments[i-1,2],
+                                                                                      loads.dx_list[i-1], loads.a.Izz())
+        thetas[i,2] = -loads.pointload_angle(shearforces[i-1,2], loads.dx_list[i-1],
+                                             loads.a.Izz()) + loads.moment_angle(moments[i-1,2],
+                                                                                 loads.dx_list[i-1], loads.a.Izz())
 
         if loads.bending:
             u[i, 4] += u[i - 1, 4] + loads.backward_defl_point(i)
-            u[i, 4] += -loads.pointload_defl(shearforces[i-1,3], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_defl(moments[i-1,3], loads.dx_list[i-1], loads.a.Izz())
+            u[i, 4] += -loads.pointload_defl(shearforces[i-1,3], loads.dx_list[i-1],
+                                             loads.a.Izz()) + loads.moment_defl(moments[i-1,3],
+                                                                                loads.dx_list[i-1], loads.a.Izz())
             thetas[i,3] = loads.backward_angle_point(i)
-            thetas[i,3] += -loads.pointload_angle(shearforces[i-1,3], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_angle(moments[i-1,3], loads.dx_list[i-1], loads.a.Izz())
+            thetas[i,3] += -loads.pointload_angle(shearforces[i-1,3], loads.dx_list[i-1],
+                                                  loads.a.Izz()) + loads.moment_angle(moments[i-1,3],
+                                                                                      loads.dx_list[i-1], loads.a.Izz())
 
             u[i, 2] += u[i - 1, 2]
-            u[i, 2] += -loads.pointload_defl(shearforces[i-1,1], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_defl(moments[i-1,1], loads.dx_list[i-1], loads.a.Izz())
-            thetas[i,1] = -loads.pointload_angle(shearforces[i-1,1], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_angle(moments[i-1,1], loads.dx_list[i-1], loads.a.Izz())
+            u[i, 2] += -loads.pointload_defl(shearforces[i-1,1], loads.dx_list[i-1],
+                                             loads.a.Izz()) + loads.moment_defl(moments[i-1,1],
+                                                                                loads.dx_list[i-1], loads.a.Izz())
+            thetas[i,1] = -loads.pointload_angle(shearforces[i-1,1], loads.dx_list[i-1],
+                                                 loads.a.Izz()) + loads.moment_angle(moments[i-1,1],
+                                                                                     loads.dx_list[i-1], loads.a.Izz())
 
         for j in range(1, i - loads.hinge2_idx):
             u[i, 0] += loads.dx_list[i-1] * thetas[loads.hinge2_idx + j, 0]
@@ -88,7 +112,9 @@ def make_u_z(loads):
         # Contribution of internal moment due to P, negative due to positive definition of internal moment
         u[i, 0] -= loads.moment_defl(moments[i,0], loads.dx_list[i], loads.a.Iyy())
         # Angle due to internal shear and moment due to P
-        thetas[i,0] = loads.pointload_angle(shearforces[i,0], loads.dx_list[i], loads.a.Iyy()) - loads.moment_angle(moments[i,0], loads.dx_list[i], loads.a.Iyy())
+        thetas[i,0] = loads.pointload_angle(shearforces[i,0], loads.dx_list[i],
+                                            loads.a.Iyy()) - loads.moment_angle(moments[i,0],
+                                                                                loads.dx_list[i], loads.a.Iyy())
 
         # Previous deflection due to angle at D and new contribution
         u[i, 1] += u[i+1,1] - loads.dx_list[i]
@@ -97,11 +123,15 @@ def make_u_z(loads):
             # Previous deflection plus contribution of force 1
             u[i, 2] += u[i + 1, 2] + loads.defl_point_z(i, 0, 0)
             # Adding deflection due to internal shear and moment due to force 1
-            u[i, 2] += loads.pointload_defl(shearforces[i,1], loads.dx_list[i], loads.a.Iyy()) - loads.moment_defl(moments[i,1], loads.dx_list[i], loads.a.Iyy())
+            u[i, 2] += loads.pointload_defl(shearforces[i,1], loads.dx_list[i],
+                                            loads.a.Iyy()) - loads.moment_defl(moments[i,1],
+                                                                               loads.dx_list[i], loads.a.Iyy())
             # Angle due to force 1
             thetas[i,1] = loads.angle_point_z(i, 0, 0)
             # Angle due to internal shear and moment due to force 1
-            thetas[i,1] += loads.pointload_angle(shearforces[i,1], loads.dx_list[i], loads.a.Iyy()) - loads.moment_angle(moments[i,1], loads.dx_list[i], loads.a.Iyy())
+            thetas[i,1] += loads.pointload_angle(shearforces[i,1], loads.dx_list[i],
+                                                 loads.a.Iyy()) - loads.moment_angle(moments[i,1],
+                                                                                     loads.dx_list[i], loads.a.Iyy())
         if loads.jammed:
             # Previous deflection plus contribution of force a
             u[i, 3] += u[i + 1, 3] + loads.defl_point_z(i, 1, 0)
@@ -111,7 +141,9 @@ def make_u_z(loads):
             # Angle due to force a
             thetas[i, 2] = loads.angle_point_z(i, 1, 0)
             # Angle due to internal shear and moment due to force a
-            thetas[i, 2] += loads.pointload_angle(shearforces[i, 2], loads.dx_list[i], loads.a.Iyy()) - loads.moment_angle(moments[i, 2], loads.dx_list[i], loads.a.Iyy())
+            thetas[i, 2] += loads.pointload_angle(shearforces[i, 2], loads.dx_list[i],
+                                                  loads.a.Iyy()) - loads.moment_angle(moments[i, 2],
+                                                                                      loads.dx_list[i], loads.a.Iyy())
 
         for j in range(1, loads.hinge2_idx - i):
             # Add contribution of the angle depending on P
@@ -129,33 +161,51 @@ def make_u_z(loads):
         # Contribution of internal shear and moment due to aero load
         u[i, 0] -= loads.moment_defl(moments[i-1,0], loads.dx_list[i-1], loads.a.Iyy())
         # Angle due to internal shear and moment due to P
-        thetas[i, 0] = loads.pointload_angle(shearforces[i-1,0], loads.dx_list[i-1], loads.a.Iyy()) - loads.moment_angle(moments[i-1,0], loads.dx_list[i-1], loads.a.Iyy())
+        thetas[i, 0] = loads.pointload_angle(shearforces[i-1,0], loads.dx_list[i-1],
+                                             loads.a.Iyy()) - loads.moment_angle(moments[i-1,0],
+                                                                                 loads.dx_list[i-1], loads.a.Iyy())
 
         # Previous deflection due to angle at D and new contribution
         u[i, 1] += u[i-1,1] + loads.dx_list[i - 1]
 
 
-        u[i, 4] += u[i-1,4] + loads.pointload_defl(shearforces[i-1,3], loads.dx_list[i-1], loads.a.Iyy()) - loads.moment_defl(moments[i-1,3], loads.dx_list[i-1], loads.a.Iyy())
-        thetas[i,3] = loads.pointload_angle(shearforces[i-1,3], loads.dx_list[i-1], loads.a.Iyy()) - loads.moment_angle(moments[i-1,3], loads.dx_list[i-1], loads.a.Iyy())
+        u[i, 4] += u[i-1,4] + loads.pointload_defl(shearforces[i-1,3], loads.dx_list[i-1],
+                                                   loads.a.Iyy()) - loads.moment_defl(moments[i-1,3],
+                                                                                      loads.dx_list[i-1], loads.a.Iyy())
+        thetas[i,3] = loads.pointload_angle(shearforces[i-1,3], loads.dx_list[i-1],
+                                            loads.a.Iyy()) - loads.moment_angle(moments[i-1,3],
+                                                                                loads.dx_list[i-1], loads.a.Iyy())
 
         if loads.bending:
             u[i, 5] += u[i - 1, 5] + loads.defl_point_z(i, 4, 1)
-            u[i, 5] += loads.pointload_defl(shearforces[i-1,4], loads.dx_list[i-1], loads.a.Iyy()) - loads.moment_defl(moments[i-1,4], loads.dx_list[i-1], loads.a.Iyy())
+            u[i, 5] += loads.pointload_defl(shearforces[i-1,4], loads.dx_list[i-1],
+                                            loads.a.Iyy()) - loads.moment_defl(moments[i-1,4],
+                                                                               loads.dx_list[i-1], loads.a.Iyy())
             thetas[i,4] = loads.angle_point_z(i, 4, 1)
-            thetas[i,4] += loads.pointload_angle(shearforces[i-1,4], loads.dx_list[i-1], loads.a.Iyy()) - loads.moment_angle(moments[i-1,4], loads.dx_list[i-1], loads.a.Iyy())
+            thetas[i,4] += loads.pointload_angle(shearforces[i-1,4], loads.dx_list[i-1],
+                                                 loads.a.Iyy()) - loads.moment_angle(moments[i-1,4],
+                                                                                     loads.dx_list[i-1], loads.a.Iyy())
 
             u[i, 2] += u[i - 1, 2]
-            u[i, 2] += loads.pointload_defl(shearforces[i-1,1], loads.dx_list[i-1], loads.a.Iyy()) - loads.moment_defl(moments[i-1,1], loads.dx_list[i-1], loads.a.Iyy())
-            thetas[i,1] = loads.pointload_angle(shearforces[i-1,1], loads.dx_list[i-1], loads.a.Iyy()) - loads.moment_angle(moments[i-1,1], loads.dx_list[i-1], loads.a.Iyy())
+            u[i, 2] += loads.pointload_defl(shearforces[i-1,1], loads.dx_list[i-1],
+                                            loads.a.Iyy()) - loads.moment_defl(moments[i-1,1],
+                                                                               loads.dx_list[i-1], loads.a.Iyy())
+            thetas[i,1] = loads.pointload_angle(shearforces[i-1,1], loads.dx_list[i-1],
+                                                loads.a.Iyy()) - loads.moment_angle(moments[i-1,1],
+                                                                                    loads.dx_list[i-1], loads.a.Iyy())
         if loads.jammed:
             # Previous deflection plus contribution of force a
             u[i, 3] += u[i - 1, 3] + loads.defl_point_z(i, 1, 1)
             # Adding deflection due to internal shear and moment due to force a
-            u[i, 3] += loads.pointload_defl(shearforces[i-1, 2], loads.dx_list[i-1], loads.a.Iyy()) - loads.moment_defl(moments[i-1, 2], loads.dx_list[i-1], loads.a.Iyy())
+            u[i, 3] += loads.pointload_defl(shearforces[i-1, 2], loads.dx_list[i-1],
+                                            loads.a.Iyy()) - loads.moment_defl(moments[i-1, 2],
+                                                                               loads.dx_list[i-1], loads.a.Iyy())
             # Angle due to force a
             thetas[i, 2] = loads.angle_point_z(i, 1, 1)
             # Angle due to internal shear and moment due to force a
-            thetas[i, 2] += loads.pointload_angle(shearforces[i-1, 2], loads.dx_list[i-1], loads.a.Iyy()) - loads.moment_angle(moments[i-1, 2], loads.dx_list[i-1], loads.a.Iyy())
+            thetas[i, 2] += loads.pointload_angle(shearforces[i-1, 2], loads.dx_list[i-1],
+                                                  loads.a.Iyy()) - loads.moment_angle(moments[i-1, 2],
+                                                                                      loads.dx_list[i-1], loads.a.Iyy())
 
 
         for j in range(1, i - loads.hinge2_idx):
@@ -202,7 +252,8 @@ def calc_deflection_z(loads, u=np.nan):
     matrix[1, :] = ua[1:]
     matrix[2, :] = u3[1:]
     matrix[3, 1:] = np.ones(4)
-    matrix[4, 1:] = np.array([loads.hinge1_val-loads.hinge2_val, loads.act1_val-loads.hinge2_val, 0, -loads.hinge3_val-loads.hinge2_val])
+    matrix[4, 1:] = np.array([loads.hinge1_val-loads.hinge2_val,
+                              loads.act1_val-loads.hinge2_val, 0, -loads.hinge3_val-loads.hinge2_val])
     b = np.array([- u1[0], - ua[0], - u3[0], loads.P, loads.P * (loads.act2_val-loads.hinge2_val)])
 
     x = la.solve(matrix, b) # Theta_d, F_y1, F_y_I, F_y2, F_y3
@@ -222,28 +273,44 @@ def alt_u_y(loads):
         # Previous known deflection plus aero distributed load
         u[i, 0] += u[i - 1, 0] + loads.backward_defl_distr(i)
         # Contribution of internal shear and moment due to aero load
-        u[i, 0] += loads.pointload_defl(shearforces[i-1,0], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_defl(moments[i-1,0], loads.dx_list[i-1], loads.a.Izz())
+        u[i, 0] += loads.pointload_defl(shearforces[i-1,0], loads.dx_list[i-1],
+                                        loads.a.Izz()) + loads.moment_defl(moments[i-1,0],
+                                                                           loads.dx_list[i-1], loads.a.Izz())
         # Angle due to aero load
         thetas[i, 0] = loads.backward_angle_distr(i)
         # Angle due to internal shear and moment due to aero load
-        thetas[i, 0] += loads.moment_angle(moments[i-1,0], loads.dx_list[i-1], loads.a.Izz()) + loads.pointload_angle(shearforces[i-1,0], loads.dx_list[i-1], loads.a.Izz())
+        thetas[i, 0] += loads.moment_angle(moments[i-1,0], loads.dx_list[i-1],
+                                           loads.a.Izz()) + loads.pointload_angle(shearforces[i-1,0],
+                                                                                  loads.dx_list[i-1], loads.a.Izz())
 
         # Previous deflection due to angle at D and new contribution
         u[i, 1] += u[i-1,1] + loads.dx_list[i - 1]
 
 
-        u[i, 3] += u[i-1,3] + loads.pointload_defl(shearforces[i-1,2], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_defl(moments[i-1,2], loads.dx_list[i-1], loads.a.Izz())
-        thetas[i,2] = loads.pointload_angle(shearforces[i-1,2], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_angle(moments[i-1,2], loads.dx_list[i-1], loads.a.Izz())
+        u[i, 3] += u[i-1,3] + loads.pointload_defl(shearforces[i-1,2], loads.dx_list[i-1],
+                                                   loads.a.Izz()) + loads.moment_defl(moments[i-1,2],
+                                                                                      loads.dx_list[i-1], loads.a.Izz())
+        thetas[i,2] = loads.pointload_angle(shearforces[i-1,2], loads.dx_list[i-1],
+                                            loads.a.Izz()) + loads.moment_angle(moments[i-1,2],
+                                                                                loads.dx_list[i-1], loads.a.Izz())
 
         if loads.bending:
             u[i, 4] += u[i - 1, 4] + loads.backward_defl_point(i)
-            u[i, 4] += loads.pointload_defl(shearforces[i-1,3], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_defl(moments[i-1,3], loads.dx_list[i-1], loads.a.Izz())
+            u[i, 4] += loads.pointload_defl(shearforces[i-1,3], loads.dx_list[i-1],
+                                            loads.a.Izz()) + loads.moment_defl(moments[i-1,3],
+                                                                               loads.dx_list[i-1], loads.a.Izz())
             thetas[i,3] = loads.backward_angle_point(i)
-            thetas[i,3] += loads.pointload_angle(shearforces[i-1,3], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_angle(moments[i-1,3], loads.dx_list[i-1], loads.a.Izz())
+            thetas[i,3] += loads.pointload_angle(shearforces[i-1,3], loads.dx_list[i-1],
+                                                 loads.a.Izz()) + loads.moment_angle(moments[i-1,3],
+                                                                                     loads.dx_list[i-1], loads.a.Izz())
 
             u[i, 2] += u[i - 1, 2]
-            u[i, 2] += loads.pointload_defl(shearforces[i-1,1], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_defl(moments[i-1,1], loads.dx_list[i-1], loads.a.Izz())
-            thetas[i,1] = loads.pointload_angle(shearforces[i-1,1], loads.dx_list[i-1], loads.a.Izz()) + loads.moment_angle(moments[i-1,1], loads.dx_list[i-1], loads.a.Izz())
+            u[i, 2] += loads.pointload_defl(shearforces[i-1,1], loads.dx_list[i-1],
+                                            loads.a.Izz()) + loads.moment_defl(moments[i-1,1],
+                                                                               loads.dx_list[i-1], loads.a.Izz())
+            thetas[i,1] = loads.pointload_angle(shearforces[i-1,1], loads.dx_list[i-1],
+                                                loads.a.Izz()) + loads.moment_angle(moments[i-1,1],
+                                                                                    loads.dx_list[i-1], loads.a.Izz())
 
         for j in range(1, i):
             u[i, 0] += loads.dx_list[i-1] * thetas[j, 0]
@@ -294,7 +361,9 @@ def plot_u(loads, u, axis, equal=False) -> None:
         plt.axis('equal')
     plt.show()
 
-def save_data(x, appendix = "", prefix = "", shear_blank=False, shear_solved=False, moment_blank=False, moment_solved=False, u_blank=False, u=False) -> None:
+
+def save_data(x, appendix = "", prefix = "", shear_blank=False,
+              shear_solved=False, moment_blank=False, moment_solved=False, u_blank=False, u=False) -> None:
     if appendix != "":
         appendix = "_"+appendix
     np.savetxt(prefix+"x"+appendix+".csv", x, delimiter=",")
@@ -310,6 +379,7 @@ def save_data(x, appendix = "", prefix = "", shear_blank=False, shear_solved=Fal
         np.savetxt(prefix+"ublank"+appendix+".csv", u_blank, delimiter=",")
     if np.any(u) != False:
         np.savetxt(prefix+"usolved"+appendix+".csv", u, delimiter=",")
+
 
 if __name__ == "__main__":
     a = Aileron()
@@ -340,5 +410,3 @@ if __name__ == "__main__":
     # print(u_y_new[loads.hinge2_idx])
     #
     plot_u(loads, u_new, 1)
-
-
