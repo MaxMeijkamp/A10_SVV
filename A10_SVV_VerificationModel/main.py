@@ -87,7 +87,7 @@ crosssection.J = 1. / solution[-1]
 """" If you desire, you can manually overwrite these values. """
 ysc = crosssection.ysc                 # y-coordinate of the centroid
 zsc = crosssection.zsc                 # z-coordinate of the centroid
-print("ysc, zsc = ",ysc, zsc+h)
+#print("ysc, zsc = ",ysc, zsc+h)
 
 _ = crosssection.J                   # torsional constant
 
@@ -190,7 +190,8 @@ Stressobject = Stress.Stressstate(crosssection)
 
 ### Define the forces and moments for which you want to know the stress distributions
 xmax = []
-xmin = []
+ymax = []
+zmax = []
 qmax = []
 qmin = []
 sssmax = []
@@ -198,13 +199,13 @@ sssmin = []
 vmmax = []
 vmmin = []
 
-for x in range(1692):
+for x in range(0,1692):
     xtemp = x/1000
-    Sy = aileron.Sy(x)
-    Sz = aileron.Sz(x)
-    My = aileron.My(x)
-    Mz = aileron.Mz(x)
-    T = aileron.T(x)
+    Sy = aileron.Sy(xtemp)
+    Sz = aileron.Sz(xtemp)
+    My = aileron.My(xtemp)
+    Mz = aileron.Mz(xtemp)
+    T = aileron.T(xtemp)
 
     ### Primary functions
     """"The following line should never be disabled, as its results are used in the auxiliary functions"""
@@ -255,37 +256,37 @@ for x in range(1692):
     q1 = Stressobject.q1f(theta)             # Compute the shear flow distribution in region 1
     sss1 = Stressobject.sigma1f(theta)         # Compute the direct stress distribution in region 1
     vm1 = Stressobject.vm1(theta)             # Compute the Von Mises stress distribution in region 1
-    d, e = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
+    z1, y1 = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
 
     y = np.linspace(0,ha/2.,num = 100)
     q2 = Stressobject.q2f(y)             # Compute the shear flow distribution in region 3
     sss2 = Stressobject.sigma2f(y)         # Compute the direct stress distribution in region 3
     vm2 = Stressobject.vm2(y)             # Compute the Von Mises stress distribution in region 3
-    _, _ = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
+    z2, y2 = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
 
     s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
     q3 = Stressobject.q3f(s)             # Compute the shear flow distribution in region 4
     sss3 = Stressobject.sigma3f(s)         # Compute the direct stress distribution in region 4
     vm3 = Stressobject.vm3(s)             # Compute the Von Mises stress distribution in region 4
-    _, _ = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
+    z3, y3 = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
 
     s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
     q4 = Stressobject.q4f(s)             # Compute the shear flow distribution in region 4
     sss4 = Stressobject.sigma4f(s)         # Compute the direct stress distribution in region 4
     vm4 = Stressobject.vm4(s)             # Compute the Von Mises stress distribution in region 4
-    _, _ = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
+    z4, y4 = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
 
     y = np.linspace(0,ha/2.,num = 100)
     q5 = Stressobject.q5f(y)             # Compute the shear flow distribution in region 5
     sss5 = Stressobject.sigma5f(y)         # Compute the direct stress distribution in region 5
     vm5 = Stressobject.vm5(y)             # Compute the Von Mises stress distribution in region 5
-    _, _ = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
+    z5, y5 = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
 
     theta = np.linspace(-m.pi/2,0,num = 100)
     q6 = Stressobject.q6f(theta)             # Compute the shear flow distribution in region 6
     sss6 = Stressobject.sigma6f(theta)         # Compute the direct stress distribution in region 6
     vm6 = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
-    _, _ = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
+    z6, y6 = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
     #print(xtemp, max(vm1), min(vm1))
     #print(xtemp, max(vm2), min(vm2))
     #print(xtemp, max(vm3), min(vm3))
@@ -304,6 +305,7 @@ for x in range(1692):
     qmin.append(qmintemp)
     sssmax.append(sssmaxtemp)
     sssmin.append(sssmintemp)
+
     vmmax.append(vmmaxtemp)
     vmmin.append(vmmintemp)
 
@@ -311,9 +313,60 @@ i = qmax.index(max(qmax))
 j = qmin.index(min(qmin))
 k = sssmax.index(max(sssmax))
 l = sssmin.index(min(sssmin))
-m = vmmax.index(max(vmmax))
+r = vmmax.index(max(vmmax))
 n = vmmin.index(min(vmmin))
 
 print(xmax[j],qmin[j],xmax[i],qmax[i])
 print(xmax[l],sssmin[l],xmax[k],sssmax[k])
-print(xmax[n],vmmin[n],xmax[m],vmmax[m])
+print(xmax[n],vmmin[n],xmax[r],vmmax[r])
+
+xstress = [xmax[i],xmax[k],xmax[l],xmax[n]]
+print(xstress)
+for p in range(4):
+    print("wollah", p)
+    x = xstress[i]
+    Sy = aileron.Sy(xtemp)
+    Sz = aileron.Sz(xtemp)
+    My = aileron.My(xtemp)
+    Mz = aileron.Mz(xtemp)
+    T = aileron.T(xtemp)
+    Stressobject.compute_unitstressdistributions()
+    h = Stressobject.ha / 2.
+    A1 = m.pi * h ** 2 / 2.
+    A2 = (Stressobject.Ca - h) * h
+
+    A = np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]])
+    b = np.array([0., 0., 0.])
+
+    ### First row
+    A[0, 0] = 2. * A1
+    A[0, 1] = 2. * A2
+    b[0] = -1
+
+    ### Second row
+    A[1, 0] = (h * m.pi / Stressobject.tsk + 2 * h / Stressobject.tsp) / (2 * A1)
+    A[1, 1] = (-2 * h / Stressobject.tsp) / (2 * A1)
+    A[1, 2] = -1.
+    b[1] = 0.
+
+    ### Third row
+    A[2, 0] = (-2 * h / Stressobject.tsp) / (2 * A2)
+    A[2, 1] = (2 * Stressobject.lsk / Stressobject.tsk + 2 * h / Stressobject.tsp) / (2 * A2)
+    A[2, 2] = -1
+    b[2] = 0.
+
+    solution = np.linalg.solve(A, b)
+    Stressobject.Tq1f = solution[0]
+    Stressobject.Tq2f = -solution[0] + solution[1]
+    Stressobject.Tq3f = solution[1]
+    Stressobject.Tq4f = solution[1]
+    Stressobject.Tq5f = -solution[0] + solution[1]
+    Stressobject.Tq6f = solution[0]
+
+    ### Auxiliary functions
+    Stressobject.compute_stressdistributions(Sy, Sz, My, Mz, T)
+
+    Stressobject.plot_shearflowdistributions()
+    Stressobject.plot_directstressdistributions()
+    Stressobject.plot_vonmisesstressdistributions()
+
