@@ -84,6 +84,3 @@ def derivative(u, x):
     result[0] = (u[1]-u[0])/(x[1]-x[0])
     result[-1] = (u[-1]-u[-2])/(x[-1]-x[-2])
     return result
-
-
-

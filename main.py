@@ -41,7 +41,8 @@ if renew_data_y:
     uy_save[:,2] *= xy[1]
     uy_save[:,3] *= xy[2]
     uy_save[:,4] *= xy[3]
-    save_data(xy, appendix="y", prefix=str(data_path)+"\\", shear_blank=sheary, shear_solved=shearsolvedy, moment_blank=momenty, moment_solved=momentsolvedy, u_blank=uy, u=uy_save)
+    save_data(xy, appendix="y", prefix=str(data_path)+"\\", shear_blank=sheary, shear_solved=shearsolvedy,
+              moment_blank=momenty, moment_solved=momentsolvedy, u_blank=uy, u=uy_save)
 
 if renew_data_z:
     uz, shearz, momentz = make_u_z(loads)
@@ -54,7 +55,8 @@ if renew_data_z:
     uz_save[:,3] *= xz[2]
     uz_save[:,4] *= xz[3]
     uz_save[:,5] *= xz[4]
-    save_data(xz, appendix="z", prefix=str(data_path)+"\\", shear_blank=shearz, shear_solved=shearsolvedz, moment_blank=momentz, moment_solved=momentsolvedz, u_blank=uz, u=uz_save)
+    save_data(xz, appendix="z", prefix=str(data_path)+"\\", shear_blank=shearz, shear_solved=shearsolvedz,
+              moment_blank=momentz, moment_solved=momentsolvedz, u_blank=uz, u=uz_save)
 
 if verification_gen: # Does not work 100% yet
     if sys.version_info.minor == 7:

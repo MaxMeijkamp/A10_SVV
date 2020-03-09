@@ -3,7 +3,6 @@ from matplotlib import pyplot as plt
 from math import sqrt, sin, cos, acos
 from numericaltools import *
 
-
 class Aileron:
     def __init__(self, span=1.691, chord=0.484, hinge1=0.149, hinge2=0.554, hinge3=1.541, height=0.173, skint=0.0011,
                  spart=0.0025, stifft=0.0012, stiffh=0.014, stiffw=0.018, stiffn=13, actdist=0.272):
@@ -37,9 +36,9 @@ class Aileron:
         self.stiffener_area = self.stifft * (self.stiffh + self.stiffw)
         self.radius = self.height * 0.5
         self.a = sqrt(self.radius * self.radius + (self.chord - self.radius) * (self.chord - self.radius))
-        self._circumference = 2 * self.a + np.pi * self.radius
-        self.shear_centre = self.shearcentre()
+
         # Protected variables
+        self._circumference = 2 * self.a + np.pi * self.radius
 
 
     def Izz(self, skin=True, spar=True, stiffener=True):
@@ -47,8 +46,7 @@ class Aileron:
         Izz = 0
         if skin:
             beta = acos((self.chord - self.radius) / self.a)
-            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + \
-                   np.pi / 2 * self.radius * self.radius * self.radius * self.skint
+            Izz += self.skint * self.a * self.a * self.a * sin(beta) * sin(beta) * 2 / 3 + np.pi / 2 * self.radius * self.radius * self.radius * self.skint
         if spar:
             Izz += self.spart * self.height * self.height * self.height / 12
         if stiffener:
@@ -63,8 +61,7 @@ class Aileron:
             beta = acos((self.chord - self.radius) / self.a)
             Iyy += (np.pi/2 - 4/np.pi) * self.skint * self.radius * self.radius * self.radius
             Iyy += 2 * (self.skint * self.a * self.a * self.a * cos(beta) * cos(beta) / 12)
-            Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar) * \
-                   ((-self.chord + self.radius) * .5 - zbar)
+            Iyy += 2 * self.skint * self.a * ((-self.chord + self.radius) * .5 - zbar) * ((-self.chord + self.radius) * .5 - zbar)
             Iyy += (-zbar + 2*self.radius / np.pi) * (-zbar + 2*self.radius / np.pi) * np.pi * self.skint * self.radius
         if spar:
             Iyy += self.spart * self.height * zbar* zbar
@@ -89,9 +86,7 @@ class Aileron:
         else:
             raise ValueError("The axis is invalid")
 
-    def shearcentre(self, verif=True, checking = False ):
-
-        # Returns shear centre location
+    def shearcentre(self):
         r = self.radius
         a = self.a
         Izz = self.Izz()
@@ -102,22 +97,21 @@ class Aileron:
         dist_s5 = dist_s6 = r
 
         def func_s(s):
-            if s < dist_s1:
-                return (r * np.sin(s / r))
-            elif dist_s1 <= s < dist_s1 + dist_s2:
-                return (r - (s - dist_s1) * r / a)
-            elif dist_s2 + dist_s1 <= s < dist_s3 + dist_s2 + dist_s1:
-                return (0. - (s - dist_s1 - dist_s2) * r / a)
-            elif dist_s3 + dist_s2 + dist_s1 <= s <= dist_s4 + dist_s3 + dist_s2 + dist_s1:
-                return - r * np.cos((s - dist_s1 - dist_s2 - dist_s3)/r)
+            if s <= dist_s1:
+                return (r * np.sin(s / r)) * skint
+            elif dist_s1 < s <= dist_s1 + dist_s2:
+                return (r - (s - dist_s1) * r / a) * skint
+            elif dist_s2 + dist_s1 < s <= dist_s3 + dist_s2 + dist_s1:
+                return (0. - (s - dist_s1 - dist_s2) * r / a) * skint
+            elif dist_s3 + dist_s2 + dist_s1 < s <= dist_s4 + dist_s3 + dist_s2 +dist_s1:
+                return (r * -np.cos((s - .5 * r * np.pi - a * 2) / r)) * skint
 
         def func_s56(s):  # from s = 0 to s = height / 2
-            return s
+            return s * self.spart
 
         integrateV = np.vectorize(integrate)
         func_s = np.vectorize(func_s)
-        func_s56 = np.vectorize(func_s56)
-        num_steps = 2000
+        num_steps = 10000
 
         s_list = np.zeros((7, num_steps)) # array with s value, integral shear, booms
         s_list[0] = np.linspace(0, self._circumference, num_steps)
@@ -130,65 +124,64 @@ class Aileron:
 
         ss = np.arange(-r, r, self._circumference / num_steps)
         s56_list = np.zeros((7, ss.size))
+
         s56_list[0] = ss
+        idx_s56 = [int(ss.size/2), int(ss.size-1)]
+        s56_list[1, idx_s56[0]: idx_s56[1]] = - 1. / Izz * (integrateV(func_s56, 0, s56_list[0, idx_s56[0]: idx_s56[1]], 1000))
+        s56_list[1, 0: idx_s56[0]] = - 1. / Izz * (integrateV(func_s56, 0, s56_list[0, 0: idx_s56[0]], 1000))
 
-        # Skin base shear flows
-        s56_list[1, 0:int(ss.size/2)] = 1. / Izz * (integrateV(func_s56, 0, s56_list[0, 0:int(ss.size/2)], 2000)) * self.spart
-        s56_list[1, int(ss.size/2):int(ss.size)] = -1. / Izz * (integrateV(func_s56, 0, s56_list[0, int(ss.size/2):int(ss.size)], 2000)) * self.spart
-        s_list[1] = -1. / Izz * (integrateV(func_s, 0, s_list[0], 3000)) * self.skint
+        # Base shear flow of skin:
+        s_list[1, 0: idx_s[1]] = -1. / Izz * (integrateV(func_s, 0, s_list[0, 0 : idx_s[1]], 1000))
+        s_list[1, idx_s[1]: idx_s[2]] = -1. / Izz * (integrateV(func_s, s_list[0, idx_s[1]], s_list[0, idx_s[1]: idx_s[2]], 1000)) + s_list[1, idx_s[1]-1]
+        s_list[1, idx_s[2]: idx_s[3]] = -1. / Izz * (integrateV(func_s, s_list[0, idx_s[2]], s_list[0, idx_s[2]: idx_s[3]], 1000)) + s_list[1, idx_s[2]-1]
+        s_list[1, idx_s[3]: idx_s[4]] = -1. / Izz * (integrateV(func_s, s_list[0, idx_s[3]], s_list[0, idx_s[3]: idx_s[4]], 1000)) + s_list[1, idx_s[3]-1]
+        s_list[1, idx_s[4]] = -1. / Izz * (integrateV(func_s, s_list[0, idx_s[3]], s_list[0, idx_s[4]], 1000)) + s_list[1, idx_s[3]-1]
 
-        # Base shear flow of booms:
-        boom_stepsize = self._circumference/self.stiffn
+
+        #Base shear flow of booms:
+        stepsize = self._circumference/self.stiffn
+
         for i in range(self.stiffn):
-            boomdist = boom_stepsize * i
+            boomdist = stepsize * i
             idx = (np.abs(s_list[0] - boomdist)).argmin()
-            s_list[2, idx : idx_s[4]] += (-1. / Izz * self.stiffener_area * func_s(s_list[0, idx]))
+            s_list[2, idx : -1] +=  -1. / Izz * self.stiffener_area * func_s(s_list[0, idx]) / self.skint
 
-        # Booms and skin contribution combined in row 3 of s_list:
+        # Combined in row 3:
         s_list[3] = s_list[2] + s_list[1]
 
+        stepcorrection = (num_steps - 1) / num_steps
         # Find correction shear flow:
         stepwidth = self._circumference / num_steps
-
-        shearbasesum1 = (stepwidth  * ((np.sum(s_list[3, 0: idx_s[1]]) +
-                                                       np.sum(s_list[3, idx_s[3]: idx_s[4]]))/self.skint -
-                                                       np.sum(s56_list[1])/self.spart))
-        shearbasesum2 = (stepwidth * ((np.sum(s_list[3, idx_s[1]: idx_s[3]]))/self.skint +
-                                                       np.sum(s56_list[1])/self.spart))
-
-        twistmatrix = np.array([[2 * dist_s1 / self.skint + 2 * dist_s5 / self.spart, -2 * dist_s5 / self.spart],
-                                [-2* dist_s5 / self.spart, 2 * dist_s2 / self.skint + 2 * dist_s5 / self.spart]])
-
-        shearbasevector = np.array([[-shearbasesum1],
-                                    [-shearbasesum2]])
+        shearbasesum1 = stepwidth * ((np.sum(s_list[3, idx_s[0] : idx_s[1]]) + np.sum(s_list[3, idx_s[3] : idx_s[4]]))/self.skint - np.sum(s56_list[1])/self.spart)
+        shearbasesum2 = stepwidth * ((np.sum(s_list[3, idx_s[1] : idx_s[2]]) + np.sum(s_list[3, idx_s[2] : idx_s[3]]))/self.skint + np.sum(s56_list[1])/self.spart)
+        twistmatrix = np.array([[2 * dist_s1 / self.skint + 2* dist_s5 / self.spart, -2* dist_s5 / self.spart ], [-2* dist_s5 / self.spart, 2 * dist_s2 / self.skint + 2 * dist_s5 / self.spart]])
+        shearbasevector = np.array([[-shearbasesum1],[-shearbasesum2]])
         correctionshears = np.linalg.solve(twistmatrix, shearbasevector)
-        correctionshear1 = correctionshears[0][0]
-        correctionshear2 = correctionshears[1][0]
+        correctionshear1 = correctionshears[0]
+        correctionshear2 = correctionshears[1]
+
+
 
         # Add correction shears and base shear to row 4
-        s_list[4, idx_s[0]: idx_s[1]] = s_list[3, idx_s[0]: idx_s[1]] + correctionshear1
-        s_list[4, idx_s[3]: idx_s[4]] = s_list[3, idx_s[3]: idx_s[4]] + correctionshear1
-        s_list[4, idx_s[1]: idx_s[3]] = s_list[3, idx_s[1]: idx_s[3]] + correctionshear2
-        s56_list[4] = s56_list[1] - correctionshear1 + correctionshear2
-
-        r = self.radius
-        a = self.a
-
+        s_list[4, idx_s[0] : idx_s[1]] =  s_list[3, idx_s[0] : idx_s[1]] + correctionshear1
+        s_list[4, idx_s[3] : idx_s[4]] =  s_list[3, idx_s[3] : idx_s[4]] + correctionshear1
+        s_list[4, idx_s[1] : idx_s[2]] =  s_list[3, idx_s[1] : idx_s[2]] + correctionshear2
+        s_list[4, idx_s[2] : idx_s[3]] =  s_list[3, idx_s[2] : idx_s[3]] + correctionshear2
+        s56_list[4] = np.absolute(s56_list[1] - correctionshear1 + correctionshear2)
+        s_list[6] = np.absolute(s_list[4])
         # Arms:
-        as1 = self.radius
-        as2 = np.cos( acos((self.chord - self.radius) / self.a)) * self.radius
+        as1 = r
+        as2 = np.cos( acos((self.chord - self.radius) / self.a) ) * r
 
-        # Moment about point z=z_spar and y = 0
-        moment = as1 * stepwidth * ((np.sum(s_list[4, idx_s[3]: idx_s[4]]) +
-                                                      np.sum(s_list[3, 0: idx_s[1]])))
-        moment += as2 * stepwidth *(np.sum(s_list[4, idx_s[1]: idx_s[3]]))
-        distance = moment
-        # distance is defined as z = 0 at spar and positive towards leading edge
+        moment = as1 * stepwidth *  (np.sum(s_list[6, idx_s[3]: idx_s[4]]) + np.sum(s_list[6, 0: idx_s[1]]))
+        moment += np.pi*r*r/2 * correctionshear1 + r*(self.chord-r) * correctionshear2
+        moment += as2 * stepwidth *  (np.sum(s_list[6, idx_s[1]: idx_s[2]]) + np.sum(s_list[6, idx_s[2]: idx_s[3]+1]))
+        moment = moment[0]
 
-        if checking:
-            return check, distance
+        # Then, the shearflow moment created about 0,0 should be equal to the moment caused by force Vy = 1 so moment = arm
+        #z location wrt spar
 
-        return (distance, 0)
+        return moment, s_list, s56_list, idx_s, correctionshears  # Keep s56_list, s_list and idx_s as outputs
 
     def _stiffcoord(self, num):
         step = self._circumference/self.stiffn
@@ -219,11 +212,11 @@ class Aileron:
     def stiffLoc(self, n=None):
         # Returns a tuple of the given stiffener number.
         # If no arguments are given, a list of tuples containing all stiffener locations is returned.
-        if n is None:
-            listnum = []
+        if n == None:
+            list = []
             for i in range(self.stiffn):
-                listnum.append(self._stiffcoord(i))
-            return listnum
+                list.append(self._stiffcoord(i))
+            return list
         else:
             return self._stiffcoord(n)
 
@@ -360,12 +353,11 @@ class AppliedLoads:
             raise ValueError("This hinge does not exist.")
 
     def _getzcoord(self, i, aileron, Nz=81):
-        return -0.5 * (aileron.chord*0.5 * (1-cos(self._get_theta(i, Nz))) +
-                       aileron.chord*0.5*(1-cos(self._get_theta(i+1, Nz))))
+        return -0.5 * (aileron.chord*0.5 * (1-cos(self._get_theta(i, Nz))) + aileron.chord*0.5*(1-cos(self._get_theta(i+1, Nz))))
+
 
     def _getxcoord(self, i, aileron, Nx=41):
-        return 0.5 * (aileron.span*0.5 * (1-cos(self._get_theta(i, Nx))) +
-                      aileron.span*0.5*(1-cos(self._get_theta(i+1, Nx))))
+        return 0.5 * (aileron.span*0.5 * (1-cos(self._get_theta(i, Nx))) + aileron.span*0.5*(1-cos(self._get_theta(i+1, Nx))))
 
     def _get_theta(self, i, N):
         return (i - 1) * np.pi / N
@@ -407,24 +399,16 @@ class AppliedLoads:
         return res_array
 
     def int_shear_y(self, x):
-        return np.array([self.res_aeroforces[np.where(np.abs(self.grid - x) < self._geo_error)],
-                         - self.mac_step_vect_0(x-self.hinge1_val),
-                         - self.mac_step_vect_0(x-self.hinge2_val), -self.mac_step_vect_0(x-self.hinge3_val)])
+        return np.array([self.res_aeroforces[np.where(np.abs(self.grid - x)<self._geo_error)], - self.mac_step_vect_0(x-self.hinge1_val), -self.mac_step_vect_0(x-self.hinge2_val), -self.mac_step_vect_0(x-self.hinge3_val)])
 
     def int_moment_y(self, x):
-        return np.array([-self.res_aeroforces[np.where(np.abs(self.grid - x)<self._geo_error)] * (x-self.res_xlocs),
-                         self.mac_step_vect_1(x-self.hinge1_val),
-                         self.mac_step_vect_1(x-self.hinge2_val), self.mac_step_vect_1(x-self.hinge3_val)])
+        return np.array([-self.res_aeroforces[np.where(np.abs(self.grid - x)<self._geo_error)] * (x-self.res_xlocs), self.mac_step_vect_1(x-self.hinge1_val), self.mac_step_vect_1(x-self.hinge2_val), self.mac_step_vect_1(x-self.hinge3_val)])
 
     def int_shear_z(self, x):
-        return np.array([-self.P*self.mac_step_vect_0(x-self.act2_val), self.mac_step_vect_0(x-self.hinge1_val),
-                         self.mac_step_vect_0(x-self.act1_val),
-                         self.mac_step_vect_0(x-self.hinge2_val), self.mac_step_vect_0(x-self.hinge3_val)])
+        return np.array([-self.P*self.mac_step_vect_0(x-self.act2_val), self.mac_step_vect_0(x-self.hinge1_val), self.mac_step_vect_0(x-self.act1_val), self.mac_step_vect_0(x-self.hinge2_val), self.mac_step_vect_0(x-self.hinge3_val)])
 
     def int_moment_z(self, x):
-        return np.array([self.P*self.mac_step_vect_1(x-self.act2_val), -self.mac_step_vect_1(x-self.hinge1_val),
-                         -self.mac_step_vect_1(x-self.act1_val),
-                         -self.mac_step_vect_1(x-self.hinge2_val), -self.mac_step_vect_1(x-self.hinge3_val)])
+        return np.array([self.P*self.mac_step_vect_1(x-self.act2_val), -self.mac_step_vect_1(x-self.hinge1_val), -self.mac_step_vect_1(x-self.act1_val), -self.mac_step_vect_1(x-self.hinge2_val), -self.mac_step_vect_1(x-self.hinge3_val)])
 
     def _getq(self, coords, forces, x):
         xlocs = np.unique(coords[:, 0])
@@ -437,7 +421,7 @@ class AppliedLoads:
     def make_cuts_sections(self, a, num_sections_x):
         new_list = [0]
         step = a.span/num_sections_x
-        for i in range(1, num_sections_x):
+        for i in range(1,num_sections_x):
             new_list.append(step*i)
         new_list.append(a.span)
         return np.asarray(new_list)
@@ -445,9 +429,10 @@ class AppliedLoads:
     def distr_defl_func(self, q1, q2, L, I, E=73100000000):
         # deflection return positive in positive direction of q
         if q1 != q2:
-            return L*L*L*L/(E*I)*(q2 / 8 + (q1-q2)*3/72)
+            return L*L*L*L/(E*I)*(q2 /8 + (q1-q2)*3/72)
         else:
             return L*L*L*L*q2/(E*I*8)
+
 
     def distr_angle_func(self, q1, q2, L, I, E=73100000000):
         if q1 != q2:
@@ -532,38 +517,38 @@ class AppliedLoads:
             return 0
 
     def forward_defl_distr(self, i):
-        return self.distr_defl_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]),
-                                    self.dx_list[i], self.a.Izz())
+        return self.distr_defl_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]), self.dx_list[i], self.a.Izz())
 
     def backward_defl_distr(self, i):
-        return self.distr_defl_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]),
-                                    self.dx_list[i - 1], self.a.Izz())
+        return self.distr_defl_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]), self.dx_list[i - 1], self.a.Izz())
 
     def forward_angle_distr(self, i):
-        return self.distr_angle_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]),
-                                     self.dx_list[i], self.a.Izz())
+        return self.distr_angle_func(-self.q(self.grid[i + 1]), -self.q(self.grid[i]), self.dx_list[i], self.a.Izz())
 
     def backward_angle_distr(self, i):
-        return self.distr_angle_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]),
-                                     self.dx_list[i - 1], self.a.Izz())
+        return self.distr_angle_func(-self.q(self.grid[i - 1]), -self.q(self.grid[i]), self.dx_list[i - 1], self.a.Izz())
+
+
 
 
 if __name__ == "__main__":
     a = Aileron()
-    sc = a.shear_centre
-    print('moment: ', sc)
-    '''
+    #print(a._stiff_s_pos())
+    #plt.plot(a.shearcentre()[1][0], a.shearcentre()[4])
+    #plt.show()
+    sc = a.shearcentre()
+    print('moment: ', sc[0])
+    #print("idx's: ", a.shearcentre()[2])
     plt.subplot(2, 1, 1)
-    plt.plot(sc[1][0], sc[1][1], label='1')
-    plt.plot(sc[1][0], sc[1][2], label='2')
-    plt.plot(sc[1][0], sc[1][3], label='3')
-    plt.plot(sc[1][0], sc[1][4], label='4')
+    plt.plot(sc[1][0], sc[1][1], label = '1')
+    plt.plot(sc[1][0], sc[1][2], label = '2')
+    plt.plot(sc[1][0], sc[1][3], label = '3')
+    plt.plot(sc[1][0], sc[1][4], label = '4')
     plt.subplot(2, 1, 2)
-    plt.plot(sc[2][1], sc[2][0], label='56 - 1')
+    plt.plot(sc[2][1], sc[2][0], label = '56 - 1')
     plt.plot(sc[2][4], sc[2][0], label='56 - 4')
     plt.xlabel('shearflow 56')
     plt.ylabel('y value')
     plt.legend()
     plt.show()
-    '''
-
+    #a.shearcentre()

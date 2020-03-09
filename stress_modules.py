@@ -63,7 +63,8 @@ def bending(M_vect, point_vect, a):
     # returns sigma_x for location y, z on the aileron. Inputs: Internal moment vector (y, z); position of the point to
     # calculate the stresses (y, z); an instance of Aileron class.
     # the relevant moments M_z, M_y (tension in + plane positive), centroid: tuple with xyz centroid of the aileron
-    return - M_vect[1] * (point_vect[0] - a.centroid(axis=1)) / a.Izz() + M_vect[0] * (point_vect[1] - a.centroid(2)) / a.Iyy()
+    return - M_vect[1] * (point_vect[0] - a.centroid(axis=1)) / \
+           a.Izz() + M_vect[0] * (point_vect[1] - a.centroid(2)) / a.Iyy()
 
 # For bending, not only sigma_x is needed, but also the displacements and angular displacements
 # at all sections caused by the bending.
