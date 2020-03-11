@@ -4,6 +4,7 @@ import Energy
 import Stiffness
 import Stress
 import math as m
+import matplotlib.pyplot as plt
 
 ######################## Part I - parameters as in assignment #######################################
 aircraft = "CRJ700" # Write either A320, F100, CRJ700 or Do228 (bear in mind capitals); this is used for aerodynamic loading
@@ -198,9 +199,15 @@ sssmax = []
 sssmin = []
 vmmax = []
 vmmin = []
-verstress = np.array([])
+qmaxtemp = []
+qmintemp = []
+sssmaxtemp = []
+sssmintemp = []
+vmmaxtemp = []
+vmmintemp = []
+verstress = np.array([[]])
 
-for x in range(0,5):
+for x in range(20,1670):
     verstresstemp = []
     xtemp = x/1000
     Sy = aileron.Sy(xtemp)
@@ -260,7 +267,7 @@ for x in range(0,5):
     vm1 = Stressobject.vm1(theta)             # Compute the Von Mises stress distribution in region 1
     z1, y1 = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
     verstresstemp = np.array([xtemp,y1,z1,q1,sss1,vm1])
-    verstress.append(verstresstemp)
+    verstress = np.append(verstress, verstresstemp)
 
     y = np.linspace(0,ha/2.,num = 100)
     q2 = Stressobject.q2f(y)             # Compute the shear flow distribution in region 3
@@ -268,7 +275,7 @@ for x in range(0,5):
     vm2 = Stressobject.vm2(y)             # Compute the Von Mises stress distribution in region 3
     z2, y2 = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
     verstresstemp = [xtemp,y2,z2,q2,sss2,vm2]
-    verstress.append(verstresstemp)
+    verstress = np.append(verstress, verstresstemp)
 
     s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
     q3 = Stressobject.q3f(s)             # Compute the shear flow distribution in region 4
@@ -276,7 +283,7 @@ for x in range(0,5):
     vm3 = Stressobject.vm3(s)             # Compute the Von Mises stress distribution in region 4
     z3, y3 = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
     verstresstemp = [xtemp,y3,z3,q3,sss3,vm3]
-    verstress.append(verstresstemp)
+    verstress = np.append(verstress, verstresstemp)
 
     s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
     q4 = Stressobject.q4f(s)             # Compute the shear flow distribution in region 4
@@ -284,7 +291,7 @@ for x in range(0,5):
     vm4 = Stressobject.vm4(s)             # Compute the Von Mises stress distribution in region 4
     z4, y4 = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
     verstresstemp = [xtemp,y4,z4,q4,sss4,vm4]
-    verstress.append(verstresstemp)
+    verstress = np.append(verstress, verstresstemp)
 
     y = np.linspace(0,ha/2.,num = 100)
     q5 = Stressobject.q5f(y)             # Compute the shear flow distribution in region 5
@@ -292,7 +299,7 @@ for x in range(0,5):
     vm5 = Stressobject.vm5(y)             # Compute the Von Mises stress distribution in region 5
     z5, y5 = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
     verstresstemp = [xtemp,y5,z5,q5,sss5,vm5]
-    verstress.append(verstresstemp)
+    verstress = np.append(verstress, verstresstemp)
 
     theta = np.linspace(-m.pi/2,0,num = 100)
     q6 = Stressobject.q6f(theta)             # Compute the shear flow distribution in region 6
@@ -300,7 +307,7 @@ for x in range(0,5):
     vm6 = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
     z6, y6 = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
     verstresstemp = [xtemp,y6,z6,q6,sss6,vm6]
-    verstress.append(verstresstemp)
+    verstress = np.append(verstress, verstresstemp)
 
     #print(xtemp, max(vm1), min(vm1))
     #print(xtemp, max(vm2), min(vm2))
@@ -308,12 +315,28 @@ for x in range(0,5):
     #print(xtemp, max(vm4), min(vm4))
     #print(xtemp, max(vm5), min(vm5))
     #print(xtemp, max(vm6), min(vm6))
-    qmaxtemp = max(max(q1), max(q2), max(q3), max(q4), max(q5), max(q6))
-    qmintemp = min(min(q1), min(q2), min(q3), min(q4), min(q5), min(q6))
-    sssmaxtemp = max(max(sss1), max(sss2), max(sss3), max(sss4), max(sss5), max(sss6))
-    sssmintemp = min(min(sss1), min(sss2), min(sss3), min(sss4), min(sss5), min(sss6))
-    vmmaxtemp = max(max(vm1), max(vm2), max(vm3), max(vm4), max(vm5), max(vm6))
-    vmmintemp = min(min(vm1), min(vm2), min(vm3), min(vm4), min(vm5), min(vm6))
+    qmaxtemp = (max(q1), max(q2), max(q3), max(q4), max(q5), max(q6))
+    qmintemp = (min(q1), min(q2), min(q3), min(q4), min(q5), min(q6))
+    sssmaxtemp = (max(sss1), max(sss2), max(sss3), max(sss4), max(sss5), max(sss6))
+    sssmintemp = (min(sss1), min(sss2), min(sss3), min(sss4), min(sss5), min(sss6))
+    vmmaxtemp = (max(vm1), max(vm2), max(vm3), max(vm4), max(vm5), max(vm6))
+    vmmintemp = (min(vm1), min(vm2), min(vm3), min(vm4), min(vm5), min(vm6))
+    qmaxtemp = max(qmaxtemp)
+    qmintemp = min(qmintemp)
+    sssmaxtemp = max(sssmaxtemp)
+    sssmintemp = min(sssmintemp)
+    vmmaxtemp = max(vmmaxtemp)
+    vmmintemp = min(vmmintemp)
+
+    #print(qmaxtemp,qmintemp,sssmaxtemp,sssmintemp,vmmaxtemp,vmmintemp)
+
+
+    #qmaxtemp = max(max(q1), max(q2), max(q3), max(q4), max(q5), max(q6))
+    #qmintemp = min(min(q1), min(q2), min(q3), min(q4), min(q5), min(q6))
+    #sssmaxtemp = max(max(sss1), max(sss2), max(sss3), max(sss4), max(sss5), max(sss6))
+    #sssmintemp = min(min(sss1), min(sss2), min(sss3), min(sss4), min(sss5), min(sss6))
+    #vmmaxtemp = max(max(vm1), max(vm2), max(vm3), max(vm4), max(vm5), max(vm6))
+    #vmmintemp = min(min(vm1), min(vm2), min(vm3), min(vm4), min(vm5), min(vm6))
 
     xmax.append(xtemp)
     qmax.append(qmaxtemp)
@@ -323,6 +346,12 @@ for x in range(0,5):
 
     vmmax.append(vmmaxtemp)
     vmmin.append(vmmintemp)
+#print(verstress)
+x = np.arange(0.02, 1.670, 0.001)
+plt.plot(x,sssmax)
+plt.plot(x,qmax)
+plt.plot(x,vmmax)
+
 
 i = qmax.index(max(qmax))
 j = qmin.index(min(qmin))
@@ -335,9 +364,9 @@ print(xmax[j],qmin[j],xmax[i],qmax[i])
 print(xmax[l],sssmin[l],xmax[k],sssmax[k])
 print(xmax[n],vmmin[n],xmax[r],vmmax[r])
 
-xstress = [xmax[i],xmax[k],xmax[l],xmax[n]]
+xstress = [xmax[i],xmax[k],xmax[j],xmax[r],xmax[l],xmax[n]]
 print(xstress)
-for p in range(4):
+for p in range(len(xstress)):
     print("wollah", p)
     x = xstress[i]
     Sy = aileron.Sy(xtemp)
@@ -381,7 +410,8 @@ for p in range(4):
     ### Auxiliary functions
     Stressobject.compute_stressdistributions(Sy, Sz, My, Mz, T)
 
+    print(x)
     Stressobject.plot_shearflowdistributions()
-    Stressobject.plot_directstressdistributions()
+    #Stressobject.plot_directstressdistributions()
     Stressobject.plot_vonmisesstressdistributions()
 
