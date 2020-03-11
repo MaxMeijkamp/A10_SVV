@@ -143,12 +143,32 @@ _, _, _ = aileron.tdeval(x)     # Compute their their third order derivative
 #print(x, vdef, wdef, phidef)
 
 # Compute the loading
-_ = aileron.Sy(x)               # Compute the shear force in y
-_ = aileron.Sz(x)               # Compute the shear force in z
-_ = aileron.My(x)               # Compute the moment around the y-axis
-_ = aileron.Mz(x)               # Compute the moment around the z-axis
-_ = aileron.T(x)                # Compute the torque
-_ = aileron.tau(x)              # Compute the distributed torque
+Sy = aileron.Sy(x)               # Compute the shear force in y
+Sz = aileron.Sz(x)               # Compute the shear force in z
+My = aileron.My(x)               # Compute the moment around the y-axis
+Mz = aileron.Mz(x)               # Compute the moment around the z-axis
+T = aileron.T(x)                # Compute the torque
+tau = aileron.tau(x)              # Compute the distributed torque
+Sytemp, Sztemp, Mytemp, Mztemp, Ttemp, tautemp = [],[],[],[],[],[]
+loads = np.array([[]])
+
+for x in range(6,1670):
+    verstresstemp = []
+    xtemp = x/1000
+    Sy = aileron.Sy(xtemp)
+    Sz = aileron.Sz(xtemp)
+    My = aileron.My(xtemp)
+    Mz = aileron.Mz(xtemp)
+    T = aileron.T(xtemp)
+    Sytemp.append(Sy)
+    Sztemp.append(Sz)
+    Mytemp.append(My)
+    Mztemp.append(Mz)
+    Ttemp.append(T)
+    tautemp.append(tau)
+    loadstemp = [xtemp,Sytemp,Sztemp,Mytemp,Mztemp,Ttemp,tautemp]
+    loads = np.append(loads,loadstemp)
+#print(loads)
 
 ## Value of the total potential energy
 _ = aileron.cPI()               # Compute the total potential energy of the beam for the computed solution.
@@ -207,7 +227,7 @@ vmmaxtemp = []
 vmmintemp = []
 verstress = np.array([[]])
 
-for x in range(20,1670):
+for x in range(6,1692):
     verstresstemp = []
     xtemp = x/1000
     Sy = aileron.Sy(xtemp)
@@ -343,11 +363,11 @@ for x in range(20,1670):
     qmin.append(qmintemp)
     sssmax.append(sssmaxtemp)
     sssmin.append(sssmintemp)
-
     vmmax.append(vmmaxtemp)
     vmmin.append(vmmintemp)
+
 #print(verstress)
-x = np.arange(0.02, 1.670, 0.001)
+x = np.arange(0.006, 1.692, 0.001)
 plt.plot(x,sssmax)
 plt.plot(x,qmax)
 plt.plot(x,vmmax)
@@ -358,22 +378,25 @@ j = qmin.index(min(qmin))
 k = sssmax.index(max(sssmax))
 l = sssmin.index(min(sssmin))
 r = vmmax.index(max(vmmax))
+print(r)
+print(x[r])
 n = vmmin.index(min(vmmin))
 
 print(xmax[j],qmin[j],xmax[i],qmax[i])
 print(xmax[l],sssmin[l],xmax[k],sssmax[k])
 print(xmax[n],vmmin[n],xmax[r],vmmax[r])
 
+print(xmax)
 xstress = [xmax[i],xmax[k],xmax[j],xmax[r],xmax[l],xmax[n]]
 print(xstress)
 for p in range(len(xstress)):
     print("wollah", p)
-    x = xstress[i]
-    Sy = aileron.Sy(xtemp)
-    Sz = aileron.Sz(xtemp)
-    My = aileron.My(xtemp)
-    Mz = aileron.Mz(xtemp)
-    T = aileron.T(xtemp)
+    x = xstress[p]
+    Sy = aileron.Sy(x)
+    Sz = aileron.Sz(x)
+    My = aileron.My(x)
+    Mz = aileron.Mz(x)
+    T = aileron.T(x)
     Stressobject.compute_unitstressdistributions()
     h = Stressobject.ha / 2.
     A1 = m.pi * h ** 2 / 2.
