@@ -144,27 +144,27 @@ def get_dat(case, param):
 #print(get_dat('bending','disp'))
 #print(get_dat('Jam_Bent','disp'))
 
-H = []
-
-for s in np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598),
-                      delimiter=",").astype(float):
-    if s[2]==0 and s[3]==0:
-        H.append([s[0],s[1]])
-
-H = H=np.array(H)
-print(H)
-disph = []
-
-for t in get_dat('bending','disp'):
-    #print(t)
-    for h in H:
-        if int(t[0]) == h[0]:
-            disph.append([float(h[1]),float(t[3])])
-disph = np.sort(disph, axis=0)
-
-print(disph)
-for elem in disph:
-    print(elem[1])
+# H = []
+#
+# for s in np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598),
+#                       delimiter=",").astype(float):
+#     if s[2]==0 and s[3]==0:
+#         H.append([s[0],s[1]])
+#
+# H = H=np.array(H)
+# print(H)
+# disph = []
+#
+# for t in get_dat('bending','disp'):
+#     #print(t)
+#     for h in H:
+#         if int(t[0]) == h[0]:
+#             disph.append([float(h[1]),float(t[3])])
+# disph = np.sort(disph, axis=0)
+#
+# print(disph)
+# for elem in disph:
+#     print(elem[1])
 
 
 # def get_twist(case):
@@ -348,8 +348,10 @@ def get_twist(case):
         for elems in LEdisp:
             if elem[0] == elems[0]:
                 LEfull.append([elem[1], elems[3], abs(elems[4] - elem[3])])
-    LEfull = np.sort(LEfull, axis=0)
-    TEfull = np.sort(TEfull, axis=0)
+    LEfull = np.asarray(LEfull)
+    LEfull = LEfull[np.argsort(LEfull[:,0])]
+    TEfull = np.asarray(TEfull)
+    TEfull = TEfull[np.argsort(TEfull[:,0])]
 
 
 
@@ -358,9 +360,9 @@ def get_twist(case):
         theta = np.arctan((LEfull[i][1] - TEfull[i][1]) / (LEfull[i][2] + TEfull[i][2]))
         #theta = np.arctan((LEfull[i][1] - TEfull[i][1]) / (102.5+502.5))
         thetas.append(theta)
-        print(theta)
+        #print(theta)
 
     thetas = np.array(thetas)
 
-    return #np.sort(TE[:,1]), thetas
+    return np.sort(TE[:,1]), thetas
 
