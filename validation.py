@@ -4,7 +4,7 @@ from mpl_toolkits import mplot3d  # 3d plotting
 import matplotlib.pyplot as plt
 
 # # input file
-# a = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+#a = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
 # #a = a.astype(np.float)
 # xin = []
 # yin = []
@@ -80,11 +80,18 @@ import matplotlib.pyplot as plt
 #                   delimiter=",", usecols=2).astype(float)
 # zin = np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598),
 #                   delimiter=",", usecols=3).astype(float)
-#
+# LEa = []  # nmbr, x , y , z
+# for n in np.genfromtxt("A10_SVV_DataSets/B737INP.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598),
+#                       delimiter=",").astype(float):
+#     if n[2] == 0.0 and n[3] == 102.5:
+#         LEa.append(n)
+# LEa = np.array(LEa)
+# print(LEa)
 # #plotting the 3D aileron
 # fig = plt.figure()
 # ax = plt.axes(projection='3d')
 # ax.scatter3D(xin, yin, zin)
+# ax.scatter3D(LEa[:,1],LEa[:,2],LEa[:,3])
 # plt.show()
 # print(yin.min(),zin.min())
 
@@ -300,10 +307,10 @@ def get_twist(case):
 
     # Trailing edge displacement
     TEdisp = []  # nmbr, magn, dx, dy ,dz
-    for L in TE:
-        for b0 in b:
-            if L[0] == b0[0]:
-                TEdisp.append(b0)
+    for r in TE:
+        for b1 in b:
+            if r[0] == b1[0]:
+                TEdisp.append(b1)
     TEdisp = np.array(TEdisp)
 
     # Twist
@@ -311,20 +318,25 @@ def get_twist(case):
     for elem in TE:
         for elems in TEdisp:
             if elem[0] == elems[0]:
-                TEfull.append([elem[1], elems[3], abs(elems[4] + elem[3])])
+                TEfull.append([elem[1], elems[3], abs(elems[4] - elem[3])])
     LEfull = []  # x, dy, Dz
     for elem in LE:
         for elems in LEdisp:
             if elem[0] == elems[0]:
-                LEfull.append([elem[1], elems[3], abs(elems[4] + elem[3])])
+                LEfull.append([elem[1], elems[3], abs(elems[4] - elem[3])])
     LEfull = np.sort(LEfull, axis=0)
     TEfull = np.sort(TEfull, axis=0)
+    for i in LEfull:
+        print(i[0])
 
     thetas = []
     for i in range(len(LE)):
         theta = np.arctan((LEfull[i][1] - TEfull[i][1]) / (LEfull[i][2] + TEfull[i][2]))
-        #theta = np.arcsin((LEfull[i][1] - TEfull[i][1]) / (102.5+502.5))
+        #theta = np.arctan((LEfull[i][1] - TEfull[i][1]) / (102.5+502.5))
         thetas.append(theta)
+
     thetas = np.array(thetas)
-    print(TE)
+
     return np.sort(TE[:,1]), thetas
+
+print(get_twist('bending'))
