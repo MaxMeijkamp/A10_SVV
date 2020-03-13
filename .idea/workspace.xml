@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4c9ce60f-9425-4ff2-a792-5952d02b9cd9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Energy.cp36-win_amd64.pyd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Stiffness.cp36-win_amd64.pyd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Stress.cp36-win_amd64.pyd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Energy.cp38-win_amd64.pyd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Stiffness.cp38-win_amd64.pyd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Stress.cp38-win_amd64.pyd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testval.py" beforeDir="false" afterPath="$PROJECT_DIR$/testval.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/validation.py" beforeDir="false" afterPath="$PROJECT_DIR$/validation.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,25 +17,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/validation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="325" column="14" selection-start-line="325" selection-start-column="14" selection-end-line="325" selection-end-column="14" />
+            <state relative-caret-position="696">
+              <caret line="324" column="88" lean-forward="true" selection-start-line="324" selection-start-column="88" selection-end-line="324" selection-end-column="88" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
                 <element signature="e#2579#4581#0" />
-                <element signature="e#4560#4582#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testval.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" selection-start-line="9" selection-end-line="9" />
+            <state relative-caret-position="306">
+              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
             </state>
           </provider>
         </entry>
@@ -51,7 +43,7 @@
         <entry file="file://$PROJECT_DIR$/A10_SVV_DataSets/B737INP.inp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="306">
-              <caret line="18" column="49" lean-forward="true" selection-start-line="18" selection-start-column="49" selection-end-line="18" selection-end-column="49" />
+              <caret line="18" column="49" selection-start-line="18" selection-start-column="49" selection-end-line="18" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -59,7 +51,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/A10_SVV_DataSets/B737RPT.rpt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="53">
+            <state relative-caret-position="341258">
               <caret line="20074" column="31" selection-start-line="20074" selection-start-column="31" selection-end-line="20074" selection-end-column="31" />
             </state>
           </provider>
@@ -80,8 +72,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="222" column="46" lean-forward="true" selection-start-line="222" selection-start-column="46" selection-end-line="222" selection-end-column="46" />
+            <state relative-caret-position="209">
+              <caret line="129" column="15" selection-start-line="129" selection-start-column="12" selection-end-line="129" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -94,7 +86,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/compare.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
+            <state relative-caret-position="1598">
               <caret line="96" column="16" selection-start-line="96" selection-start-column="16" selection-end-line="96" selection-end-column="16" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
@@ -119,6 +111,9 @@
       <find>self</find>
       <find>x</find>
       <find>twi</find>
+      <find>plot</find>
+      <find>plotphi</find>
+      <find>phi</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -135,25 +130,23 @@
         <option value="$PROJECT_DIR$/A10_SVV_Validation/Hingeline deflection.py" />
         <option value="$PROJECT_DIR$/torsion.py" />
         <option value="$PROJECT_DIR$/compare.py" />
-        <option value="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py" />
         <option value="$PROJECT_DIR$/validation2.py" />
-        <option value="$PROJECT_DIR$/validation.py" />
+        <option value="$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py" />
         <option value="$PROJECT_DIR$/testval.py" />
+        <option value="$PROJECT_DIR$/validation.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="950" />
-    <option name="y" value="-10" />
-    <option name="width" value="980" />
-    <option name="height" value="1050" />
+    <option name="width" value="979" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -170,6 +163,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -199,7 +193,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.testval">
     <configuration name="InputClasses" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="A10_SVV" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -307,8 +301,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.testval" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.validation2" />
         <item itemvalue="Python.validation" />
         <item itemvalue="Python.InputClasses" />
@@ -487,7 +481,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583744008816</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Function n_twist(x) gives the twist as a function of the span for the num.model">
+      <created>1583935245387</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1583935245387</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView">
@@ -692,6 +693,21 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Energy.cp38-win_amd64.pyd" />
+    <entry file="file://$PROJECT_DIR$/validation2.py" />
+    <entry file="file://$USER_HOME$/.PyCharmCE2019.1/system/python_stubs/-608225662/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="278" column="4" selection-start-line="278" selection-start-column="4" selection-end-line="278" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/A10_SVV_DataSets/B737RPT.rpt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341258">
+          <caret line="20074" column="31" selection-start-line="20074" selection-start-column="31" selection-end-line="20074" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/InputClasses.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="9129">
@@ -702,16 +718,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_DataSets/B737RPT.rpt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="20074" column="31" selection-start-line="20074" selection-start-column="31" selection-end-line="20074" selection-end-column="31" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Energy.cp36-win_amd64.pyd">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/compare.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
+        <state relative-caret-position="1598">
           <caret line="96" column="16" selection-start-line="96" selection-start-column="16" selection-end-line="96" selection-end-column="16" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -719,56 +731,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel2.0/Energy.cp36-win_amd64.pyd">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation2.py">
+    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharmCE2019.1/system/python_stubs/-608225662/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="278" column="4" selection-start-line="278" selection-start-column="4" selection-end-line="278" selection-end-column="4" />
+        <state relative-caret-position="209">
+          <caret line="129" column="15" selection-start-line="129" selection-start-column="12" selection-end-line="129" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/A10_SVV_DataSets/B737INP.inp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
-          <caret line="18" column="49" lean-forward="true" selection-start-line="18" selection-start-column="49" selection-end-line="18" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="325" column="14" selection-start-line="325" selection-start-column="14" selection-end-line="325" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#2579#4581#0" />
-            <element signature="e#4560#4582#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel2.0/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="222" column="46" lean-forward="true" selection-start-line="222" selection-start-column="46" selection-end-line="222" selection-end-column="46" />
+          <caret line="18" column="49" selection-start-line="18" selection-start-column="49" selection-end-line="18" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testval.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="306">
+          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="696">
+          <caret line="324" column="88" lean-forward="true" selection-start-line="324" selection-start-column="88" selection-end-line="324" selection-end-column="88" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#2579#4581#0" />
+          </folding>
         </state>
       </provider>
     </entry>

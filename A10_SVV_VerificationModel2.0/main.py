@@ -125,8 +125,8 @@ aileron.compute_deflections(aerodynamicloading=aircraft) ### Switch aerodynamic 
 """" A number of auxiliary functions and results are given to you. """
 
 ## Simplistic plotting procedures for a first check
-aileron.plotv()             # Plot the deflections in y-direction, its derivative, the bending moment about the z-axis, and the shear force in y.
-aileron.plotw()             # Plot the deflections in z-direction, its derivative, the bending moment about the y-axis, and the shear force in z.
+#aileron.plotv()             # Plot the deflections in y-direction, its derivative, the bending moment about the z-axis, and the shear force in y.
+#aileron.plotw()             # Plot the deflections in z-direction, its derivative, the bending moment about the y-axis, and the shear force in z.
 aileron.plotphi()           # Plot the twist distribution, the torque and the distributed torque.
 
 ## For custom post-processing of the solution
@@ -230,9 +230,9 @@ Stressobject.Tq6f = solution[0]
 Stressobject.compute_stressdistributions(Sy,Sz,My,Mz,T)
 
 ### Some plotting functions
-Stressobject.plot_shearflowdistributions()
-Stressobject.plot_directstressdistributions()
-Stressobject.plot_vonmisesstressdistributions()
+#Stressobject.plot_shearflowdistributions()
+#Stressobject.plot_directstressdistributions()
+#Stressobject.plot_vonmisesstressdistributions()
 
 ### Access to important results
 theta = np.linspace(0,m.pi/2,num = 100)
