@@ -155,7 +155,7 @@ H = H=np.array(H)
 #print(H)
 disph = []
 
-for t in get_dat('Jam_Bent','disp'):
+for t in get_dat('Jam_Straight','disp'):
     #print(t)
     for h in H:
         if int(t[0]) == h[0]:
