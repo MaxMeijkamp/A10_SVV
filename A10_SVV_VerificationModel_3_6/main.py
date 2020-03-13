@@ -6,24 +6,41 @@ import Stress
 import math as m
 
 ######################## Part I - parameters as in assignment #######################################
-aircraft = "CRJ700" # Write either A320, F100, CRJ700 or Do228 (bear in mind capitals); this is used for aerodynamic loading
-Ca = 0.484  # m
-la = 1.691  # m
-x1 = 0.149  # m
-x2 = 0.554  # m
-x3 = 1.541  # m
-xa = 0.272  # m
-ha = 0.173  # m
+aircraft = "B737" # Write either A320, F100, CRJ700 or Do228 (bear in mind capitals); this is used for aerodynamic loading
+# Ca = 0.484  # m
+# la = 1.691  # m
+# x1 = 0.149  # m
+# x2 = 0.554  # m
+# x3 = 1.541  # m
+# xa = 0.272  # m
+# ha = 0.173  # m
+# tsk = 0.0011  # m
+# tsp = 0.0025  # m
+# tst = 0.0012  # m
+# hst = 0.014   # m
+# wst = 0.018   # m
+# nst = 13  # -
+# d1 = 0.00681  # m
+# d3 = 0.02030  # m
+# theta = m.radians(26)  # rad
+# P = 37.9*1000  # N
+Ca = 0.605  # m
+la = 2.661  # m
+x1 = 0.172  # m
+x2 = 1.211  # m
+x3 = 2.591  # m
+xa = 0.35  # m
+ha = 0.205  # m
 tsk = 0.0011  # m
-tsp = 0.0025  # m
+tsp = 0.0028  # m
 tst = 0.0012  # m
-hst = 0.014   # m
-wst = 0.018   # m
-nst = 13  # -
-d1 = 0.00681  # m
-d3 = 0.02030  # m
-theta = m.radians(26)  # rad
-P = 37.9*1000  # N
+hst = 0.016   # m
+wst = 0.019   # m
+nst = 15  # -
+d1 = 0.01154  # m
+d3 = 0.01840  # m
+theta = m.radians(28)  # rad
+P = 97.4*1000  # N
 
 
 ######################## Part II - bending stiffness calculations #######################################
@@ -74,11 +91,13 @@ aileron = Energy.Beam(la,crosssection,N,E,G)
 
 """Define your boundary conditions; see manual for explanations. The shown boundary conditions are the boundary
 conditions for the aileron as described in the assignment."""
-aileron.addbcss(x1,0.,-ha/2.,-theta,d1)
+# aileron.addbcss(x1,0.,-ha/2.,-theta,d1)
+aileron.addbcss(x1,0.,-ha/2.,-theta,0)
 aileron.addbcss(x1,0.,-ha/2.,m.pi/2-theta,0)
 aileron.addbcss(x2,0.,-ha/2.,0,0)
 aileron.addbcss(x2,0.,-ha/2.,m.pi/2,0.)
-aileron.addbcss(x3,0.,-ha/2.,-theta,d3)
+# aileron.addbcss(x3,0.,-ha/2.,-theta,d3)
+aileron.addbcss(x3,0.,-ha/2.,-theta,0)
 aileron.addbcss(x3,0.,-ha/2.,m.pi/2-theta,0)
 aileron.addbcss(x2-xa/2.,ha/2.,0,m.pi/2.-theta,0)
 
@@ -93,7 +112,8 @@ If you do want to include the aerodynamic loading, let the variable aircraft (se
 Note that the name should be spelled exactly as listed above. Note that if the aircraft you write is inconsistent with the
 geometry you define at the beginning of this file, the program will not return an error, but will simply produce bogus
 results."""
-aileron.compute_deflections() ### Switch aerodynamic loading to the aircraft that is being considered
+aileron.compute_deflections("B737") ### Switch aerodynamic loading to the aircraft that is being considered
+# aileron.compute_deflections()
 
 ### Auxiliary functions
 """" A number of auxiliary functions and results are given to you. """
@@ -117,24 +137,25 @@ My = aileron.My(x)               # Compute the moment around the y-axis
 Mz = aileron.Mz(x)               # Compute the moment around the z-axis
 T = aileron.T(x)                # Compute the torque
 tau = aileron.tau(x)              # Compute the distributed torque
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\v.csv", v, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\v1.csv", v1, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\v2.csv", v2, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\v3.csv", v3, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\w.csv", w, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\w1.csv", w1, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\w2.csv", w2, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\w3.csv", w3, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\phi.csv", phi, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\phi1.csv", phi1, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\phi2.csv", phi2, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\phi3.csv", phi3, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\Sy.csv", Sy, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\Sz.csv", Sz, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\My.csv", My, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\Mz.csv", Mz, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\T.csv", T, delimiter=",")
-np.savetxt("D:\\Documents\\SVV\\A10\\datafiles\\tau.csv", tau, delimiter=",")
+loadcase = "_3"
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\v"+loadcase+".csv", v, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\v1"+loadcase+".csv", v1, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\v2"+loadcase+".csv", v2, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\v3"+loadcase+".csv", v3, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\w"+loadcase+".csv", w, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\w1"+loadcase+".csv", w1, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\w2"+loadcase+".csv", w2, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\w3"+loadcase+".csv", w3, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\phi"+loadcase+".csv", phi, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\phi1"+loadcase+".csv", phi1, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\phi2"+loadcase+".csv", phi2, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\phi3"+loadcase+".csv", phi3, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\Sy"+loadcase+".csv", Sy, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\Sz"+loadcase+".csv", Sz, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\My"+loadcase+".csv", My, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\Mz"+loadcase+".csv", Mz, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\T"+loadcase+".csv", T, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\tau"+loadcase+".csv", tau, delimiter=",")
 ## Value of the total potential energy
 _ = aileron.cPI()               # Compute the total potential energy of the beam for the computed solution.
 i,k = 0, 1.01                   # Parameters for next line
@@ -197,36 +218,55 @@ Stressobject.compute_stressdistributions(Sy,Sz,My,Mz,T)
 theta = np.linspace(0,m.pi/2,num = 100)
 a = Stressobject.q1f(theta)             # Compute the shear flow distribution in region 1
 b = Stressobject.sigma1f(theta)         # Compute the direct stress distribution in region 1
-c = Stressobject.vm1(theta)             # Compute the Von Mises stress distribution in region 1
+c1 = Stressobject.vm1(theta)             # Compute the Von Mises stress distribution in region 1
 d1, e1 = Stressobject.coord1(theta)       # Compute the z,y-coordinates for region 1
 
 y = np.linspace(0,ha/2.,num = 100)
 _ = Stressobject.q2f(y)             # Compute the shear flow distribution in region 3
 _ = Stressobject.sigma2f(y)         # Compute the direct stress distribution in region 3
-_ = Stressobject.vm2(y)             # Compute the Von Mises stress distribution in region 3
+c2 = Stressobject.vm2(y)             # Compute the Von Mises stress distribution in region 3
 d2, e2 = Stressobject.coord2(y)       # Compute the z,y-coordinates for region 3
 
 s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
 _ = Stressobject.q3f(s)             # Compute the shear flow distribution in region 4
 _ = Stressobject.sigma3f(s)         # Compute the direct stress distribution in region 4
-_ = Stressobject.vm3(s)             # Compute the Von Mises stress distribution in region 4
+c3 = Stressobject.vm3(s)             # Compute the Von Mises stress distribution in region 4
 d3, e3 = Stressobject.coord3(s)       # Compute the z,y-coordinates for region 4
 
 s = np.linspace(0,m.sqrt((Ca-ha/2.)**2+(ha/2.)**2),num = 100)
 _ = Stressobject.q4f(s)             # Compute the shear flow distribution in region 4
 _ = Stressobject.sigma4f(s)         # Compute the direct stress distribution in region 4
-_ = Stressobject.vm4(s)             # Compute the Von Mises stress distribution in region 4
+c4 = Stressobject.vm4(s)             # Compute the Von Mises stress distribution in region 4
 d4, e4 = Stressobject.coord4(s)       # Compute the z,y-coordinates for region 4
 
 y = np.linspace(0,ha/2.,num = 100)
 _ = Stressobject.q5f(y)             # Compute the shear flow distribution in region 5
 _ = Stressobject.sigma5f(y)         # Compute the direct stress distribution in region 5
-_ = Stressobject.vm5(y)             # Compute the Von Mises stress distribution in region 5
+c5 = Stressobject.vm5(y)             # Compute the Von Mises stress distribution in region 5
 d5, e5 = Stressobject.coord5(y)       # Compute the z,y-coordinates for region 5
 
 theta = np.linspace(-m.pi/2,0,num = 100)
 _ = Stressobject.q6f(theta)             # Compute the shear flow distribution in region 6
 _ = Stressobject.sigma6f(theta)         # Compute the direct stress distribution in region 6
-_ = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
+c6 = Stressobject.vm6(theta)             # Compute the Von Mises stress distribution in region 6
 d6, e6 = Stressobject.coord6(theta)       # Compute the z,y-coordinates for region 6
+
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\c1"+loadcase+".csv", c1, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\d1"+loadcase+".csv", d1, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\e1"+loadcase+".csv", e1, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\c2"+loadcase+".csv", c2, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\d2"+loadcase+".csv", d2, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\e2"+loadcase+".csv", e2, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\c3"+loadcase+".csv", c3, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\d3"+loadcase+".csv", d3, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\e3"+loadcase+".csv", e3, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\c4"+loadcase+".csv", c4, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\d4"+loadcase+".csv", d4, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\e4"+loadcase+".csv", e4, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\c5"+loadcase+".csv", c5, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\d5"+loadcase+".csv", d5, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\e5"+loadcase+".csv", e5, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\c6"+loadcase+".csv", c6, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\d6"+loadcase+".csv", d6, delimiter=",")
+np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\e6"+loadcase+".csv", e6, delimiter=",")
 
