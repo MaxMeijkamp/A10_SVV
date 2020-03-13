@@ -80,6 +80,3 @@ plt.plot(x_bend, y_bend, 'bo') #bluedots
 plt.plot(x_jam_bent, y_jam_bent, 'ro') #reddots
 plt.plot(x_jam_straight, y_jam_straight, 'go') #greendots
 plt.show()
-print(y_bend)
-for i in y_bend:
-    print(i)

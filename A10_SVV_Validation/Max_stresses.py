@@ -62,6 +62,7 @@ def node_x(node):
             return i[1]
 
 
+
 def node_y(node):
     # returns y-coordinate OF GIVEN NODE
     nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
@@ -120,6 +121,17 @@ def integrationpoint(element):
     return x / len(allnodes), y / len(allnodes), z / len(allnodes)
 
 
+
+#print(integrationpoint(5190)[0])
+#print(integrationpoint(2391)[0])
+#print(integrationpoint(5369)[0])
+#print(integrationpoint(384)[0])
+#print(integrationpoint(2390)[0])
+#print(integrationpoint(5181)[0])
+
+
+
+
 def crossection(node):
     # finds all the nodes in the crossection of given node
     elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
@@ -133,7 +145,6 @@ def crossection(node):
                     crossection_list.append(int(n[0]))
 
     return np.array(crossection_list)
-
 
 def crossection_element(element):
     a1 = crossection(nodes(element)[0])
@@ -215,12 +226,12 @@ def crossection_s12(case):
 
     return crossection_s12_list
 
-print (max_von_mises('bending'))
-print (max_von_mises('Jam_Bent'))
-print (max_von_mises('Jam_Straight'))
-print (max_s12('bending'))
-print (max_s12('Jam_Bent'))
-print (max_s12('Jam_Straight'))
+#print (max_von_mises('bending'))
+#print (max_von_mises('Jam_Bent'))
+#print (max_von_mises('Jam_Straight'))
+#print (max_s12('bending'))
+#print (max_s12('Jam_Bent'))
+#print (max_s12('Jam_Straight'))
 
 
 

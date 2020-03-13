@@ -90,7 +90,7 @@ def plotcrossection(values,coordinates,plotname):
 
 
 plotcrossection(a,b,'Von Mises Bending')
-#plotcrossection(c,phi_1,'Von Mises Jam Bent' )
+#plotcrossection(c,d,'Von Mises Jam Bent' )
 #plotcrossection(e,f,'Von Mises Jam Straight')
 #plotcrossection(g,h, 'S12 Bending')
 #plotcrossection(i,j,'S12 Jam Bent')
