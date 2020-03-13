@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 #     xin.append(i[1])
 #     yin.append(i[2])
 #     zin.append(i[3])
-#
+#dd
 # # plotting the 3D aileron
 #
 # fig = plt.figure()
