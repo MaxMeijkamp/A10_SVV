@@ -1,127 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4c9ce60f-9425-4ff2-a792-5952d02b9cd9" name="Default Changelist" comment="Final commit (hopefully).">
+    <list default="true" id="4c9ce60f-9425-4ff2-a792-5952d02b9cd9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/A10_SVV.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/A10_SVV.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compare.py" beforeDir="false" afterPath="$PROJECT_DIR$/compare.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c1_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c1_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c1_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c1_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c1_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c1_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c2_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c2_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c2_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c2_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c2_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c2_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c3_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c3_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c3_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c3_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c3_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c3_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c4_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c4_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c4_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c4_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c4_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c4_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c5_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c5_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c5_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c5_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c5_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c5_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c6_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c6_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c6_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c6_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/c6_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c6_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/use_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/use_data.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="numericaltools.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/numericaltools.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="660">
-              <caret line="56" column="23" selection-start-line="56" selection-start-column="23" selection-end-line="56" selection-end-column="23" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InputClasses.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/InputClasses.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="629">
-              <caret line="40" column="20" selection-start-line="40" selection-start-column="20" selection-end-line="40" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="equilibrium.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/equilibrium.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4216">
-              <caret line="252" column="25" selection-start-line="252" selection-start-column="25" selection-end-line="252" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="compare.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/compare.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1547">
-              <caret line="91" column="29" selection-start-line="91" selection-start-column="29" selection-end-line="91" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2006">
-              <caret line="125" column="20" selection-start-line="125" selection-start-column="20" selection-end-line="125" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="70" column="21" lean-forward="true" selection-start-line="70" selection-start-column="21" selection-end-line="70" selection-end-column="21" />
-              <folding>
-                <element signature="e#32#50#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="use_data.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/use_data.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1306">
-              <caret line="125" column="16" selection-start-line="125" selection-start-column="16" selection-end-line="125" selection-end-column="16" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="validation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/validation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3873">
-              <caret line="361" column="69" selection-start-line="361" selection-start-column="69" selection-end-line="361" selection-end-column="69" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+  <component name="FavoritesManager">
+    <favorites_list name="A10_SVV" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -142,23 +33,6 @@
     <option name="UPDATE_TYPE" value="MERGE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/loading.py" />
-        <option value="$PROJECT_DIR$/A10_SVV_DataSets/B737RPT.rpt" />
-        <option value="$PROJECT_DIR$/geometry.py" />
-        <option value="$PROJECT_DIR$/InputClasses.py" />
-        <option value="$PROJECT_DIR$/testval.py" />
-        <option value="$PROJECT_DIR$/A10_SVV_Validation/Hingeline deflection.py" />
-        <option value="$PROJECT_DIR$/torsion.py" />
-        <option value="$PROJECT_DIR$/validation.py" />
-        <option value="$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py" />
-        <option value="$PROJECT_DIR$/compare.py" />
-        <option value="$PROJECT_DIR$/use_data.py" />
-      </list>
-    </option>
-  </component>
   <component name="ProjectConfigurationFiles">
     <option name="files">
       <list>
@@ -168,58 +42,43 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="950" />
-    <option name="y" value="-10" />
-    <option name="width" value="980" />
-    <option name="height" value="1050" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="A10" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A10" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
-  </component>
+  <component name="ProjectId" id="1Z4h8yfBNnELVlALZf7MshW8eiS" />
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Documents\SVV\A10\datafileval" />
-      <recent name="C:\Users\Dario\PycharmProjects\A10_SVV\A10_SVV_DataSets" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Documents\SVV\A10\datafiles" />
+      <recent name="C:\Users\Dario\PycharmProjects\A10_SVV\A10_SVV_DataSets" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Dario\PycharmProjects\A10_SVV\A10_SVV_DataSets" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
-  <component name="RunManager" selected="Python.use_data">
+  <component name="RunManager" selected="Python.validation">
+    <configuration name="Hingeline deflection" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="A10_SVV" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/A10_SVV_Validation" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/A10_SVV_Validation/Hingeline deflection.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Max_stresses" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="A10_SVV" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -237,6 +96,9 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <configuration name="compare" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="A10_SVV" />
@@ -255,26 +117,11 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="A10_SVV" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/A10_SVV_VerificationModel_3_6" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-    </configuration>
-    <configuration name="use_data" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="testval" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="A10_SVV" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -286,11 +133,14 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/use_data.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/testval.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <configuration name="validation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="A10_SVV" />
@@ -309,21 +159,17 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
-    <list>
-      <item itemvalue="Python.Max_stresses" />
-      <item itemvalue="Python.compare" />
-      <item itemvalue="Python.validation" />
-      <item itemvalue="Python.main" />
-      <item itemvalue="Python.use_data" />
-    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.use_data" />
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.validation" />
         <item itemvalue="Python.compare" />
         <item itemvalue="Python.Max_stresses" />
+        <item itemvalue="Python.Hingeline deflection" />
+        <item itemvalue="Python.testval" />
       </list>
     </recent_temporary>
   </component>
@@ -485,21 +331,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582817311560</updated>
     </task>
-    <task id="LOCAL-00022" summary="Expanded use_data to compare stresses in cross-section">
-      <created>1584316938983</created>
+    <task id="LOCAL-00022" summary="Updated functions for stresses and Hingeline deflection">
+      <created>1584103365452</created>
       <option name="number" value="00022" />
       <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1584316938983</updated>
+      <updated>1584103365452</updated>
     </task>
-    <task id="LOCAL-00023" summary="Final commit (hopefully).">
-      <created>1584374160587</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1584374160587</updated>
-    </task>
-    <option name="localTasksCounter" value="24" />
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TodoView">
@@ -510,51 +349,6 @@
       <are-packages-shown value="true" />
       <is-autoscroll-to-source value="true" />
     </todo-panel>
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48734176" visible="true" weight="0.14739583" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32956153" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5019815" side_tool="true" weight="0.24186705" />
-      <window_info anchor="bottom" id="Find" order="7" weight="0.32897604" />
-      <window_info active="true" anchor="bottom" x="11" y="127" width="1514" height="570" id="Run" order="2" sideWeight="0.4980185" visible="true" weight="0.3583878" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49867898" weight="0.32956153" />
-      <window_info anchor="bottom" id="Python Console" order="4" weight="0.42149928" />
-      <window_info id="Structure" order="1" sideWeight="0.51265824" side_tool="true" weight="0.15587847" />
-      <window_info anchor="bottom" id="Terminal" order="0" weight="0.32956153" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39745402" />
-      <window_info id="Favorites" order="2" sideWeight="0.5007072" side_tool="true" weight="0.22523117" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Message" order="5" />
-      <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
-    </layout>
-    <layout-to-restore>
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="10" weight="0.4" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48734176" visible="true" weight="0.15587847" />
-      <window_info id="Structure" order="1" sideWeight="0.51265824" side_tool="true" weight="0.15587847" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32956153" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49867898" weight="0.32956153" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4980185" visible="true" weight="0.24186705" />
-      <window_info anchor="bottom" id="Python Console" order="4" weight="0.42149928" />
-      <window_info anchor="bottom" id="Message" order="5" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39745402" />
-      <window_info anchor="bottom" id="Terminal" order="0" weight="0.32956153" />
-      <window_info anchor="bottom" id="Event Log" order="1" sideWeight="0.5019815" side_tool="true" weight="0.24186705" />
-      <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="7" />
-      <window_info id="Favorites" order="2" sideWeight="0.5007072" side_tool="true" weight="0.22523117" />
-    </layout-to-restore>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="I did this" />
@@ -569,15 +363,43 @@
     <MESSAGE value="Get twist finished, graphs gotten" />
     <MESSAGE value="get_dat modified" />
     <MESSAGE value="Function n_twist(x) gives the twist as a function of the span for the num.model" />
-    <MESSAGE value="Expanded use_data to compare stresses in cross-section" />
-    <MESSAGE value="Final commit (hopefully)." />
-    <option name="LAST_COMMIT_MESSAGE" value="Final commit (hopefully)." />
+    <MESSAGE value="Updated functions for stresses and Hingeline deflection" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated functions for stresses and Hingeline deflection" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="279" y="52" key="CommitChangelistDialog2" timestamp="1584103330499">
+    <state x="279" y="52" key="CommitChangelistDialog2" timestamp="1584103365228">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="279" y="52" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1584103330499" />
+    <state x="279" y="52" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1584103365228" />
+    <state width="1398" height="138" key="GridCell.Tab.0.bottom" timestamp="1584103396884">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="138" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1584103396884" />
+    <state width="1398" height="138" key="GridCell.Tab.0.center" timestamp="1584103396883">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="138" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1584103396883" />
+    <state width="1398" height="138" key="GridCell.Tab.0.left" timestamp="1584103396882">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="138" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1584103396882" />
+    <state width="1398" height="138" key="GridCell.Tab.0.right" timestamp="1584103396883">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="138" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1584103396883" />
+    <state x="229" y="89" key="SettingsEditor" timestamp="1584103390430">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="229" y="89" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1584103390430" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1584103367578">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1584103367578" />
+    <state x="399" y="272" key="com.intellij.ide.util.TipDialog" timestamp="1584375196941">
+      <screen x="0" y="23" width="1440" height="795" />
+    </state>
+    <state x="399" y="282" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1584107977637" />
+    <state x="399" y="272" key="com.intellij.ide.util.TipDialog/0.23.1440.795@0.23.1440.795" timestamp="1584375196941" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -588,318 +410,5 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/compare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2006">
-          <caret line="125" column="20" selection-start-line="125" selection-start-column="20" selection-end-line="125" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4046">
-          <caret line="242" column="36" selection-start-line="242" selection-start-column="36" selection-end-line="242" selection-end-column="36" />
-          <folding>
-            <element signature="e#32#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Stresses file.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="72" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/use_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2295">
-          <caret line="140" column="60" selection-start-line="140" selection-start-column="60" selection-end-line="140" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gendata.py" />
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel/verification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/torsion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1454" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/verification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel/ORIGINAL_MAIN.py" />
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/use_data.py" />
-    <entry file="file://$PROJECT_DIR$/stress_modules.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/InputClasses.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4743">
-          <caret line="6" column="39" selection-start-line="6" selection-start-column="39" selection-end-line="6" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/equilibrium.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4216">
-          <caret line="252" column="25" selection-start-line="252" selection-start-column="25" selection-end-line="252" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/numericaltools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="676">
-          <caret line="56" column="23" selection-start-line="56" selection-start-column="23" selection-end-line="56" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1020">
-          <caret line="348" column="30" lean-forward="true" selection-start-line="348" selection-start-column="30" selection-end-line="348" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datafiles/S12_Bending_coordinates.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="59" selection-start-column="59" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="350" column="36" lean-forward="true" selection-start-line="350" selection-start-column="36" selection-end-line="350" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/compare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1449">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Hingeline deflection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1058" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/unit_tests.py" />
-    <entry file="file://$PROJECT_DIR$/geometry.py" />
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../AppData/Local/Programs/Python/Python36/Lib/site-packages/IPython/core/interactiveshell.py" />
-    <entry file="file://$PROJECT_DIR$/../AppData/Local/Programs/Python/Python36/Lib/site-packages/numpy/lib/npyio.py" />
-    <entry file="file://$PROJECT_DIR$/Hingeline deflection.py" />
-    <entry file="file://$PROJECT_DIR$/../AppData/Local/Programs/Python/Python36/Lib/site-packages/matplotlib/axes/_base.py" />
-    <entry file="file://$PROJECT_DIR$/A10_SVV_DataSets/B737RPT.rpt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="20074" column="48" selection-start-line="20074" selection-start-column="48" selection-end-line="20074" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_DataSets/B737INP.inp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/displacements.py" />
-    <entry file="file://$PROJECT_DIR$/testval.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/torsion.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/loading.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="40" column="24" selection-start-line="40" selection-start-column="14" selection-end-line="40" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel/ORIGINAL_MAIN.py" />
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel/verification.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="15" lean-forward="true" selection-start-line="11" selection-start-column="15" selection-end-line="11" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/stress_modules.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datafiles/VM_Bending_coordinates.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="74" lean-forward="true" selection-start-line="1" selection-start-column="74" selection-end-line="1" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/InputClasses.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="629">
-          <caret line="40" column="20" selection-start-line="40" selection-start-column="20" selection-end-line="40" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Max_stresses.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1001">
-          <caret line="144" selection-start-line="144" selection-end-line="144" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2006">
-          <caret line="125" column="20" selection-start-line="125" selection-start-column="20" selection-end-line="125" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datafileval/w_1">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1420" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datafileval/Xcoord">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1403" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/datafiles2/phi_1.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-44865" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/numericaltools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="56" column="23" selection-start-line="56" selection-start-column="23" selection-end-line="56" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Stresses file.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="52" column="46" lean-forward="true" selection-start-line="52" selection-start-column="46" selection-end-line="52" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Hingeline deflection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="81" column="10" lean-forward="true" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3873">
-          <caret line="361" column="69" selection-start-line="361" selection-start-column="69" selection-end-line="361" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/compare.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1547">
-          <caret line="91" column="29" selection-start-line="91" selection-start-column="29" selection-end-line="91" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/use_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1306">
-          <caret line="125" column="16" selection-start-line="125" selection-start-column="16" selection-end-line="125" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="70" column="21" lean-forward="true" selection-start-line="70" selection-start-column="21" selection-end-line="70" selection-end-column="21" />
-          <folding>
-            <element signature="e#32#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>
