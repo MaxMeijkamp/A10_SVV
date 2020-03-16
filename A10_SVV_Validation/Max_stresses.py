@@ -15,24 +15,31 @@ def get_dat(case, param):
     if str(case) == 'bending':
 
         if param == 'stresses':  # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=20, max_rows=5778).astype(float)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=5816, max_rows=856).astype(float)
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=20, 
+                                    max_rows=5778).astype(float)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=5816, 
+                                    max_rows=856).astype(float)
             loaded = np.concatenate((loaded1, loaded2))
 
             for elem in loaded:
-                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
+                newload.append([elem[0], (elem[2] + elem[3]) / 2, 
+                                (elem[4] + elem[5]) / 2])
         if param == 'disp':  # returns displacement at each node
-            newload = np.genfromtxt(file, dtype=str, skip_header=20074, max_rows=6588)
+            newload = np.genfromtxt(file, dtype=str, skip_header=20074, 
+                                    max_rows=6588)
 
     if case == 'Jam_Bent':
 
         if param == 'stresses':  # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=6705, max_rows=5778)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=12501, max_rows=856)
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=6705, 
+                                    max_rows=5778)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=12501,
+                                    max_rows=856)
             loaded = np.concatenate((loaded1, loaded2)).astype(float)
 
             for elem in loaded:
-                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
+                newload.append([elem[0], (elem[2] + elem[3]) / 2, 
+                                (elem[4] + elem[5]) / 2])
 
         if param == 'disp':  # returns displacement at each node
             newload = np.genfromtxt(file, dtype=str, skip_header=26724,
@@ -40,22 +47,27 @@ def get_dat(case, param):
 
     if case == 'Jam_Straight':
         if param == 'stresses':  # returns VMS and S12 at each element
-            loaded1 = np.genfromtxt(file, dtype=str, skip_header=13390, max_rows=5778)
-            loaded2 = np.genfromtxt(file, dtype=str, skip_header=19186, max_rows=856)
+            loaded1 = np.genfromtxt(file, dtype=str, skip_header=13390, 
+                                    max_rows=5778)
+            loaded2 = np.genfromtxt(file, dtype=str, skip_header=19186, 
+                                    max_rows=856)
             loaded = np.concatenate((loaded1, loaded2)).astype(float)
 
             for elem in loaded:
-                newload.append([elem[0], (elem[2] + elem[3]) / 2, (elem[4] + elem[5]) / 2])
+                newload.append([elem[0], (elem[2] + elem[3]) / 2, 
+                                (elem[4] + elem[5]) / 2])
 
         if param == 'disp':  # returns displacement at each node
-            newload = np.genfromtxt(file, dtype=str, skip_header=33374, max_rows=6588)
+            newload = np.genfromtxt(file, dtype=str, skip_header=33374, 
+                                    max_rows=6588)
 
     return (newload)
 
 
 def node_x(node):
     # returns x-coordinate OF GIVEN NODE
-    nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+    nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, 
+                             skip_footer=(14594 - 6598), delimiter=",")
     nodelist = nodelist.astype(np.float)
     for i in nodelist:
         if int(i[0]) == node:
@@ -65,7 +77,8 @@ def node_x(node):
 
 def node_y(node):
     # returns y-coordinate OF GIVEN NODE
-    nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+    nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, 
+                             skip_footer=(14594 - 6598), delimiter=",")
     nodelist = nodelist.astype(np.float)
     for i in nodelist:
         if int(i[0]) == node:
@@ -74,7 +87,8 @@ def node_y(node):
 
 def node_z(node):
     # returns z-coordinate OF GIVEN NODE
-    nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+    nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, 
+                             skip_footer=(14594 - 6598), delimiter=",")
     nodelist = nodelist.astype(np.float)
     for i in nodelist:
         if int(i[0]) == node:
@@ -83,7 +97,8 @@ def node_z(node):
 
 def nodes(element):
     # enter element number and gives corresponding nodes
-    elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=6598, skip_footer=(14594 - 13233), delimiter=",")
+    elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=6598, 
+                                skip_footer=(14594 - 13233), delimiter=",")
     elementlist = elementlist.astype(np.float)
     for i in elementlist:
         if int(i[0]) == element:
@@ -92,7 +107,8 @@ def nodes(element):
 
 def elements(node):
     # enter node number and gives corresponding elements
-    elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=6598, skip_footer=(14594 - 13233), delimiter=",")
+    elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=6598, 
+                                skip_footer=(14594 - 13233), delimiter=",")
     elementlist = elementlist.astype(np.float)
     elements = []
     for i in elementlist:
@@ -108,7 +124,9 @@ def elements(node):
 
 
 def integrationpoint(element):
-    elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=6598, skip_footer=(14594 - 13233), delimiter=",")
+    #finds the integration point of every element
+    elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=6598, 
+                                skip_footer=(14594 - 13233), delimiter=",")
     elementlist = elementlist.astype(np.float)
     allnodes = nodes(element)
     x = 0
@@ -122,36 +140,30 @@ def integrationpoint(element):
 
 
 
-#print(integrationpoint(5190)[0])
-#print(integrationpoint(2391)[0])
-#print(integrationpoint(5369)[0])
-#print(integrationpoint(384)[0])
-#print(integrationpoint(2390)[0])
-#print(integrationpoint(5181)[0])
-
-
-
-
 def crossection(node):
     # finds all the nodes in the crossection of given node
-    elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+    elementlist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, 
+                                skip_footer=(14594 - 6598), delimiter=",")
     elementlist = elementlist.astype(np.float)
     crossection_list = []
 
     for i in elementlist:
         if int(i[0]) == node:  # find line with corresponding element
             for n in elementlist:
-                if int(n[1]) == int(i[1]):  # finds all the elements with the same x coordinate as the input element
+                if int(n[1]) == int(i[1]):  # finds all the elements with the 
+                    #same x coordinate as the input element
                     crossection_list.append(int(n[0]))
 
     return np.array(crossection_list)
 
 def crossection_element(element):
+    # finds all the elements in the crossection of given element
     a1 = crossection(nodes(element)[0])
     a2 = crossection(nodes(element)[2])
     a = list(np.hstack((a1, a2)))
 
-    lst = []  # list of all the nodes of the crossection of nodes on the left and right of the element
+    lst = []  # list of all the nodes of the crossection of nodes on the left 
+    #and right of the element
     for i in a:
         lst = lst + elements(i)
     crossectionlist = []
@@ -167,15 +179,17 @@ def crossection_element(element):
 
 
 def crossection_coordinates(element):
+    #finds the integration points of the crossection of every element
     a = crossection_element(element)
     lst = []
     for i in a:
         lst.append(integrationpoint(i))
     return lst
-
+print (crossection_coordinates(100))
 
 def max_von_mises(case):
-    # finds the maximum von mises stress at given loading case for the entire aileron
+    # finds the maximum von mises stress at given loading case for the entire 
+    #aileron
     stresslist = []
     for i in get_dat(case, 'stresses'):
         stresslist.append((i[1], i[0]))
@@ -233,10 +247,7 @@ def crossection_s12(case):
 #print (max_s12('Jam_Bent'))
 #print (max_s12('Jam_Straight'))
 
-
-
-
-
+#maximum values for every loadcase for von misses and shear stress
 (0.3617365, 5190.0) #von mises bending
 (0.4141685, 2391.0) #von mises Jam Bent
 (0.178384, 5369.0) #von mises Jam Straight
@@ -245,7 +256,7 @@ def crossection_s12(case):
 (0.0831562, 5181.0) #s12 Jam Straight
 
 
-
+    
 
 
 

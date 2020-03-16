@@ -11,7 +11,8 @@ import numpy as np
 from validation import *
 
 # input file
-nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, skip_footer=(14594 - 6598), delimiter=",")
+nodelist = np.genfromtxt("B737.inp", dtype=str, skip_header=9, 
+                         skip_footer=(14594 - 6598), delimiter=",")
 nodelist = nodelist.astype(np.float)
 
 hingelinenodes = []
