@@ -4,24 +4,23 @@ import equilibrium
 
 
 def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_rel=True,
-              label="Verification", vertlabel="u", unit="m", fullscreen=True, extraplot=lambda: True) -> None:
+              label="Verification", label0="Verification", vertlabel="u", unit="m", fullscreen=True, extraplot=lambda: True) -> None:
     subplots = 0
     if label == "Validation":
         smalllabel = "val"
     else:
         smalllabel = "ver"
-    print(plot_raw)
     if plot_raw:
-        rawlabel = ("Numerical model", label + " model")
+        rawlabel = (label0 + " model", label + " model")
         subplots += 1
         rawunit = "  ["+unit+"]"
     if plot_diff_abs:
-        abslabel = ("Abs. difference numerical - "+label+" model")
+        abslabel = ("Abs. difference "+ label0 + " - "+label+" model")
         subplots += 1
         absunit = "  ["+unit+"]"
     if plot_diff_rel:
         subplots += 1
-        rellabel = ("Rel. difference numerical - "+label+" model")
+        rellabel = ("Rel. difference "+label0+" - "+label+" model")
         relunit = "  [%]"
     if subplots == 0:
         raise ValueError("At least one plot is required for data visualization.")
@@ -93,5 +92,3 @@ def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_
         figManager.full_screen_toggle()
     plt.tight_layout()
     plt.show()
-
-print(comp_data())
