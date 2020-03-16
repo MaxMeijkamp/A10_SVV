@@ -91,18 +91,18 @@ aileron = Energy.Beam(la,crosssection,N,E,G)
 
 """Define your boundary conditions; see manual for explanations. The shown boundary conditions are the boundary
 conditions for the aileron as described in the assignment."""
-# aileron.addbcss(x1,0.,-ha/2.,-theta,d1)
-aileron.addbcss(x1,0.,-ha/2.,-theta,0)
+aileron.addbcss(x1,0.,-ha/2.,-theta,d1)
+# aileron.addbcss(x1,0.,-ha/2.,-theta,0)
 aileron.addbcss(x1,0.,-ha/2.,m.pi/2-theta,0)
 aileron.addbcss(x2,0.,-ha/2.,0,0)
 aileron.addbcss(x2,0.,-ha/2.,m.pi/2,0.)
-# aileron.addbcss(x3,0.,-ha/2.,-theta,d3)
-aileron.addbcss(x3,0.,-ha/2.,-theta,0)
+aileron.addbcss(x3,0.,-ha/2.,-theta,d3)
+# aileron.addbcss(x3,0.,-ha/2.,-theta,0)
 aileron.addbcss(x3,0.,-ha/2.,m.pi/2-theta,0)
 aileron.addbcss(x2-xa/2.,ha/2.,0,m.pi/2.-theta,0)
 
 """"Define your applied loading; see manual for explanations."""
-aileron.addfpl(x2+xa/2.,ha/2.,0,m.pi/2.-theta,-P)
+# aileron.addfpl(x2+xa/2.,ha/2.,0,m.pi/2.-theta,-P)
 
 ### Primary functions
 """ The following line computes the deflections. If you do not want to include the aerodynamic loading, simply write
@@ -112,8 +112,8 @@ If you do want to include the aerodynamic loading, let the variable aircraft (se
 Note that the name should be spelled exactly as listed above. Note that if the aircraft you write is inconsistent with the
 geometry you define at the beginning of this file, the program will not return an error, but will simply produce bogus
 results."""
-aileron.compute_deflections("B737") ### Switch aerodynamic loading to the aircraft that is being considered
-# aileron.compute_deflections()
+# aileron.compute_deflections("B737") ### Switch aerodynamic loading to the aircraft that is being considered
+aileron.compute_deflections()
 
 ### Auxiliary functions
 """" A number of auxiliary functions and results are given to you. """
@@ -137,7 +137,7 @@ My = aileron.My(x)               # Compute the moment around the y-axis
 Mz = aileron.Mz(x)               # Compute the moment around the z-axis
 T = aileron.T(x)                # Compute the torque
 tau = aileron.tau(x)              # Compute the distributed torque
-loadcase = "_3"
+loadcase = "_1"
 np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\v"+loadcase+".csv", v, delimiter=",")
 np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\v1"+loadcase+".csv", v1, delimiter=",")
 np.savetxt("D:\\Documents\\SVV\\A10\\datafiles2\\v2"+loadcase+".csv", v2, delimiter=",")
@@ -195,7 +195,7 @@ _ = aileron.sol.coef        # Resulting coefficients, collected in bar(alpha) (a
 Stressobject = Stress.Stressstate(crosssection)
 
 ### Define the forces and moments for which you want to know the stress distributions
-x = 1.1985
+x = 1.002
 Sy = aileron.Sy(x)
 Sz = aileron.Sz(x)
 My = aileron.My(x)

@@ -6,6 +6,11 @@ import equilibrium
 def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_rel=True,
               label="Verification", label0="Verification", vertlabel="u", unit="m", fullscreen=True, extraplot=lambda: True) -> None:
     subplots = 0
+    if fullscreen:
+        figManager = plt.get_current_fig_manager()
+        figManager.full_screen_toggle()
+    else:
+        plt.figure(figsize=(12,6))
     if label == "Validation":
         smalllabel = "val"
     else:
@@ -87,8 +92,5 @@ def comp_data(x, data_num, data_v, plot_raw=True, plot_diff_abs=True, plot_diff_
             plt.legend(rellabel, loc="upper right")
             plt.xlabel("x  [m]")
             plt.ylabel("("+vertlabel+"_num-"+vertlabel + "_"+smalllabel+")/("+vertlabel+"_"+smalllabel+")"+relunit)
-    if fullscreen:
-        figManager = plt.get_current_fig_manager()
-        figManager.full_screen_toggle()
     plt.tight_layout()
     plt.show()

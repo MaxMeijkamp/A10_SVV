@@ -1,26 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4c9ce60f-9425-4ff2-a792-5952d02b9cd9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/datafileval/VMc_1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datafileval/VMc_2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datafileval/VMc_3.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datafileval/VMv_1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datafileval/VMv_2.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/datafileval/VMv_3.csv" afterDir="false" />
+    <list default="true" id="4c9ce60f-9425-4ff2-a792-5952d02b9cd9" name="Default Changelist" comment="Expanded use_data to compare stresses in cross-section">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/compare.py" beforeDir="false" afterPath="$PROJECT_DIR$/compare.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/My_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/My_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/My_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/My_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/Mz_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/Mz_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/Mz_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/Mz_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/Sy_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/Sy_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/Sy_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/Sy_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/Sz_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/Sz_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/Sz_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/Sz_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/T_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/T_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/T_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/T_3.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datafiles2/c1_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c1_1.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datafiles2/c1_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c1_2.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datafiles2/c1_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c1_3.csv" afterDir="false" />
@@ -39,35 +23,6 @@
       <change beforePath="$PROJECT_DIR$/datafiles2/c6_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c6_1.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datafiles2/c6_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c6_2.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datafiles2/c6_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/c6_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/e2_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/e2_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/e2_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/e2_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/e2_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/e2_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/phi1_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/phi1_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/phi1_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/phi1_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/phi2_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/phi2_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/phi2_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/phi2_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/phi3_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/phi3_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/phi3_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/phi3_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/phi_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/phi_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/phi_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/phi_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/tau_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/tau_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/tau_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/tau_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/v1_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/v1_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/v1_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/v1_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/v2_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/v2_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/v2_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/v2_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/v3_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/v3_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/v3_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/v3_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/v_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/v_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/v_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/v_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/w1_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/w1_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/w1_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/w1_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/w2_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/w2_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/w2_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/w2_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/w3_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/w3_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/w3_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/w3_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/w_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/w_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datafiles2/w_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/datafiles2/w_3.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/use_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/use_data.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -115,8 +70,8 @@
       <file leaf-file-name="compare.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/compare.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="88" column="39" selection-start-line="88" selection-start-column="39" selection-end-line="88" selection-end-column="39" />
+            <state relative-caret-position="1547">
+              <caret line="91" column="29" selection-start-line="91" selection-start-column="29" selection-end-line="91" selection-end-column="29" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -133,11 +88,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-258">
-              <caret line="100" column="32" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
+            <state relative-caret-position="201">
+              <caret line="70" column="21" lean-forward="true" selection-start-line="70" selection-start-column="21" selection-end-line="70" selection-end-column="21" />
               <folding>
                 <element signature="e#32#50#0" expanded="true" />
               </folding>
@@ -145,11 +100,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="use_data.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="use_data.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/use_data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="388">
-              <caret line="184" column="35" lean-forward="true" selection-start-line="184" selection-start-column="35" selection-end-line="184" selection-end-column="35" />
+            <state relative-caret-position="1306">
+              <caret line="125" column="16" selection-start-line="125" selection-start-column="16" selection-end-line="125" selection-end-column="16" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -157,11 +112,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Stresses file.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Stresses file.py">
+      <file leaf-file-name="validation.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/validation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="58" selection-start-line="58" selection-end-line="72" selection-end-column="10" />
+            <state relative-caret-position="3873">
+              <caret line="361" column="69" selection-start-line="361" selection-start-column="69" selection-end-line="361" selection-end-column="69" />
             </state>
           </provider>
         </entry>
@@ -197,9 +152,9 @@
         <option value="$PROJECT_DIR$/testval.py" />
         <option value="$PROJECT_DIR$/A10_SVV_Validation/Hingeline deflection.py" />
         <option value="$PROJECT_DIR$/torsion.py" />
-        <option value="$PROJECT_DIR$/compare.py" />
         <option value="$PROJECT_DIR$/validation.py" />
         <option value="$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py" />
+        <option value="$PROJECT_DIR$/compare.py" />
         <option value="$PROJECT_DIR$/use_data.py" />
       </list>
     </option>
@@ -230,21 +185,6 @@
             <path>
               <item name="A10" type="b2602c69:ProjectViewProjectNode" />
               <item name="A10" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="A10" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A10" type="462c0819:PsiDirectoryNode" />
-              <item name="A10_SVV_Validation" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="A10" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A10" type="462c0819:PsiDirectoryNode" />
-              <item name="A10_SVV_VerificationModel_3_6" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="A10" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A10" type="462c0819:PsiDirectoryNode" />
-              <item name="datafiles2" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -545,7 +485,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582817311560</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Expanded use_data to compare stresses in cross-section">
+      <created>1584316938983</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1584316938983</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TodoView">
@@ -559,7 +506,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48734176" visible="true" weight="0.14739583" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32956153" />
@@ -615,7 +561,8 @@
     <MESSAGE value="Get twist finished, graphs gotten" />
     <MESSAGE value="get_dat modified" />
     <MESSAGE value="Function n_twist(x) gives the twist as a function of the span for the num.model" />
-    <option name="LAST_COMMIT_MESSAGE" value="Function n_twist(x) gives the twist as a function of the span for the num.model" />
+    <MESSAGE value="Expanded use_data to compare stresses in cross-section" />
+    <option name="LAST_COMMIT_MESSAGE" value="Expanded use_data to compare stresses in cross-section" />
   </component>
   <component name="WindowStateProjectService">
     <state x="279" y="52" key="CommitChangelistDialog2" timestamp="1584103330499">
@@ -805,13 +752,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/displacements.py" />
-    <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Hingeline deflection.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="81" column="10" lean-forward="true" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testval.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -848,13 +788,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="204" column="20" lean-forward="true" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datafiles/VM_Bending_coordinates.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -883,13 +816,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Stresses file.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="58" selection-start-line="58" selection-end-line="72" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datafileval/w_1">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1420" />
@@ -915,10 +841,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/compare.py">
+    <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Stresses file.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
-          <caret line="88" column="39" selection-start-line="88" selection-start-column="39" selection-end-line="88" selection-end-column="39" />
+          <caret line="52" column="46" lean-forward="true" selection-start-line="52" selection-start-column="46" selection-end-line="52" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/A10_SVV_Validation/Hingeline deflection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="81" column="10" lean-forward="true" selection-start-line="81" selection-start-column="10" selection-end-line="81" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3873">
+          <caret line="361" column="69" selection-start-line="361" selection-start-column="69" selection-end-line="361" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/compare.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1547">
+          <caret line="91" column="29" selection-start-line="91" selection-start-column="29" selection-end-line="91" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/use_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1306">
+          <caret line="125" column="16" selection-start-line="125" selection-start-column="16" selection-end-line="125" selection-end-column="16" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -927,20 +884,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/A10_SVV_VerificationModel_3_6/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-258">
-          <caret line="100" column="32" selection-start-line="100" selection-start-column="32" selection-end-line="100" selection-end-column="32" />
+        <state relative-caret-position="201">
+          <caret line="70" column="21" lean-forward="true" selection-start-line="70" selection-start-column="21" selection-end-line="70" selection-end-column="21" />
           <folding>
             <element signature="e#32#50#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/use_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="184" column="35" lean-forward="true" selection-start-line="184" selection-start-column="35" selection-end-line="184" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
